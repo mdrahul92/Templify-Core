@@ -1,0 +1,2 @@
+# Templify-Core
+ Templify Core
