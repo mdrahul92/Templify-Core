@@ -1,0 +1,11 @@
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --third-color: #e74c3c;
+  
+    --pad-xs: 5px;
+    --pad-sm: 10px;
+    --pad: 15px;
+    --pad-x: 20px;
+  }
+  
