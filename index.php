@@ -620,6 +620,27 @@ add_action( 'add_meta_boxes', 'edd_full_access_add_meta_box' );
 add_action('admin_init', 'register_templify_core_full_access_settings');
 
 
+function edd_full_access_update_download_type( $type, $download_id ) {
+	if ( 'full_access' === $type ) {
+		return $type;
+	}
+
+	// If the download doesn't yet have a type, but does have AA settings, it's probably an AA download.
+	if ( ( empty( $type ) || 'default' === $type ) && get_post_meta( $download_id, '_edd_full_access_settings', true ) ) {
+		// This request will trigger a debugging notice and update the post meta.
+		if ( get_post_meta( $download_id, '_edd_full_access_enabled', true ) ) {
+			update_post_meta( $download_id, '_edd_product_type', 'full_access' );
+			delete_post_meta( $download_id, '_edd_full_access_enabled' );
+
+			return 'full_access';
+		}
+	}
+
+	return $type;
+}
+add_filter( 'edd_get_download_type', 'edd_full_access_update_download_type', 20, 2 );
+
+
 
 // Admin Notices
 add_action('admin_notices', 'templify_core_admin_notices');
