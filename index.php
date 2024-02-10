@@ -179,7 +179,7 @@ function templify_core_register_settings() {
 	$settings[] = array(
 		'id'   => 'full_access_expired_redirect',
 		'name' => __( 'Redirect URL (Optional):', 'templify-full-access' ),
-		'desc' => __( 'Instead of seeing the above error message, if you\'d like the customer to be redirected to a specific page when they attempt to download a product using an expired Full Access pass, enter that URL here.', 'templify-full-access' ),
+		'desc' => __( 'Instead of seeing the above error message, if you\'d like the customer to be redirected to a specific page when they attempt to download a product using an expired Full Access License, enter that URL here.', 'templify-full-access' ),
 		'type' => 'text',
 		'size' => 'large',
 		'std'  => '',
@@ -205,7 +205,7 @@ function templify_core_register_settings() {
 	$settings[] = array(
 		'id'   => 'full_access_category_not_included_redirect',
 		'name' => __( 'Redirect URL (Optional):', 'templify-full-access' ),
-		'desc' => __( 'Instead of seeing the above error message, if you\'d like the customer to be redirected to a specific page when they attempt to download a product using an expired Full Access pass, enter that URL here.', 'templify-full-access' ),
+		'desc' => __( 'Instead of seeing the above error message, if you\'d like the customer to be redirected to a specific page when they attempt to download a product using an expired Full Access License, enter that URL here.', 'templify-full-access' ),
 		'type' => 'text',
 		'size' => 'large',
 		'std'  => '',
@@ -231,7 +231,7 @@ function templify_core_register_settings() {
 	$settings[] = array(
 		'id'   => 'full_access_price_id_not_included_redirect',
 		'name' => __( 'Redirect URL (Optional):', 'templify-full-access' ),
-		'desc' => __( 'Instead of seeing the above error message, if you\'d like the customer to be redirected to a specific page when they attempt to download a product using an expired Full Access pass, enter that URL here.', 'templify-full-access' ),
+		'desc' => __( 'Instead of seeing the above error message, if you\'d like the customer to be redirected to a specific page when they attempt to download a product using an expired Full Access License, enter that URL here.', 'templify-full-access' ),
 		'type' => 'text',
 		'size' => 'large',
 		'std'  => '',
@@ -274,7 +274,7 @@ function templify_core_register_settings() {
 	$settings[] = array(
 		'id'            => 'full_access_hide_non_relevant_variable_prices',
 		'name'          => __( 'Hide non-relevant variable prices?', 'templify-full-access' ),
-		'desc'          => __( 'If a customer has an Full Access pass but that pass doesn\'t provide access to a specific variable price, should it be hidden? For example, if the Full Access License gives access to a "Large" version and thus you want to hide the "Medium" and "Small" versions, choose "Yes" and they will be hidden from those Full Access License holders. Note they will still appear to people without an Full Access pass where they normally would.', 'templify-full-access' ),
+		'desc'          => __( 'If a customer has an Full Access License but that pass doesn\'t provide access to a specific variable price, should it be hidden? For example, if the Full Access License gives access to a "Large" version and thus you want to hide the "Medium" and "Small" versions, choose "Yes" and they will be hidden from those Full Access License holders. Note they will still appear to people without an Full Access License where they normally would.', 'templify-full-access' ),
 		'type'          => 'radio',
 		'options'       => array(
 			'no'  => __( 'No. I want to show all variable prices to customers with an Full Access License - even if they don\'t get access to them.', 'templify-full-access' ),
@@ -426,6 +426,7 @@ function templify_core_full_access_download_now_text_callback($args) {
         echo "<input type='text' name='templify_core_full_access_settings[full_access_download_now_text]' value='' />";
     }
     echo "<br>".$args['desc'];
+
 }
 
 
@@ -597,6 +598,23 @@ function register_templify_core_full_access_settings() {
 }
 
 
+function edd_full_access_register_download_type( $types ) {
+	$types['full_access'] = __( 'Full Access', 'templify-full-access' );
+
+	return $types;
+}
+add_filter( 'edd_download_types', 'edd_full_access_register_download_type' );
+
+require_once plugin_dir_path( __FILE__ ) . '/full_access/functions/helper_function.php';
+require_once plugin_dir_path( __FILE__ ) . '/full_access/metabox/full_access_meta_box.php';
+require_once plugin_dir_path( __FILE__ ) . '/full_access/metabox/price_meta_box.php';
+function edd_full_access_add_meta_box() {
+
+	if ( current_user_can( 'manage_shop_settings' ) ) {
+		add_meta_box( 'edd_downloads_full_access', __( 'Full Access', 'edd-full-access' ), 'edd_full_access_render_full_access_meta_box', 'download', 'normal', 'default' );
+	}
+}
+add_action( 'add_meta_boxes', 'edd_full_access_add_meta_box' );
 
 // Hook your functions
 add_action('admin_init', 'register_templify_core_full_access_settings');
