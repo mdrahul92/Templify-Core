@@ -608,6 +608,10 @@ add_filter( 'edd_download_types', 'edd_full_access_register_download_type' );
 require_once plugin_dir_path( __FILE__ ) . '/full_access/functions/helper_function.php';
 require_once plugin_dir_path( __FILE__ ) . '/full_access/metabox/full_access_meta_box.php';
 require_once plugin_dir_path( __FILE__ ) . '/full_access/metabox/price_meta_box.php';
+require_once plugin_dir_path( __FILE__ ) . '/full_access/reports/reports.php';
+require_once plugin_dir_path( __FILE__ ) . '/full_access/reports/class-edd-fa-download-popularity-table.php';
+
+
 function edd_full_access_add_meta_box() {
 
 	if ( current_user_can( 'manage_shop_settings' ) ) {

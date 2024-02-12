@@ -49,11 +49,11 @@ return apply_filters( 'edd_full_access_downloads', $edd_full_access_downloads );
 
 function edd_full_access_get_download_limit_periods(){
 $download_limit_periods = array(
-    'per_day'    => __( 'X downloads per day', 'templify-full-access' ),
-    'per_week'   => __( 'X downloads per week', 'templify-full-access' ),
-    'per_month'  => __( 'X downloads per month', 'templify-full-access' ),
-    'per_year'   => __( 'X downloads per year', 'templify-full-access' ),
-    'per_period' => __( 'X downloads total', 'templify-full-access' ),
+    'per_day'    => __( 'X downloads per day', 'templify-full-access'),
+    'per_week'   => __( 'X downloads per week', 'templify-full-access'),
+    'per_month'  => __( 'X downloads per month', 'templify-full-access'),
+    'per_year'   => __( 'X downloads per year', 'templify-full-access'),
+    'per_period' => __( 'X downloads total', 'templify-full-access'),
 );
 
 /**

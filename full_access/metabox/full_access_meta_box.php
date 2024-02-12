@@ -29,7 +29,32 @@ $enabled = edd_full_access_enabled_for_download( $post->ID );
             <?php echo esc_html( __( 'To which product categories does the customer get "Full Access"', 'templify-full-access' ) ); ?>
         </label>
         <br />
-        
+        <?php
+				$categories = get_terms( 'download_category', apply_filters( 'edd_category_dropdown', array() ) );
+				$options    = array(
+					'all' => __( 'All Products', 'templify-full-access' ),
+				);
+
+				foreach ( $categories as $category ) {
+					$options[ absint( $category->term_id ) ] = esc_html( $category->name );
+				}
+
+				echo EDD()->html->select(
+					array(
+						'options'          => $options,
+						'name'             => 'edd_full_access_meta[all_access_categories][]',
+						'selected'         => '',
+						'id'               => 'edd_full_access_meta_all_access_categories',
+						'class'            => 'edd_full_access_meta_all_access_categories',
+						'chosen'           => true,
+						'placeholder'      => __( 'Type to search Categories', 'templify-full-access' ),
+						'multiple'         => true,
+						'show_option_all'  => false,
+						'show_option_none' => false,
+						'data'             => array( 'search-type' => 'no_ajax' ),
+					)
+				);
+				?>
     </td>
 </tr>
 
