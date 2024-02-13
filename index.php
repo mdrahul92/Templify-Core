@@ -610,7 +610,7 @@ require_once plugin_dir_path( __FILE__ ) . '/full_access/metabox/full_access_met
 require_once plugin_dir_path( __FILE__ ) . '/full_access/metabox/price_meta_box.php';
 require_once plugin_dir_path( __FILE__ ) . '/full_access/reports/reports.php';
 require_once plugin_dir_path( __FILE__ ) . '/full_access/reports/class-edd-fa-download-popularity-table.php';
-
+require_once plugin_dir_path( __FILE__ ) . '/full_access/functions/shortcodes.php';
 
 function edd_full_access_add_meta_box() {
 
