@@ -30,7 +30,7 @@ add_action('wp_enqueue_scripts', 'templify_core_enqueue_scripts');
 function templify_core_admin_enqueue_scripts() {
     // Enqueue your plugin scripts
     wp_enqueue_style('templify-core-admin-style', plugins_url('assets/admin/css/style.css', __FILE__));
-    wp_enqueue_script('templify-core--admin-script', plugins_url('assets/admin/js/script.js', __FILE__), array('jquery'), '1.0', true);
+    wp_enqueue_script('templify-core-admin-script', plugins_url('assets/admin/js/script.js', __FILE__), array('jquery'), '1.0', true);
 }
 add_action('admin_enqueue_scripts', 'templify_core_admin_enqueue_scripts');
 
@@ -38,8 +38,8 @@ add_action('admin_enqueue_scripts', 'templify_core_admin_enqueue_scripts');
 register_activation_hook(__FILE__, 'templify_core_activation');
 
 function templify_core_activation() {
-    $result = templify_core_check_edd();
-    if ($result['edd_active']) {
+    //$result = templify_core_check_edd();
+    if (templify_core_check_edd() ) {
         // templify_core_add_edd_full_access();
     } else {
         // Deactivate the plugin
@@ -584,8 +584,6 @@ function templify_core_full_access_custom_url_btn_text_callback($args){
 }
 
 
-// ... (existing code)
-
 // Hook your functions
 add_action('admin_init', 'templify_core_register_settings');
 
@@ -598,12 +596,13 @@ function register_templify_core_full_access_settings() {
 }
 
 
-function edd_full_access_register_download_type( $types ) {
+function templify_full_access_register_download_type( $types ) {
 	$types['full_access'] = __( 'Full Access', 'templify-full-access' );
 
 	return $types;
 }
-add_filter( 'edd_download_types', 'edd_full_access_register_download_type' );
+add_filter( 'edd_download_types', 'templify_full_access_register_download_type' );
+
 
 require_once plugin_dir_path( __FILE__ ) . '/full_access/functions/helper_function.php';
 require_once plugin_dir_path( __FILE__ ) . '/full_access/metabox/full_access_meta_box.php';
@@ -615,7 +614,7 @@ require_once plugin_dir_path( __FILE__ ) . '/full_access/functions/shortcodes.ph
 function edd_full_access_add_meta_box() {
 
 	if ( current_user_can( 'manage_shop_settings' ) ) {
-		add_meta_box( 'edd_downloads_full_access', __( 'Full Access', 'edd-full-access' ), 'edd_full_access_render_full_access_meta_box', 'download', 'normal', 'default' );
+		add_meta_box( 'edd_downloads_full_access', __( 'Full Access', 'templify-full-access' ), 'edd_full_access_render_full_access_meta_box', 'download', 'normal', 'default' );
 	}
 }
 add_action( 'add_meta_boxes', 'edd_full_access_add_meta_box' );
