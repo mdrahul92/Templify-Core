@@ -717,6 +717,7 @@ function edd_all_access_display_pass_details( $payment_id, $download_id, $price_
 
 						</div>
 
+
 						<div id="item-edit-actions" class="edit-item" style="display: block; margin-top:10px;">
 
 							<?php
