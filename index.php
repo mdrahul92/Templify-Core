@@ -127,7 +127,7 @@ function render_templify_core_full_access_settings() {
    ?>
     <div class="wrap">
         <form method="post" action="options.php">
-            <?php
+            <?
             settings_fields('templify_core_full_access_settings_group');
             do_settings_sections('templify_core_full_access_settings');
             submit_button();
@@ -795,7 +795,7 @@ $enabled = edd_full_access_enabled_for_download( $post->ID );
 			<td>
 		</tr>
 						</table>
-	<?php 
+	<?php
 	}
 	
 	
@@ -870,4 +870,53 @@ function templify_core_deactivate() {
 register_deactivation_hook(__FILE__, 'templify_core_deactivate');
 
 
+
+
+
+function edds_pro_preapproval_setting( $settings ) {
+	if ( empty( $settings['edd-stripe'] ) ) {
+		return $settings;
+	}
+
+	$setting = array(
+		'id'            => 'stripe_preapprove_only',
+		'name'          => __( 'Preapproved Payments', 'edds' ),
+		'desc'          => __( 'Authorize payments for processing and collection at a future date.', 'edds' ),
+		'type'          => 'checkbox',
+		'tooltip_title' => __( 'What does checking preapprove do?', 'edds' ),
+		'tooltip_desc'  => __( 'If you choose this option, Stripe will not charge the customer right away after checkout, and the payment status will be set to preapproved in Easy Digital Downloads. You (as the admin) can then manually change the status to Complete by going to Payment History and changing the status of the payment to Complete. Once you change it to Complete, the customer will be charged. Note that most typical stores will not need this option.', 'edds' ),
+	);
+
+	$position = array_search(
+		'stripe_restrict_assets',
+		array_keys(
+			$settings['edd-stripe']
+		),
+		true
+	);
+
+	array_splice(
+		$settings['edd-stripe'],
+		$position,
+		0,
+		array(
+			'stripe_preapprove_only' => $setting,
+		)
+	);
+
+	return $settings;
+}
+add_filter( 'edd_settings_gateways', 'edds_pro_preapproval_setting', 20 );
+
+
+//if ( class_exists( '\\EDD\\Gateways\\PayPal\\API' ) ) {
+	require_once dirname( __FILE__ ) . '/paypal/main.php';
+	require_once dirname( __FILE__ ) . '/paypal/admin/settings.php';
+
+	require_once dirname( __FILE__ ) . '/paypal/checkout.php';
+//}
+
+require_once plugin_dir_path( __FILE__ ) . '/recurring_payment/functions.php';
+require_once plugin_dir_path( __FILE__ ) . '/recurring_payment/helper_functions.php';
+require_once plugin_dir_path( __FILE__ ) . '/recurring_payment/admin_settings.php';
 
