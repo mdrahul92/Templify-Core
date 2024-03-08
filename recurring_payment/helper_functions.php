@@ -28,6 +28,82 @@ function get_period_single( $post_id ) {
 }
 
 
+function get_custom_times( $post_id ) {
+	global $post;
+
+	$times = get_post_meta( $post_id, 'edd_custom_times', true );
+
+	if ( $times ) {
+		return $times;
+	}
+
+	return 0;
+}
+
+
+function get_custom_signup_fee( $post_id ) {
+	global $post;
+
+	$signup_fee = get_post_meta( $post_id, 'edd_custom_signup_fee', true );
+
+	if ( $signup_fee ) {
+		return $signup_fee;
+	}
+
+	return 0;
+}
+
+function is_price_recurring( $download_id, $price_id ) {
+
+	global $post;
+
+	if ( empty( $download_id ) && is_object( $post ) ) {
+		$download_id = $post->ID;
+	}
+
+	$prices = get_post_meta( $download_id, 'edd_variable_prices', true );
+	$period = get_period( $price_id, $download_id );
+
+	if ( isset( $prices[ $price_id ]['recurring'] ) && 'never' != $period ) {
+		return true;
+	}
+
+	return false;
+
+}
+
+
+function get_period( $price_id, $post_id = null ) {
+	global $post;
+
+	$period = 'never';
+
+	if ( ! $post_id && is_object( $post ) ) {
+		$post_id = $post->ID;
+	}
+
+	$prices = get_post_meta( $post_id, 'edd_variable_prices', true );
+
+	if ( isset( $prices[ $price_id ]['period'] ) ) {
+		$period = $prices[ $price_id ]['period'];
+	}
+
+	return $period;
+}
+
+
+function get_custom_period( $post_id ) {
+	global $post;
+
+	$period = get_post_meta( $post_id, 'edd_custom_period', true );
+
+	if ( $period ) {
+		return $period;
+	}
+
+	return 'never';
+}
+
 function is_recurring( $download_id = 0 ) {
 
 	global $post;
@@ -52,6 +128,23 @@ function get_times_single( $post_id ) {
 
 	if ( $times ) {
 		return $times;
+	}
+
+	return 0;
+}
+
+
+function get_times( $price_id, $post_id = null ) {
+	global $post;
+
+	if ( empty( $post_id ) && is_object( $post ) ) {
+		$post_id = $post->ID;
+	}
+
+	$prices = get_post_meta( $post_id, 'edd_variable_prices', true );
+
+	if ( isset( $prices[ $price_id ]['times'] ) ) {
+		return intval( $prices[ $price_id ]['times'] );
 	}
 
 	return 0;
@@ -92,6 +185,43 @@ function get_signup_fee_single( $post_id ) {
 	}
 
 	return 0;
+}
+
+
+
+function get_signup_fee( $price_id, $post_id = null ) {
+	global $post;
+
+	if ( empty( $post_id ) && is_object( $post ) ) {
+		$post_id = $post->ID;
+	}
+
+	$prices = get_post_meta( $post_id, 'edd_variable_prices', true );
+
+	$fee = isset( $prices[ $price_id ]['signup_fee'] ) ? $prices[ $price_id ]['signup_fee'] : 0;
+	$fee = apply_filters( 'edd_recurring_signup_fee', $fee, $price_id, $prices );
+	if ( $fee ) {
+		return floatval( $fee );
+	}
+
+	return 0;
+}
+
+
+function is_custom_recurring( $download_id = 0 ) {
+
+	global $post;
+
+	if ( empty( $download_id ) && is_object( $post ) ) {
+		$download_id = $post->ID;
+	}
+
+	if ( get_post_meta( $download_id, 'edd_custom_recurring', true ) == 'yes' ) {
+		return true;
+	}
+
+	return false;
+
 }
 
 
