@@ -1,4 +1,15 @@
-<?php 
+<?php
+/**
+ * Functions
+ *
+ * @package   edd-paypal-commerce-pro
+ * @copyright Copyright (c) 2021, Sandhills Development, LLC
+ * @license   GPL2+
+ * @since     1.0
+ */
+
+namespace EDD_PayPal_Commerce_Pro\Advanced;
+
 use EDD\Gateways\PayPal\API;
 use EDD\Gateways\PayPal\MerchantAccount;
 
@@ -18,7 +29,10 @@ function advanced_payments_enabled() {
 		return false;
 	}
 
-	
+	// Recurring payments not supported. @todo Confirm this.
+	if ( function_exists( 'EDD_Recurring' ) && EDD_Recurring()->cart_contains_recurring() ) {
+		return false;
+	}
 
 	return is_merchant_account_ready();
 }
@@ -62,5 +76,3 @@ function is_merchant_account_ready() {
 		return false;
 	}
 }
-
-    ?>

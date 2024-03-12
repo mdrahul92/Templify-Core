@@ -1,6 +1,20 @@
 <?php
+/**
+ * Checkout Actions
+ *
+ * @package   edd-paypal-commerce-pro
+ * @copyright Copyright (c) 2021, Sandhills Development, LLC
+ * @license   GPL2+
+ * @since     1.0
+ */
 
+namespace EDD_PayPal_Commerce_Pro\Advanced;
 
+/**
+ * Adds card fields after the PayPal Smart Buttons.
+ *
+ * @since 1.0
+ */
 add_action( 'edd_paypal_after_button_container', function () {
 	if ( ! advanced_payments_enabled() ) {
 		return;

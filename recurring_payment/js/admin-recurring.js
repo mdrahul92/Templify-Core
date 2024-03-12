@@ -7,9 +7,7 @@
 var EDD_Recurring_Vars;
 
 jQuery( document ).ready( function ( $ ) {
-
-	console.log('work');
-
+	console.log('ok');
 	var EDD_Recurring = {
 		init: function () {
 
@@ -241,6 +239,7 @@ jQuery( document ).ready( function ( $ ) {
 				$('.edd-sub-profile-id').toggle();
 				$('#edd-sub-profile-id-update-notice').slideToggle();
 			});
+
 		},
 
 		edit_product_id: function() {

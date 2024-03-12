@@ -1,4 +1,44 @@
 <?php
+/**
+ * PayPal Settings
+ *
+ * @package   edd-paypal-commerce-pro
+ * @copyright Copyright (c) 2021, Sandhills Development, LLC
+ * @license   GPL2+
+ */
+
+namespace EDD_PayPal_Commerce_Pro\Advanced\Admin;
+
+add_filter( 'edd_paypal_settings', function ( $settings ) {
+	/*
+	 * If the user was not onboarded for PPCP then we won't show
+	 * them this option, as they're not eligible to use it anyway.
+	 */
+	if ( ! \EDD_PayPal_Commerce_Pro\Advanced\is_merchant_account_eligible_for_advanced_payments() ) {
+		return $settings;
+	}
+
+	$desc = __( 'If enabled, eligible customers will be able to pay with a credit or debit card directly on your site.', 'edd-paypal-commerce-pro' );
+	if ( ! \EDD_PayPal_Commerce_Pro\Advanced\is_merchant_account_ready() ) {
+		$desc .= '<br>' . __( 'Warning: Your PayPal account is not ready to support this feature. Please reach out to PayPal to enable PPCP_CUSTOM for your account.', 'edd-paypal-commerce-pro' );
+	}
+
+	$settings['paypal_advanced_card_payments'] = array(
+		'id'   => 'paypal_advanced_card_payments',
+		'name' => __( 'Enabled Advanced Credit and Debit Card Payments', 'edd-paypal-commerce-pro' ),
+		'desc' => $desc,
+		'type' => 'checkbox',
+	);
+
+	return $settings;
+} );
+
+/**
+ * Allows store owners to disable specific payment options.
+ *
+ * @since 1.0.1
+ * @link https://developer.paypal.com/docs/checkout/reference/customize-sdk/#disable-funding
+ */
 add_filter( 'edd_paypal_settings', function( $settings ) {
 	$settings['paypal_disable_funding'] = array(
 		'id'      => 'paypal_disable_funding',

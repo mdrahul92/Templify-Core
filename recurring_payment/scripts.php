@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * Load the admin javascript
+ *
+ * @access      public
+ * @since       1.0
+ * @return      void
+ */
 function edd_recurring_admin_scripts( $hook ) {
 	global $post, $edd_recurring;
 
@@ -16,8 +24,9 @@ function edd_recurring_admin_scripts( $hook ) {
 		return;
 	}
 
-	wp_register_script( 'edd-admin-recurring',  plugin_dir_path( __FILE__ ) . 'recurring_payment/js/admin-recurring.js', array( 'jquery' ) );
-    wp_enqueue_script( 'edd-admin-recurring' );
+	wp_register_script( 'edd-admin-recurring', plugin_dir_path( __FILE__ ) . '/recurring_payment/js/admin-recurring.js', array( 'jquery' ), EDD_RECURRING_VERSION, false );
+	wp_enqueue_script( 'edd-admin-recurring' );
+	wp_enqueue_style( 'edd-admin-recurring', plugin_dir_path( __FILE__ ) . '/recurring_payment/css/admin.css', array(), EDD_RECURRING_VERSION);
 
 	$ajax_vars = array(
 		'singular'            => _x( 'time', 'Referring to billing period', 'edd-recurring' ),

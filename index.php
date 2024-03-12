@@ -85,7 +85,7 @@ function edd_all_access_render_full_access_meta_box(){
 	?>
 	<input type="hidden" name="edd_download_full_access_meta_box_nonce" value="<?php echo esc_attr( wp_create_nonce( basename( __FILE__ ) ) ); ?>" />
 	<table class="form-table">
-		<?php 
+		<?
 $enabled = edd_full_access_enabled_for_download( $post->ID );
 	
 	?>
@@ -242,7 +242,7 @@ $enabled = edd_full_access_enabled_for_download( $post->ID );
 				</select>
 			<td>
 		</tr>
-		<?php
+		<?
 		// Full Access Receipt Link Message.
 		?>
 		<tr class="edd_full_access_row">
@@ -256,7 +256,7 @@ $enabled = edd_full_access_enabled_for_download( $post->ID );
 				</p>
 			<td>
 		</tr>
-		<?php
+		<?
 		// Full Access Receipt Link URL.
 		?>
 		<tr class="edd_full_access_row">
@@ -387,11 +387,37 @@ function edds_pro_preapproval_setting( $settings ) {
 add_filter( 'edd_settings_gateways', 'edds_pro_preapproval_setting', 20 );
 
 
-//if ( class_exists( '\\EDD\\Gateways\\PayPal\\API' ) ) {
-	require_once dirname( __FILE__ ) . '/paypal/main.php';
-	require_once dirname( __FILE__ ) . '/paypal/admin/settings.php';
-	require_once dirname( __FILE__ ) . '/paypal/checkout.php';
-//}
+// if ( class_exists( '\\EDD\\Gateways\\PayPal\\API' ) ) {
+	
+// }
+
+
+define( 'EDD_PAYPAL_PRO_VERSION', '1.0.3' );
+define( 'EDD_PAYPAL_PRO_FILE', __FILE__ );
+define( 'EDD_PAYPAL_PRO_DIR', dirname( EDD_PAYPAL_PRO_FILE ) );
+define( 'EDD_PAYPAL_PRO_URL', plugin_dir_url( EDD_PAYPAL_PRO_FILE ) );
+
+define( 'EDD_RECURRING_VERSION', '2.11.11.1' );
+
+
+add_action( 'plugins_loaded', function () {
+	if ( class_exists( '\\EDD\\Extensions\\ExtensionRegistry' ) ) {
+		add_action( 'edd_extension_license_init', function( \EDD\Extensions\ExtensionRegistry $registry ) {
+			$registry->addExtension( EDD_PAYPAL_PRO_FILE, 'PayPal Commerce Pro Payment Gateway', 1687512, EDD_PAYPAL_PRO_VERSION );
+		} );
+	} elseif ( class_exists( 'EDD_License' ) ) {
+		new \EDD_License( EDD_PAYPAL_PRO_FILE, 'PayPal Commerce Pro Payment Gateway', EDD_PAYPAL_PRO_VERSION, 'Easy Digital Downloads', null, null, 1687512 );
+	}
+
+	require_once dirname( __FILE__ ) . '/paypal/upgrades.php';
+
+	if ( class_exists( '\\EDD\\Gateways\\PayPal\\API' ) ) {
+		require_once dirname( __FILE__ ) . '/paypal/main.php';
+		require_once dirname( __FILE__ ) . '/paypal/admin/settings.php';
+		require_once dirname( __FILE__ ) . '/paypal/checkout.php';
+		require_once dirname( __FILE__ ) . '/paypal/script.php';
+	}
+} );
 
 require_once plugin_dir_path( __FILE__ ) . '/recurring_payment/functions.php';
 require_once plugin_dir_path( __FILE__ ) . '/recurring_payment/helper_functions.php';
