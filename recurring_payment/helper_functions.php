@@ -544,3 +544,23 @@ function edd_all_access_get_aap_purchase_timestamp( $all_access_pass ) {
 
 	return edd_all_access_get_payment_utc_timestamp( $all_access_pass->payment );
 }
+
+
+function cart_contains_recurring() {
+
+	$contains_recurring = false;
+
+	$cart_contents = edd_get_cart_contents();
+	foreach ( $cart_contents as $cart_item ) {
+
+		if ( isset( $cart_item['options'] ) && isset( $cart_item['options']['recurring'] ) ) {
+
+			$contains_recurring = true;
+			break;
+
+		}
+
+	}
+
+	return $contains_recurring;
+}

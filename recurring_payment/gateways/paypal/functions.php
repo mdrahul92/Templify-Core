@@ -12,7 +12,7 @@ function edd_recurring_get_paypal_api_credentials() {
 	if ( edd_is_test_mode() ) {
 		$mode = 'test';
 	}
-
+ 
 	// Retrieve credentials from core
 	$creds = array(
 		'username'  => edd_get_option( 'paypal_' . $mode . '_api_username' ),

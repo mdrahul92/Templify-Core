@@ -10,6 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since  2.4
  */
+edd_test_autoloader('EDD_DB');
 class EDD_Subscriptions_DB extends EDD_DB {
 
 	/**

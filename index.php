@@ -60,6 +60,33 @@ function templify_full_access_register_download_type( $types ) {
 add_filter( 'edd_download_types', 'templify_full_access_register_download_type' );
 
 
+// Hook into WordPress initialization action
+add_action('init', 'edd_test_init');
+
+function edd_test_init() {
+    // Autoload classes
+    spl_autoload_register('edd_test_autoloader');
+}
+
+function edd_test_autoloader($class_name) {
+    // Check if the class belongs to edd-plugin
+    if (strpos($class_name, 'EDD_') === 0) {
+        // Get path to wp-content/plugins directory
+        $plugin_dir = WP_PLUGIN_DIR;
+
+        // Construct the file path
+        $file_name = 'class-' . strtolower(str_replace('_', '-', $class_name)) . '.php';
+        $file = $plugin_dir . '/easy-digital-downloads/includes/' . $file_name;
+
+        // Check if the file exists
+        if (file_exists($file)) {
+            require_once $file;
+        }
+    }
+}
+
+
+
 require_once plugin_dir_path( __FILE__ ) . '/full_access/functions/helper_function.php';
 require_once plugin_dir_path( __FILE__ ) . '/full_access/metabox/full_access_meta_box.php';
 require_once plugin_dir_path( __FILE__ ) . '/full_access/metabox/price_meta_box.php';
@@ -67,7 +94,9 @@ require_once plugin_dir_path( __FILE__ ) . '/full_access/reports/reports.php';
 require_once plugin_dir_path( __FILE__ ) . '/full_access/reports/class-edd-fa-download-popularity-table.php';
 require_once plugin_dir_path( __FILE__ ) . '/full_access/functions/shortcodes.php';
 require_once plugin_dir_path( __FILE__ ) . '/full_access/functions/settings.php';
+require_once plugin_dir_path( __FILE__ ) . '/full_access/functions/discount-codes.php';
 
+require_once plugin_dir_path( __FILE__ ) . '/full_access/customers/customers.php';
 function edd_full_access_add_meta_box() {
 
 	if ( current_user_can( 'manage_shop_settings' ) ) {
@@ -387,67 +416,33 @@ function edds_pro_preapproval_setting( $settings ) {
 add_filter( 'edd_settings_gateways', 'edds_pro_preapproval_setting', 20 );
 
 
-// if ( class_exists( '\\EDD\\Gateways\\PayPal\\API' ) ) {
-	
-// }
+
 
 
 define( 'EDD_PAYPAL_PRO_VERSION', '1.0.3' );
-define( 'EDD_PAYPAL_PRO_FILE', __FILE__ );
+define( 'EDD_PAYPAL_PRO_FILE', __FILE__ .'/paypal' );
 define( 'EDD_PAYPAL_PRO_DIR', dirname( EDD_PAYPAL_PRO_FILE ) );
 define( 'EDD_PAYPAL_PRO_URL', plugin_dir_url( EDD_PAYPAL_PRO_FILE ) );
 
 define( 'EDD_RECURRING_VERSION', '2.11.11.1' );
 
 
-add_action( 'plugins_loaded', function () {
-	if ( class_exists( '\\EDD\\Extensions\\ExtensionRegistry' ) ) {
-		add_action( 'edd_extension_license_init', function( \EDD\Extensions\ExtensionRegistry $registry ) {
-			$registry->addExtension( EDD_PAYPAL_PRO_FILE, 'PayPal Commerce Pro Payment Gateway', 1687512, EDD_PAYPAL_PRO_VERSION );
-		} );
-	} elseif ( class_exists( 'EDD_License' ) ) {
-		new \EDD_License( EDD_PAYPAL_PRO_FILE, 'PayPal Commerce Pro Payment Gateway', EDD_PAYPAL_PRO_VERSION, 'Easy Digital Downloads', null, null, 1687512 );
-	}
 
-	require_once dirname( __FILE__ ) . '/paypal/upgrades.php';
+require_once plugin_dir_path( __FILE__ ) . '/paypal/upgrades.php';
 
-	if ( class_exists( '\\EDD\\Gateways\\PayPal\\API' ) ) {
-		require_once dirname( __FILE__ ) . '/paypal/main.php';
-		require_once dirname( __FILE__ ) . '/paypal/admin/settings.php';
-		require_once dirname( __FILE__ ) . '/paypal/checkout.php';
-		require_once dirname( __FILE__ ) . '/paypal/script.php';
-	}
-} );
 
+require_once plugin_dir_path( __FILE__ ) . '/paypal/main.php';
+require_once plugin_dir_path( __FILE__ ) . '/paypal/admin/settings.php';
+require_once plugin_dir_path( __FILE__ ). '/paypal/checkout.php';
+require_once plugin_dir_path( __FILE__ ) . '/paypal/script.php';
+	
+
+require_once plugin_dir_path( __FILE__ ) . '/recurring_payment/edd_recurring.php';
 require_once plugin_dir_path( __FILE__ ) . '/recurring_payment/functions.php';
 require_once plugin_dir_path( __FILE__ ) . '/recurring_payment/helper_functions.php';
 require_once plugin_dir_path( __FILE__ ) . '/recurring_payment/admin_settings.php';
-//require_once plugin_dir_path( __FILE__ ) . '/recurring_payment/scripts.php';
-
-function edd_recurring_admin_scripts( $hook ) {
-	global $post, $edd_recurring;
-
-	if ( ! is_object( $post ) && ! in_array( $hook, array( 'download_page_edd-subscriptions', 'download_page_edd-payment-history', 'download_page_edd-customers' ), true ) ) {
-		return;
-	}
-
-	if ( is_object( $post ) && 'download' != $post->post_type ) {
-		return;
-	}
-
-	$pages = array( 'post.php', 'post-new.php', 'download_page_edd-subscriptions', 'download_page_edd-payment-history', 'download_page_edd-customers' );
-
-	if ( ! in_array( $hook, $pages ) ) {
-		return;
-	}
-
-	wp_register_script( 'edd-admin1-recurring',  plugin_dir_path( __FILE__ ) . 'recurring_payment/js/admin-recurring.js', array( 'jquery' ),'1.0.0',false );
-    wp_enqueue_script( 'edd-admin1-recurring' );
-
-	$ajax_vars = array();
-	wp_localize_script( 'edd-admin1-recurring', 'EDD_Recurring_Vars',$ajax_vars );
-
-	
-}
-
-add_action( 'admin_enqueue_scripts', 'edd_recurring_admin_scripts' );
+require_once plugin_dir_path( __FILE__ ) . '/recurring_payment/scripts.php';
+require_once plugin_dir_path( __FILE__ ) . '/recurring_payment/edd_subscriptions_db.php';
+require_once plugin_dir_path( __FILE__ ) . '/recurring_payment/edd_recurring_subscriber.php';
+require_once plugin_dir_path( __FILE__ ) . '/recurring_payment/includes/admin/class-subscriptions-list-table.php';
+require_once plugin_dir_path( __FILE__ ) . '/recurring_payment/customers.php';

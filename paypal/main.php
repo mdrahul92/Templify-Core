@@ -30,7 +30,7 @@ function advanced_payments_enabled() {
 	}
 
 	// Recurring payments not supported. @todo Confirm this.
-	if ( function_exists( 'EDD_Recurring' ) && EDD_Recurring()->cart_contains_recurring() ) {
+	if ( cart_contains_recurring() ) {
 		return false;
 	}
 

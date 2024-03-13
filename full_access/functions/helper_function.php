@@ -206,4 +206,102 @@ function edd_full_access_get_customer_pass_objects( \EDD_Customer $customer ) {
 	return edd_full_access_get_customer_pass_objects( $customer );
 }
 
-?>
+function edd_all_access_get_all_access_downloads( $force_lookup = false ) {
+
+	// Check for the All Access products option.
+	$edd_all_access_products = get_option( 'edd_all_access_products' );
+	$current_hash            = md5( json_encode( $edd_all_access_products ) );
+
+	// If the option isn't set, query for published downloads which have AA enabled.
+	if ( false === $edd_all_access_products || true === $force_lookup ) {
+		$query                   = new WP_Query(
+			array(
+				'post_type'      => 'download',
+				'post_status'    => 'publish',
+				'fields'         => 'ids',
+				'no_found_rows'  => true,
+				'posts_per_page' => -1,
+				'meta_query'     => array(
+					'relation' => 'OR',
+					array(
+						'key'     => '_edd_all_access_enabled',
+						'value'   => '1',
+						'compare' => '=',
+					),
+					array(
+						'key'     => '_edd_product_type',
+						'value'   => 'all_access',
+						'compare' => '=',
+					),
+				),
+			)
+		);
+		$edd_all_access_products = $query->posts;
+	}
+
+	$edd_all_access_downloads = is_array( $edd_all_access_products ) ? array_unique( $edd_all_access_products ) : array();
+
+	$new_hash = md5( json_encode( $edd_all_access_downloads ) );
+
+	// Only update the database if something has changed.
+	if ( ! hash_equals( $current_hash, $new_hash ) ) {
+		// Set the products option.
+		update_option( 'edd_all_access_products', $edd_all_access_downloads );
+	}
+
+	return apply_filters( 'edd_all_access_downloads', $edd_all_access_downloads );
+}
+
+
+
+function edd_all_access_get_customer_pass_objects( \EDD_Customer $customer ) {
+	static $customer_all_access_passes;
+	if ( ! is_null( $customer_all_access_passes ) ) {
+		// We've already found passes for this customer and parsed them on this page load, so we can return them.
+		return $customer_all_access_passes;
+	}
+
+	$passes = $customer->get_meta( 'all_access_passes' );
+	if ( empty( $passes ) || ! is_array( $passes ) ) {
+		// We did not find any pass data for the customer, so set the static variable to empty and return it.
+		$customer_all_access_passes = array();
+
+		return $customer_all_access_passes;
+	}
+	// Defines a static variable so we know whether this function has run.
+	static $has_run;
+
+	// Sets the current customer metadata as a hashed string.
+	$baseline_meta = md5( wp_json_encode( $passes ) );
+	$pass_objects  = array();
+	foreach ( $passes as $purchased_download_id_price_id => $purchased_aa_data ) {
+
+		if ( ! isset( $purchased_aa_data['payment_id'] ) || ! isset( $purchased_aa_data['download_id'] ) || ! isset( $purchased_aa_data['price_id'] ) ) {
+			continue;
+		}
+
+		// Set up an All Access Pass Object for this.
+		$pass = edd_all_access_get_pass( $purchased_aa_data['payment_id'], $purchased_aa_data['download_id'], $purchased_aa_data['price_id'] );
+		if ( 'invalid' !== $pass->status ) {
+			$pass_objects[] = $pass;
+		}
+	}
+	// If a pass expired and was renewed/regenerated, the customer meta will have changed at this point.
+	$possibly_new_meta = md5( wp_json_encode( $customer->get_meta( 'all_access_passes' ) ) );
+
+	// If this function has already run, or the metadata is unchanged, return the found passes.
+	if ( ! empty( $has_run ) || hash_equals( $baseline_meta, $possibly_new_meta ) ) {
+		$customer_all_access_passes = $pass_objects;
+
+		return $pass_objects;
+	}
+
+	/**
+	 * Set the static variable to true so that the function will not run again if the meta values
+	 * continue to not match.
+	 * @link https://github.com/awesomemotive/edd-all-access/issues/485
+	 */
+	$has_run = true;
+
+	return edd_all_access_get_customer_pass_objects( $customer );
+}

@@ -153,7 +153,7 @@ class EDD_Recurring_PayPal extends EDD_Recurring_Gateway {
 	 * @return array
 	 */
 	public function set_sdk_intent( $args ) {
-		if ( edd_recurring()->cart_contains_recurring() ) {
+		if ( cart_contains_recurring() ) {
 			$args['intent'] = 'subscription';
 			$args['vault']  = 'true';
 		}
@@ -171,7 +171,7 @@ class EDD_Recurring_PayPal extends EDD_Recurring_Gateway {
 	 * @return string
 	 */
 	public function set_subscription_approval_action( $action ) {
-		if ( edd_recurring()->cart_contains_recurring() ) {
+		if ( cart_contains_recurring() ) {
 			return 'edd_recurring_approve_paypal_subscription';
 		}
 

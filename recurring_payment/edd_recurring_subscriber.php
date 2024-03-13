@@ -4,8 +4,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
-
+//edd_test_autoloader('EDD_Customer');
 /**
  * The Recurring Subscriber Class
  *
@@ -13,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since  2.4
  */
-class EDD_Recurring_Subscriber extends EDD_Customer {
+class EDD_Recurring_Subscriber  {
 
 	private $subs_db;
 
@@ -24,10 +23,14 @@ class EDD_Recurring_Subscriber extends EDD_Customer {
 	 * @return void
 	 */
 	function __construct( $_id_or_email = false, $by_user_id = false ) {
-		parent::__construct( $_id_or_email, $by_user_id );
+		//parent::__construct( $_id_or_email, $by_user_id );
 		$this->subs_db = new EDD_Subscriptions_DB;
 	}
 
+
+	public $id = 0;
+
+	public $user_id;
 	/**
 	 * Determine if the customer has an active subscription for the given product
 	 *
@@ -291,11 +294,11 @@ class EDD_Recurring_Subscriber extends EDD_Customer {
 
 			if ( edd_has_variable_prices( $download_id ) ) {
 
-				$period = edd_recurring()->get_period( $price_id, $download_id );
+				$period = get_period( $price_id, $download_id );
 
 			} else {
 
-				$period = edd_recurring()->get_period_single( $download_id );
+				$period = get_period_single( $download_id );
 
 			}
 
