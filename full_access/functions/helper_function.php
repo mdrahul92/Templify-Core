@@ -85,7 +85,7 @@ $duration_units = array(
  *
  * @param array $duration_units
  */
-return (array) apply_filters( 'edd_full_access_duration_unit_metabox_options', $duration_units );
+return (array) apply_filters( 'edd_all_access_duration_unit_metabox_options', $duration_units );
 }
 
 

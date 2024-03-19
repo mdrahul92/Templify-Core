@@ -84,7 +84,7 @@ class EDD_Subscription_Reports_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function filter_bar_searchbox() {
-		$this->search_box( __( 'Search', 'edd-recurring' ), 'subscriptions' );
+		$this->search_box( __( 'Search', 'templify-recurring' ), 'subscriptions' );
 	}
 
 	/**
@@ -99,7 +99,7 @@ class EDD_Subscription_Reports_Table extends WP_List_Table {
 		<div id="edd-payment-filters">
 			<?php
 			$this->filter_bar_items();
-			$this->search_box( __( 'Search', 'edd-recurring' ), 'subscriptions' );
+			$this->search_box( __( 'Search', 'templify-recurring' ), 'subscriptions' );
 			?>
 		</div>
 		<?php
@@ -117,7 +117,7 @@ class EDD_Subscription_Reports_Table extends WP_List_Table {
 		$this->status_filter();
 		?>
 		<span id="edd-after-core-filters">
-			<input type="submit" class="button button-secondary" value="<?php esc_html_e( 'Filter', 'edd-recurring' ); ?>"/>
+			<input type="submit" class="button button-secondary" value="<?php esc_html_e( 'Filter', 'templify-recurring' ); ?>"/>
 			<?php
 			if ( ! empty( $this->get_gateway() ) || ! empty( $this->get_product_id() ) || ! empty( $this->get_status() ) ) :
 				$clear_url = add_query_arg(
@@ -129,7 +129,7 @@ class EDD_Subscription_Reports_Table extends WP_List_Table {
 				);
 				?>
 				<a href="<?php echo esc_url( $clear_url ); ?>" class="button-secondary">
-					<?php esc_html_e( 'Clear', 'edd-recurring' ); ?>
+					<?php esc_html_e( 'Clear', 'templify-recurring' ); ?>
 				</a>
 			<?php endif; ?>
 		</span>
@@ -145,7 +145,7 @@ class EDD_Subscription_Reports_Table extends WP_List_Table {
 	private function gateway_filter() {
 		$gateway      = $this->get_gateway();
 		$gateways     = array(
-			'' => __( 'All gateways', 'edd-recurring' ),
+			'' => __( 'All gateways', 'templify-recurring' ),
 		);
 		$all_gateways = edd_get_payment_gateways();
 
@@ -158,7 +158,7 @@ class EDD_Subscription_Reports_Table extends WP_List_Table {
 		}
 		?>
 		<span id="edd-gateway-filter">
-			<label for="gateway" class="screen-reader-text"><?php esc_html_e( 'Filter subscriptions by gateway:', 'edd-recurring' ); ?></label>
+			<label for="gateway" class="screen-reader-text"><?php esc_html_e( 'Filter subscriptions by gateway:', 'templify-recurring' ); ?></label>
 			<?php
 			echo EDD()->html->select(
 				array(
@@ -184,7 +184,7 @@ class EDD_Subscription_Reports_Table extends WP_List_Table {
 	private function status_filter() {
 		$status       = $this->get_status();
 		$statuses     = array(
-			'' => __( 'All statuses', 'edd-recurring' ),
+			'' => __( 'All statuses', 'templify-recurring' ),
 		);
 		$all_statuses = edd_recurring_get_subscription_statuses();
 
@@ -196,7 +196,7 @@ class EDD_Subscription_Reports_Table extends WP_List_Table {
 		}
 		?>
 		<span id="edd-recurring-status-filter">
-			<label for="status" class="screen-reader-text"><?php esc_html_e( 'Filter subscriptions by status:', 'edd-recurring' ); ?></label>
+			<label for="status" class="screen-reader-text"><?php esc_html_e( 'Filter subscriptions by status:', 'templify-recurring' ); ?></label>
 			<?php
 			echo EDD()->html->select(
 				array(
@@ -329,7 +329,7 @@ class EDD_Subscription_Reports_Table extends WP_List_Table {
 			admin_url( 'edit.php' )
 		);
 		$output  = '<a href="' . esc_url( $url ) . '">#' . esc_html( $item->id ) . '</a>';
-		$output .= '<div class="row-actions"><a href="' . esc_url( $url ) . '">' . esc_html__( 'View Details', 'edd-recurring' ) . '</a></div>';
+		$output .= '<div class="row-actions"><a href="' . esc_url( $url ) . '">' . esc_html__( 'View Details', 'templify-recurring' ) . '</a></div>';
 
 		return $output;
 	}
@@ -373,7 +373,7 @@ class EDD_Subscription_Reports_Table extends WP_List_Table {
 		$initial_amount = edd_currency_filter( edd_format_amount( $item->initial_amount ), edd_get_payment_currency_code( $item->parent_payment_id ) );
 		ob_start();
 		?>
-			<?php esc_html_e( 'Initial Amount', 'edd-recurring' ); ?>: <?php echo esc_html( $initial_amount ); ?><br>
+			<?php esc_html_e( 'Initial Amount', 'templify-recurring' ); ?>: <?php echo esc_html( $initial_amount ); ?><br>
 			<?php echo esc_html( $billing_cycle ); ?>
 		<?php
 		return ob_get_clean();
@@ -398,7 +398,7 @@ class EDD_Subscription_Reports_Table extends WP_List_Table {
 	 * @return      string
 	 */
 	function column_renewal_date( $item ) {
-		return $renewal_date = ! empty( $item->expiration ) ? date_i18n( get_option( 'date_format' ), strtotime( $item->expiration ) ) : __( 'N/A', 'edd-recurring' );
+		return $renewal_date = ! empty( $item->expiration ) ? date_i18n( get_option( 'date_format' ), strtotime( $item->expiration ) ) : __( 'N/A', 'templify-recurring' );
 	}
 
 	/**
@@ -459,14 +459,14 @@ class EDD_Subscription_Reports_Table extends WP_List_Table {
 
 	public function get_columns() {
 		$columns = array(
-			'id'                => __( 'Subscription', 'edd-recurring' ),
-			'customer_id'       => __( 'Customer', 'edd-recurring' ),
+			'id'                => __( 'Subscription', 'templify-recurring' ),
+			'customer_id'       => __( 'Customer', 'templify-recurring' ),
 			'product_id'        => edd_get_label_singular(),
-			'period'            => __( 'Billing Details', 'edd-recurring' ),
-			'parent_payment_id' => __( 'Order', 'edd-recurring' ),
-			'renewal_date'      => __( 'Renewal Date', 'edd-recurring' ),
-			'status'            => __( 'Status', 'edd-recurring' ),
-			'gateway'           => __( 'Gateway', 'edd-recurring' ),
+			'period'            => __( 'Billing Details', 'templify-recurring' ),
+			'parent_payment_id' => __( 'Order', 'templify-recurring' ),
+			'renewal_date'      => __( 'Renewal Date', 'templify-recurring' ),
+			'status'            => __( 'Status', 'templify-recurring' ),
+			'gateway'           => __( 'Gateway', 'templify-recurring' ),
 		);
 
 		return apply_filters( 'edd_report_subscription_columns', $columns );

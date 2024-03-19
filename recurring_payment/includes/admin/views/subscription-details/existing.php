@@ -4,23 +4,23 @@
  */
 
 if ( ! current_user_can( 'view_subscriptions' ) ) {
-	edd_set_error( 'edd-no-access', __( 'You are not permitted to view this data.', 'edd-recurring' ) );
+	edd_set_error( 'edd-no-access', __( 'You are not permitted to view this data.', 'templify-recurring' ) );
 }
 
 $sub_id = filter_input( INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT );
 if ( ! $sub_id ) {
-	edd_set_error( 'edd-invalid_subscription', __( 'Invalid subscription ID provided.', 'edd-recurring' ) );
+	edd_set_error( 'edd-invalid_subscription', __( 'Invalid subscription ID provided.', 'templify-recurring' ) );
 }
 
 $sub = new EDD_Subscription( $sub_id );
 if ( empty( $sub->id ) ) {
-	edd_set_error( 'edd-invalid_subscription', __( 'Invalid subscription ID provided.', 'edd-recurring' ) );
+	edd_set_error( 'edd-invalid_subscription', __( 'Invalid subscription ID provided.', 'templify-recurring' ) );
 }
 
 if ( edd_get_errors() ) {
 	?>
 	<div class="wrap">
-	<h1><?php esc_html_e( 'Subscription Details', 'edd-recurring' ); ?></h1>
+	<h1><?php esc_html_e( 'Subscription Details', 'templify-recurring' ); ?></h1>
 		<div class="error settings-error">
 			<?php edd_print_errors(); ?>
 		</div>

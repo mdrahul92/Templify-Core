@@ -24,14 +24,14 @@ function edd_all_access_discount_code_restrict_option_add() {
 	?>
 	<tr>
 		<th scope="row" valign="top">
-			<label for="edd-use-once"><?php esc_html_e( 'Required Full Access Passes', 'edd-all-access' ); ?></label>
+			<label for="edd-use-once"><?php esc_html_e( 'Required Full Access Passes', 'templify-full-access' ); ?></label>
 		</th>
 		<td>
 			<?php
 			$all_access_products = edd_all_access_get_all_access_downloads();
 
 			$options = array(
-				'all' => __( 'Any Full Access Pass', 'edd-all-access' ),
+				'all' => __( 'Any Full Access Pass', 'templify-full-access' ),
 			);
 
 			foreach ( $all_access_products as $all_access_product_id ) {
@@ -46,7 +46,7 @@ function edd_all_access_discount_code_restrict_option_add() {
 					'id'               => 'edd_all_access_discount_restrict',
 					'class'            => 'edd_all_access_discount_restrict',
 					'chosen'           => true,
-					'placeholder'      => __( 'Type to search Full Access Products', 'edd-all-access' ),
+					'placeholder'      => __( 'Type to search Full Access Products', 'templify-full-access' ),
 					'multiple'         => true,
 					'show_option_all'  => false,
 					'show_option_none' => false,
@@ -54,7 +54,7 @@ function edd_all_access_discount_code_restrict_option_add() {
 				)
 			);
 			?>
-			<span class="description"><?php esc_html_e( 'Only allow this discount to be used by customers with valid Full Access pass? Leave blank if none required.', 'edd-all-access' ); ?></span>
+			<span class="description"><?php esc_html_e( 'Only allow this discount to be used by customers with valid Full Access pass? Leave blank if none required.', 'templify-full-access' ); ?></span>
 		</td>
 	</tr>
 	<?php
@@ -76,7 +76,7 @@ function edd_all_access_discount_code_restrict_option_edit( $discount_id, $disco
 	?>
 	<tr>
 		<th scope="row" valign="top">
-			<label for="edd-use-once"><?php esc_html_e( 'Required Full Access Passes', 'edd-all-access' ); ?></label>
+			<label for="edd-use-once"><?php esc_html_e( 'Required Full Access Passes', 'templify-full-access' ); ?></label>
 		</th>
 		<td>
 			<?php
@@ -85,7 +85,7 @@ function edd_all_access_discount_code_restrict_option_edit( $discount_id, $disco
 			$all_access_products = edd_all_access_get_all_access_downloads();
 
 			$options = array(
-				'all' => __( 'Any Full Access Pass', 'edd-all-access' ),
+				'all' => __( 'Any Full Access Pass', 'templify-full-access' ),
 			);
 
 			foreach ( $all_access_products as $all_access_product_id ) {
@@ -103,7 +103,7 @@ function edd_all_access_discount_code_restrict_option_edit( $discount_id, $disco
 					'id'               => 'edd_all_access_discount_restrict',
 					'class'            => 'edd_all_access_discount_restrict',
 					'chosen'           => true,
-					'placeholder'      => __( 'Type to search Full Access Products', 'edd-all-access' ),
+					'placeholder'      => __( 'Type to search Full Access Products', 'templify-full-access' ),
 					'multiple'         => true,
 					'show_option_all'  => false,
 					'show_option_none' => false,
@@ -111,7 +111,7 @@ function edd_all_access_discount_code_restrict_option_edit( $discount_id, $disco
 				)
 			);
 			?>
-			<span class="description"><?php esc_html_e( 'Only allow this discount to be used by customers with valid Full Access pass? Leave blank if none required.', 'edd-all-access' ); ?></span>
+			<span class="description"><?php esc_html_e( 'Only allow this discount to be used by customers with valid Full Access pass? Leave blank if none required.', 'templify-full-access' ); ?></span>
 		</td>
 	</tr>
 	<?php
@@ -157,6 +157,7 @@ function edd_all_access_save_discount_code_setting( $meta, $discount_id ) {
 	$discount->update_meta( 'edd_all_access_discount_restrict', $sanitized );
 
 }
+
 add_action( 'edd_post_insert_discount', 'edd_all_access_save_discount_code_setting', 10, 2 );
 add_action( 'edd_post_update_discount', 'edd_all_access_save_discount_code_setting', 10, 2 );
 
@@ -183,7 +184,7 @@ function edd_all_access_discount_is_valid( $is_valid, $discount_id, $discount_co
 
 	// If this customer is not logged in, this discount shouldn't be allowed because we don't know if they have any Full Access passes.
 	if ( ! is_user_logged_in() || 0 === get_current_user_id() ) {
-		edd_set_error( 'edd-discount-error', apply_filters( 'edd_all_access_not_logged_in_discount_error', __( 'You must be logged in and have a valid Full Access pass to use that discount code.', 'edd-all-access' ), $discount_id, $required_aa_passes ) );
+		edd_set_error( 'edd-discount-error', apply_filters( 'edd_all_access_not_logged_in_discount_error', __( 'You must be logged in and have a valid Full Access pass to use that discount code.', 'templify-full-access' ), $discount_id, $required_aa_passes ) );
 		return false;
 	}
 
@@ -195,7 +196,7 @@ function edd_all_access_discount_is_valid( $is_valid, $discount_id, $discount_co
 
 	// If they do not have any Full Access passes, they can't use this discount code.
 	if ( empty( $customer_all_access_passes ) ) {
-		edd_set_error( 'edd-discount-error', apply_filters( 'edd_all_access_no_passes_discount_error', __( 'You need a valid Full Access pass to use that discount code.', 'edd-all-access' ), $discount_id, $required_aa_passes ) );
+		edd_set_error( 'edd-discount-error', apply_filters( 'edd_all_access_no_passes_discount_error', __( 'You need a valid Full Access pass to use that discount code.', 'templify-full-access' ), $discount_id, $required_aa_passes ) );
 		return false;
 	}
 
@@ -222,7 +223,7 @@ function edd_all_access_discount_is_valid( $is_valid, $discount_id, $discount_co
 	}
 
 	// No valid pass was found.
-	edd_set_error( 'edd-discount-error', apply_filters( 'edd_all_access_pass_required_discount_error', __( 'You must have a valid Full Access pass to use that discount code.', 'edd-all-access' ), $discount_id, $required_aa_passes ) );
+	edd_set_error( 'edd-discount-error', apply_filters( 'edd_all_access_pass_required_discount_error', __( 'You must have a valid Full Access pass to use that discount code.', 'templify-full-access' ), $discount_id, $required_aa_passes ) );
 
 	return false;
 }

@@ -11,7 +11,7 @@
 	<?php do_action( 'edd_subscription_before_notes', $sub ); ?>
 
 	<div class="customer-section customer-section__notes">
-		<h2><?php esc_html_e( 'Notes:', 'edd-recurring' ); ?></h2>
+		<h2><?php esc_html_e( 'Notes:', 'templify-recurring' ); ?></h2>
 		<?php
 		$notes = $sub->get_notes( 1000 );
 		if ( $notes ) {
@@ -31,14 +31,14 @@
 		?>
 		<form id="edd-sub-add-note" method="POST">
 			<div class="edd-form-group">
-				<label for="edd_recurring_note" class="edd-form-group__label"><?php esc_html_e( 'Add Note:', 'edd-recurring' ); ?></label>
+				<label for="edd_recurring_note" class="edd-form-group__label"><?php esc_html_e( 'Add Note:', 'templify-recurring' ); ?></label>
 				<textarea id="edd_recurring_note" name="note" class="edd-form-group__input edd-subscription-note-input" style="width:100%;" rows="8"></textarea>
 			</div>
 			<?php wp_nonce_field( 'edd-recurring-add-note', '_wpnonce', false, true ); ?>
 			<input type="hidden" name="sub_id" value="<?php echo absint( $sub->id ); ?>" />
 			<input type="hidden" name="edd_action" value="add_subscription_note" />
 			<p class="submit">
-				<input type="submit" name="add_note" class="button alignright" value="<?php esc_attr_e( 'Add Note', 'edd-recurring' ); ?>"/>
+				<input type="submit" name="add_note" class="button alignright" value="<?php esc_attr_e( 'Add Note', 'templify-recurring' ); ?>"/>
 			</p>
 		</form>
 	</div>

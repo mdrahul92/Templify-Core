@@ -23,13 +23,13 @@ function edd_subscriptions_page() {
 	?>
 	<div class="wrap">
 
-		<h1 class="wp-heading-inline"><?php esc_html_e( 'Subscriptions', 'edd-recurring' ); ?></h1>
+		<h1 class="wp-heading-inline"><?php esc_html_e( 'Subscriptions', 'templify-recurring' ); ?></h1>
 		<?php
 		if ( current_user_can( 'manage_subscriptions' ) ) {
 			printf(
 				'<a href="%s" class="page-title-action">%s</a>',
 				esc_url( add_query_arg( array( 'edd-action' => 'add_subscription' ) ) ),
-				esc_html__( 'Add New', 'edd-recurring' )
+				esc_html__( 'Add New', 'templify-recurring' )
 			);
 		}
 		$subscribers_table = new EDD_Subscription_Reports_Table();
@@ -47,7 +47,7 @@ function edd_subscriptions_page() {
 			?>
 
 		</form>
-		<?php esc_html_e( 'To narrow results, search can be prefixed with the following:', 'edd-recurring' ); ?><code>id:</code>, <code>profile_id:</code>, <code>product_id:</code>, <code>txn:</code>, <code>customer_id:</code>
+		<?php esc_html_e( 'To narrow results, search can be prefixed with the following:', 'templify-recurring' ); ?><code>id:</code>, <code>profile_id:</code>, <code>product_id:</code>, <code>txn:</code>, <code>customer_id:</code>
 	</div>
 	<?php
 }
@@ -91,17 +91,17 @@ function edd_recurring_get_subscription_tabs() {
 	return array(
 		'general'  => array(
 			'dashicon' => 'dashicons-editor-table',
-			'title'    => __( 'Overview', 'edd-recurring' ),
+			'title'    => __( 'Overview', 'templify-recurring' ),
 			'view'     => 'general',
 		),
 		'renewals' => array(
 			'dashicon' => 'dashicons-update',
-			'title'    => __( 'Renewals', 'edd-recurring' ),
+			'title'    => __( 'Renewals', 'templify-recurring' ),
 			'view'     => 'renewals',
 		),
 		'notes'    => array(
 			'dashicon' => 'dashicons-admin-comments',
-			'title'    => __( 'Notes', 'edd-recurring' ),
+			'title'    => __( 'Notes', 'templify-recurring' ),
 			'view'     => 'notes',
 		),
 	);
@@ -141,13 +141,13 @@ function edd_recurring_process_subscription_update() {
 	$subscription_id = absint( $_POST['sub_id'] );
 
 	if ( ! wp_verify_nonce( $_POST['edd-recurring-update-nonce'], "edd-recurring-update-{$subscription_id}" ) ) {
-		wp_die( __( 'Nonce verification failed', 'edd-recurring' ), __( 'Error', 'edd-recurring' ), array( 'response' => 403 ) );
+		wp_die( __( 'Nonce verification failed', 'templify-recurring' ), __( 'Error', 'templify-recurring' ), array( 'response' => 403 ) );
 	}
 
 	$subscription    = new EDD_Subscription( $subscription_id );
 
 	if ( ! $subscription->current_user_can() ) {
-		wp_die( esc_html__( 'You do not have permission to update this subscription.', 'edd-recurring' ), esc_html__( 'Error', 'edd-recurring' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'You do not have permission to update this subscription.', 'templify-recurring' ), esc_html__( 'Error', 'templify-recurring' ), array( 'response' => 403 ) );
 	}
 
 	$expiration     = date( 'Y-m-d 23:59:59', strtotime( $_POST['expiration'] ) );
@@ -161,7 +161,7 @@ function edd_recurring_process_subscription_update() {
 	$has_variations  = edd_has_variable_prices( $product_id );
 	if ( $has_variations ) {
 		if ( ! isset( $product_details[1] ) ) {
-			wp_die( __( 'A variation is required for the selected product', 'edd-recurring' ), __( 'Error', 'edd-recurring' ), array( 'response' => 401 ) );
+			wp_die( __( 'A variation is required for the selected product', 'templify-recurring' ), __( 'Error', 'templify-recurring' ), array( 'response' => 401 ) );
 		}
 
 		$price_id = $product_details[1];
@@ -238,19 +238,19 @@ function edd_recurring_process_subscription_creation() {
 		'back_link' => true,
 	);
 	if( ! wp_verify_nonce( $_POST['edd-recurring-add-subscription-nonce'], 'edd-recurring-add-subscription' ) ) {
-		wp_die( esc_html__( 'Nonce verification failed.', 'edd-recurring' ), esc_html__( 'Error', 'edd-recurring' ), $die_args );
+		wp_die( esc_html__( 'Nonce verification failed.', 'templify-recurring' ), esc_html__( 'Error', 'templify-recurring' ), $die_args );
 	}
 
 	if( empty( $_POST['expiration'] ) ) {
-		wp_die( esc_html__( 'Please enter an expiration date.', 'edd-recurring' ), esc_html__( 'Error', 'edd-recurring' ), $die_args );
+		wp_die( esc_html__( 'Please enter an expiration date.', 'templify-recurring' ), esc_html__( 'Error', 'templify-recurring' ), $die_args );
 	}
 
 	if( empty( $_POST['product_id'] ) ) {
-		wp_die( esc_html__( 'Please select a product.', 'edd-recurring' ), esc_html__( 'Error', 'edd-recurring' ), $die_args );
+		wp_die( esc_html__( 'Please select a product.', 'templify-recurring' ), esc_html__( 'Error', 'templify-recurring' ), $die_args );
 	}
 
 	if( empty( $_POST['recurring_amount'] ) ) {
-		wp_die( esc_html__( 'Please enter a recurring amount.', 'edd-recurring' ), esc_html__( 'Error', 'edd-recurring' ), $die_args );
+		wp_die( esc_html__( 'Please enter a recurring amount.', 'templify-recurring' ), esc_html__( 'Error', 'templify-recurring' ), $die_args );
 	}
 
 	if( ! empty( $_POST['created'] ) ) {
@@ -277,7 +277,7 @@ function edd_recurring_process_subscription_creation() {
 
 	$customer_id = absint( $customer_id );
 	if ( empty( $customer_id ) ) {
-		wp_die( esc_html__( 'A customer must be assigned to or created for this subscription.', 'edd-recurring' ), esc_html__( 'Error', 'edd-recurring' ), array( 'response' => 400, 'back_link' => true ) );
+		wp_die( esc_html__( 'A customer must be assigned to or created for this subscription.', 'templify-recurring' ), esc_html__( 'Error', 'templify-recurring' ), array( 'response' => 400, 'back_link' => true ) );
 	}
 
 	if ( ! empty( $_POST['edd_recurring_parent_payment_id'] ) ) {
@@ -287,7 +287,7 @@ function edd_recurring_process_subscription_creation() {
 
 		if ( ! $payment ) {
 			/* translators: the existing payment ID. */
-			wp_die( sprintf( esc_html__( 'Payment %s does not exist.', 'edd-recurring' ), absint( $payment_id ) ), esc_html__( 'Error', 'edd-recurring' ), array( 'response' => 400, 'back_link' => true ) );
+			wp_die( sprintf( esc_html__( 'Payment %s does not exist.', 'templify-recurring' ), absint( $payment_id ) ), esc_html__( 'Error', 'templify-recurring' ), array( 'response' => 400, 'back_link' => true ) );
 		}
 	} else {
 
@@ -374,7 +374,7 @@ function edd_recurring_process_subscription_cancel() {
 	}
 
 	if( ! wp_verify_nonce( $_POST['_wpnonce'], 'edd-recurring-cancel' ) ) {
-		wp_die( __( 'Nonce verification failed', 'edd-recurring' ), __( 'Error', 'edd-recurring' ), array( 'response' => 403 ) );
+		wp_die( __( 'Nonce verification failed', 'templify-recurring' ), __( 'Error', 'templify-recurring' ), array( 'response' => 403 ) );
 	}
 
 	$subscription    = new EDD_Subscription( absint( $_POST['sub_id'] ) );
@@ -405,7 +405,7 @@ function edd_recurring_process_add_renewal_payment() {
 	}
 
 	if( ! wp_verify_nonce( $_POST['_wpnonce'], 'edd-recurring-add-renewal-payment' ) ) {
-		wp_die( __( 'Nonce verification failed', 'edd-recurring' ), __( 'Error', 'edd-recurring' ), array( 'response' => 403 ) );
+		wp_die( __( 'Nonce verification failed', 'templify-recurring' ), __( 'Error', 'templify-recurring' ), array( 'response' => 403 ) );
 	}
 
 	$amount = isset( $_POST['amount'] ) ? edd_sanitize_amount( $_POST['amount'] ) : '0.00';
@@ -502,13 +502,13 @@ function edd_recurring_process_renewal_charge_retry() {
 	$sub_id = absint( $_GET['sub_id'] );
 
 	if ( ! wp_verify_nonce( $_GET['_wpnonce'], "edd-recurring-retry-{$sub_id}" ) ) {
-		wp_die( __( 'Nonce verification failed', 'edd-recurring' ), __( 'Error', 'edd-recurring' ), array( 'response' => 403 ) );
+		wp_die( __( 'Nonce verification failed', 'templify-recurring' ), __( 'Error', 'templify-recurring' ), array( 'response' => 403 ) );
 	}
 
 	$sub = new EDD_Subscription( $sub_id );
 
 	if( ! $sub->can_retry() ) {
-		wp_die( __( 'This subscription does not support being retried.', 'edd-recurring' ), __( 'Error', 'edd-recurring' ), array( 'response' => 403 ) );
+		wp_die( __( 'This subscription does not support being retried.', 'templify-recurring' ), __( 'Error', 'templify-recurring' ), array( 'response' => 403 ) );
 	}
 
 	$result = $sub->retry();
@@ -543,7 +543,7 @@ function edd_recurring_process_add_subscription_note() {
 	}
 
 	if( ! wp_verify_nonce( $_POST['_wpnonce'], 'edd-recurring-add-note' ) ) {
-		wp_die( __( 'Nonce verification failed', 'edd-recurring' ), __( 'Error', 'edd-recurring' ), array( 'response' => 403 ) );
+		wp_die( __( 'Nonce verification failed', 'templify-recurring' ), __( 'Error', 'templify-recurring' ), array( 'response' => 403 ) );
 	}
 
 	$note    = trim( sanitize_text_field( $_POST['note'] ) );
@@ -592,13 +592,13 @@ function edd_recurring_process_subscription_deletion() {
 	$subscription_id = absint( $_POST['sub_id'] );
 
 	if ( ! wp_verify_nonce( $_POST['edd-recurring-update-nonce'], "edd-recurring-update-{$subscription_id}" ) ) {
-		wp_die( __( 'Nonce verification failed', 'edd-recurring' ), __( 'Error', 'edd-recurring' ), array( 'response' => 403 ) );
+		wp_die( __( 'Nonce verification failed', 'templify-recurring' ), __( 'Error', 'templify-recurring' ), array( 'response' => 403 ) );
 	}
 
 	$subscription = new EDD_Subscription( $subscription_id );
 
 	if ( ! $subscription->current_user_can( 'delete_subscriptions' ) ) {
-		wp_die( esc_html__( 'You do not have permission to delete this subscription.', 'edd-recurring' ), esc_html__( 'Error', 'edd-recurring' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'You do not have permission to delete this subscription.', 'templify-recurring' ), esc_html__( 'Error', 'templify-recurring' ), array( 'response' => 403 ) );
 	}
 
 	$payment = new EDD_Payment( $subscription->parent_payment_id );
@@ -731,7 +731,7 @@ function edd_recurring_update_subscription_product_details() {
 	if ( $has_variable_prices ) {
 		$price_id = isset( $_GET['price_id'] ) && is_numeric( $_GET['price_id'] ) ? absint( $_GET['price_id'] ) : edd_get_default_variable_price( $download_id );
 	}
-	if ( ! is_recurring( $download_id ) && ! is_price_recurring( $download_id, $price_id ) ) {
+	if ( ! edd_recurring()->is_recurring( $download_id ) && ! edd_recurring()->is_price_recurring( $download_id, $price_id ) ) {
 		wp_send_json_error();
 	}
 	// Get the price.
@@ -739,17 +739,17 @@ function edd_recurring_update_subscription_product_details() {
 		$prices = edd_get_variable_prices( $download_id );
 		if ( null !== $price_id && isset( $prices[ $price_id ] ) ) {
 			$price  = edd_get_price_option_amount( $download_id, $price_id );
-			$period = get_period( $price_id, $download_id );
+			$period = edd_recurring()->get_period( $price_id, $download_id );
 		} else {
 			$price  = edd_get_lowest_price_option( $download_id );
-			$period = get_period_single( $download_id );
+			$period = edd_recurring()->get_period_single( $download_id );
 		}
 	} else {
 		$price  = edd_get_download_price( $download_id );
-		$period = get_period_single( $download_id );
+		$period = edd_recurring()->get_period_single( $download_id );
 	}
 	$initial_amount = $price;
-	if ( has_free_trial( $download_id, $price_id ) ) {
+	if ( edd_recurring()->has_free_trial( $download_id, $price_id ) ) {
 		$initial_amount = 0.00;
 	}
 

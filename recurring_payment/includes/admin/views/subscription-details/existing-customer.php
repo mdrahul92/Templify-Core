@@ -16,7 +16,7 @@ $url        = add_query_arg(
 )
 ?>
 <div class="edd-recurring-subscription-section edd-recurring-subscription__customer">
-	<h2><?php esc_html_e( 'Customer', 'edd-recurring' ); ?></h2>
+	<h2><?php esc_html_e( 'Customer', 'templify-recurring' ); ?></h2>
 
 	<div class="edd-item-info customer-info edd-sub">
 		<div class="avatar-wrap" id="customer-avatar">

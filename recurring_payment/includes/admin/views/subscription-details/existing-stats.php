@@ -9,11 +9,11 @@ do_action( 'edd_subscription_before_stats', $sub );
 	<ul>
 		<li>
 			<span class="dashicons dashicons-chart-area"></span>
-			<?php echo esc_html( edd_currency_filter( edd_format_amount( $sub->get_lifetime_value() ), $currency_code ) ) . ' ' . esc_html__( 'Lifetime Value', 'edd-recurring' ); ?>
+			<?php echo esc_html( edd_currency_filter( edd_format_amount( $sub->get_lifetime_value() ), $currency_code ) ) . ' ' . esc_html__( 'Lifetime Value', 'templify-recurring' ); ?>
 		</li>
 		<li>
 			<span class="dashicons dashicons-cart"></span>
-			<?php echo count( $payments ) . ' ' . esc_html( _n( 'Renewal', 'Renewals', count( $payments ), 'edd-recurring' ) ); ?>
+			<?php echo count( $payments ) . ' ' . esc_html( _n( 'Renewal', 'Renewals', count( $payments ), 'templify-recurring' ) ); ?>
 		</li>
 		<?php do_action( 'edd_subscription_stats_list', $sub ); ?>
 	</ul>

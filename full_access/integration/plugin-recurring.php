@@ -35,7 +35,9 @@ class EDD_All_Access_Recurring {
 	 */
 	public function __construct() {
 
-	
+		if ( ! class_exists( 'EDD_Recurring' ) ) {
+			return;
+		}
 
 		// Include the "Sync with Recurring expiration" option in the Post Meta for All Access duration.
 		add_filter( 'edd_all_access_duration_unit_metabox_options', array( $this, 'edd_all_access_recurring_duration_option' ) );
@@ -76,18 +78,18 @@ class EDD_All_Access_Recurring {
 	 */
 	public function migrate_rcp_subscriptions( $subscription_profile_id, $edd_payment, $all_access_product_id ) {
 
-		$recurring = is_recurring( $all_access_product_id );
+		$recurring = EDD_Recurring()->is_recurring( $all_access_product_id );
 
 		// If recurring is not enabled for the All Access product we are migrating to, don't migrate/create the subscription.
 		if ( ! $recurring ) {
 			return;
 		}
 
-		$times        = get_times_single( $all_access_product_id );
-		$period       = get_period_single( $all_access_product_id );
-		$has_trial    = has_free_trial( $all_access_product_id );
-		$trial_period = get_trial_period( $all_access_product_id );
-		$signup_fee   = get_signup_fee_single( $all_access_product_id );
+		$times        = EDD_Recurring()->get_times_single( $all_access_product_id );
+		$period       = EDD_Recurring()->get_period_single( $all_access_product_id );
+		$has_trial    = EDD_Recurring()->has_free_trial( $all_access_product_id );
+		$trial_period = EDD_Recurring()->get_trial_period( $all_access_product_id );
+		$signup_fee   = EDD_Recurring()->get_signup_fee_single( $all_access_product_id );
 
 		$subscriber = new EDD_Recurring_Subscriber( $edd_payment->customer_id );
 

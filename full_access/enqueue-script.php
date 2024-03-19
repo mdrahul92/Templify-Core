@@ -20,13 +20,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 function edd_all_access_admin_post_meta_scripts() {
 
 	$all_access_js_vars_admin = array(
-		'first_variation_string'           => __( 'st Price Variation from each product', 'edd-all-access' ),
-		'second_variation_string'          => __( 'nd Price Variation from each product', 'edd-all-access' ),
-		'third_variation_string'           => __( 'rd Price Variation from each product', 'edd-all-access' ),
-		'variation_string'                 => __( 'th Price Variation from each product', 'edd-all-access' ),
-		'manage_all_access_expire_warning' => __( 'NOTICE: This will make this All Access Pass expire. This can not be undone. In order to re-activate, the customer must re-purchase. Are you sure you want to do this?', 'edd-all-access' ),
-		'sync_with_recurring'              => __( 'Sync with Recurring expiration', 'edd-all-access' ),
-		'sync_with_license'                => __( 'Sync with License expiration', 'edd-all-access' ),
+		'first_variation_string'           => __( 'st Price Variation from each product', 'templify-full-access' ),
+		'second_variation_string'          => __( 'nd Price Variation from each product', 'templify-full-access' ),
+		'third_variation_string'           => __( 'rd Price Variation from each product', 'templify-full-access' ),
+		'variation_string'                 => __( 'th Price Variation from each product', 'templify-full-access' ),
+		'manage_all_access_expire_warning' => __( 'NOTICE: This will make this All Access Pass expire. This can not be undone. In order to re-activate, the customer must re-purchase. Are you sure you want to do this?', 'templify-full-access' ),
+		'sync_with_recurring'              => __( 'Sync with Recurring expiration', 'templify-full-access' ),
+		'sync_with_license'                => __( 'Sync with License expiration', 'templify-full-access' ),
 	);
 
 	// If we are viewing a single All Access Pass right now, indicate which one by localizing the values. No nonce required here as it's not a form submission or saving action, but just a page load.
@@ -76,7 +76,7 @@ function edd_all_access_scripts() {
 		array(
 			'ajaxurl'          => admin_url( 'admin-ajax.php' ),
 			'ajax_nonce_value' => wp_create_nonce( 'edd-all-access-nonce-action-name' ),
-			'loading_text'     => __( 'Loading', 'edd-all-access' ),
+			'loading_text'     => __( 'Loading', 'templify-full-access' ),
 		)
 	);
 

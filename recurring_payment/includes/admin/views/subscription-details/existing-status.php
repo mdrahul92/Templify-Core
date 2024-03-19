@@ -4,11 +4,11 @@
  */
 ?>
 <div class="edd-recurring-subscription-section edd-recurring-subscription__info">
-	<h2><?php esc_html_e( 'Status', 'edd-recurring' ); ?></h2>
+	<h2><?php esc_html_e( 'Status', 'templify-recurring' ); ?></h2>
 
 	<div class="edd-recurring-subscription-table">
 		<div class="edd-recurring-subscription-table_column">
-			<div class="edd-recurring-subscription-table_column-header"><?php esc_html_e( 'Date Created', 'edd-recurring' ); ?></div>
+			<div class="edd-recurring-subscription-table_column-header"><?php esc_html_e( 'Date Created', 'templify-recurring' ); ?></div>
 			<div class="edd-recurring-subscription-table_column-content">
 				<?php echo esc_html( date_i18n( get_option( 'date_format' ), strtotime( $sub->created, current_time( 'timestamp' ) ) ) ); ?>
 			</div>
@@ -16,9 +16,9 @@
 		<div class="edd-recurring-subscription-table_column">
 			<div class="edd-recurring-subscription-table_column-header">
 			<?php if ( 'trialling' === $sub->status ) : ?>
-				<?php esc_html_e( 'Trialling Until', 'edd-recurring' ); ?>
+				<?php esc_html_e( 'Trialling Until', 'templify-recurring' ); ?>
 			<?php else : ?>
-				<?php esc_html_e( 'Expiration Date', 'edd-recurring' ); ?>
+				<?php esc_html_e( 'Expiration Date', 'templify-recurring' ); ?>
 			<?php endif; ?>
 			</div>
 			<div class="edd-recurring-subscription-table_column-content">
@@ -26,12 +26,12 @@
 				<?php if ( current_user_can( 'manage_subscriptions' ) ) : ?>
 					<input type="text" id="edd_recurring_expiration" name="expiration" class="edd_datepicker hidden edd-sub-expiration" value="<?php echo esc_attr( $sub->expiration ); ?>" />
 					<span>&nbsp;&ndash;&nbsp;</span>
-					<a href="" class="edd-edit-sub-expiration"><?php esc_html_e( 'Edit', 'edd-recurring' ); ?></a>
+					<a href="" class="edd-edit-sub-expiration"><?php esc_html_e( 'Edit', 'templify-recurring' ); ?></a>
 				<?php endif; ?>
 			</div>
 		</div>
 		<div class="edd-recurring-subscription-table_column">
-			<div class="edd-recurring-subscription-table_column-header"><?php esc_html_e( 'Subscription Status', 'edd-recurring' ); ?></div>
+			<div class="edd-recurring-subscription-table_column-header"><?php esc_html_e( 'Subscription Status', 'templify-recurring' ); ?></div>
 			<div class="edd-recurring-subscription-table_column-content">
 				<?php
 				echo $sub->get_status_badge();
@@ -48,7 +48,7 @@
 						)
 					);
 					?>
-					<span>&nbsp;&ndash;&nbsp;</span> <a href="" class="edd-edit-sub-status"><?php esc_html_e( 'Edit', 'edd-recurring' ); ?></a>
+					<span>&nbsp;&ndash;&nbsp;</span> <a href="" class="edd-edit-sub-status"><?php esc_html_e( 'Edit', 'templify-recurring' ); ?></a>
 				<?php endif; ?>
 			</div>
 		</div>

@@ -26,7 +26,7 @@ function edd_all_access_customer_tab( $tabs ) {
 	// This makes it so former commission recievers get the tab and new commission users with no sales see it.
 	$tabs['all-access-passes'] = array(
 		'dashicon' => 'dashicons-welcome-widgets-menus',
-		'title'    => __( 'Full Access Passes', 'edd-all-access' ),
+		'title'    => __( 'Full Access Passes', 'templify-full-access' ),
 	);
 
 	return $tabs;
@@ -81,15 +81,15 @@ function edd_all_access_customer_view( $customer ) {
 		$at_least_one_pass_to_show = false;
 
 		?>
-		<h3><?php esc_html_e( 'Full Access Passes', 'edd-all-access' ); ?></h3>
+		<h3><?php esc_html_e( 'Full Access Passes', 'templify-full-access' ); ?></h3>
 		<table class="wp-list-table widefat striped downloads">
 			<thead>
 			<tr>
 				<th><?php echo esc_html( edd_get_label_singular() ); ?></th>
-				<th><?php esc_html_e( 'Start Date', 'edd-all-access' ); ?></th>
-				<th><?php esc_html_e( 'Expiration Date', 'edd-all-access' ); ?></th>
-				<th><?php esc_html_e( 'Status', 'edd-all-access' ); ?></th>
-				<th><?php esc_html_e( 'Actions', 'edd-all-access' ); ?></th>
+				<th><?php esc_html_e( 'Start Date', 'templify-full-access' ); ?></th>
+				<th><?php esc_html_e( 'Expiration Date', 'templify-full-access' ); ?></th>
+				<th><?php esc_html_e( 'Status', 'templify-full-access' ); ?></th>
+				<th><?php esc_html_e( 'Actions', 'templify-full-access' ); ?></th>
 			</tr>
 			</thead>
 
@@ -121,10 +121,10 @@ function edd_all_access_customer_view( $customer ) {
 							<a href="<?php echo esc_url( admin_url( 'post.php?action=edit&post=' . $all_access_pass->download_id ) ); ?>"><?php echo esc_html( get_the_title( $all_access_pass->download_id ) ); ?></a>
 						</td>
 						<td><?php echo esc_html( edd_all_access_visible_date( 'M d, Y', $all_access_pass->start_time ) ); ?></td>
-						<td><?php echo esc_html( 'never' === $all_access_pass->expiration_time ? __( 'Never Expires', 'edd-all-access' ) : edd_all_access_visible_date( 'M d, Y', $all_access_pass->expiration_time ) ); ?></td>
+						<td><?php echo esc_html( 'never' === $all_access_pass->expiration_time ? __( 'Never Expires', 'templify-full-access' ) : edd_all_access_visible_date( 'M d, Y', $all_access_pass->expiration_time ) ); ?></td>
 						<td><?php echo esc_html( edd_all_access_get_status_label( $all_access_pass->status ) ); ?></td>
 						<td>
-							<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=download&page=edd-all-access-pass&payment_id=' . $all_access_pass->payment->ID . '&download_id=' . $all_access_pass->download_id . '&price_id=' . $all_access_pass->price_id ) ); ?>"><?php esc_html_e( 'View Details', 'edd-all-access' ); ?></a>
+							<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=download&page=edd-all-access-pass&payment_id=' . $all_access_pass->payment->ID . '&download_id=' . $all_access_pass->download_id . '&price_id=' . $all_access_pass->price_id ) ); ?>"><?php esc_html_e( 'View Details', 'templify-full-access' ); ?></a>
 					</tr>
 					<?php
 				}
@@ -134,7 +134,7 @@ function edd_all_access_customer_view( $customer ) {
 			if ( ! $at_least_one_pass_to_show ) {
 				?>
 				<tr>
-					<td colspan="5"><?php esc_html_e( 'No Full Access Passes Found', 'edd-all-access' ); ?></td>
+					<td colspan="5"><?php esc_html_e( 'No Full Access Passes Found', 'templify-full-access' ); ?></td>
 				</tr>
 			<?php } ?>
 			</tbody>
@@ -145,8 +145,8 @@ function edd_all_access_customer_view( $customer ) {
 		if ( class_exists( 'EDD_Dev_Tools' ) ) {
 			?>
 			<div class="edd-all-access-dev-tools-area" style="background-color:#fffbb4; padding:10px;">'
-				<h2><?php echo esc_html( __( 'Customer Full Access Passes Array:', 'edd-all-access' ) ); ?></h2>
-				<p><?php echo esc_html( __( 'You are seeing this because you have EDD Dev Tools Activated', 'edd-all-access' ) ); ?></p>
+				<h2><?php echo esc_html( __( 'Customer Full Access Passes Array:', 'templify-full-access' ) ); ?></h2>
+				<p><?php echo esc_html( __( 'You are seeing this because you have EDD Dev Tools Activated', 'templify-full-access' ) ); ?></p>
 				<pre>
 					<?php print_r( $customer_all_access_passes ); ?>
 				</pre>

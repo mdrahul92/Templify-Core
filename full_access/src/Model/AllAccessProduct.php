@@ -27,7 +27,7 @@ class AllAccessProduct {
 
 	/**
 	 * @var string Duration unit.
-	 * @see edd_all_access_get_duration_unit_options()
+	 * @see edd_full_access_get_duration_unit_options()
 	 */
 	public $duration_unit = 'never';
 
@@ -100,7 +100,7 @@ class AllAccessProduct {
 		if ( ! empty( $settings['all_access_duration_number'] ) ) {
 			$this->duration = intval( $settings['all_access_duration_number'] );
 		}
-		if ( ! empty( $settings['all_access_duration_unit'] ) && array_key_exists( $settings['all_access_duration_unit'], edd_all_access_get_duration_unit_options() ) ) {
+		if ( ! empty( $settings['all_access_duration_unit'] ) && array_key_exists( $settings['all_access_duration_unit'], edd_full_access_get_duration_unit_options() ) ) {
 			$this->duration_unit = $settings['all_access_duration_unit'];
 		}
 

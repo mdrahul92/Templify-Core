@@ -5,7 +5,7 @@
  */
 ?>
 <div class="edd-recurring-subscription-section edd-recurring-subscription__pricing">
-	<h2><?php esc_html_e( 'Pricing', 'edd-recurring' ); ?></h2>
+	<h2><?php esc_html_e( 'Pricing', 'templify-recurring' ); ?></h2>
 	<div class="edd-form-group">
 		<?php
 		$selected = $sub->product_id;
@@ -16,7 +16,7 @@
 		?>
 		<label for="edd_recurring_product_id" class="edd-form-group__label">
 			<?php
-			esc_html_e( 'Product:', 'edd-recurring' );
+			esc_html_e( 'Product:', 'templify-recurring' );
 			if ( $download instanceof EDD_Download && current_user_can( 'edit_product', $sub->product_id ) ) {
 				$view_download = add_query_arg(
 					array(
@@ -26,7 +26,7 @@
 					admin_url( 'post.php' )
 				);
 				?>
-				(<a href="<?php echo esc_url( $view_download ); ?>"><?php printf( esc_html__( 'View %s', 'edd-recurring' ), esc_html( edd_get_label_singular() ) ); ?></a>)
+				(<a href="<?php echo esc_url( $view_download ); ?>"><?php printf( esc_html__( 'View %s', 'templify-recurring' ), esc_html( edd_get_label_singular() ) ); ?></a>)
 				<?php
 			}
 			?>
