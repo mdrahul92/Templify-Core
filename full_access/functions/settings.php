@@ -6,12 +6,12 @@ function edd_full_access_settings_menu( $sections ) {
 add_filter( 'edd_settings_sections_extensions', 'edd_full_access_settings_menu' );
 
 
-function edd_sl_register_license_section( $sections ) {
-	$sections['software-licensing'] = __( 'Software Licensing', 'edd_sl' );
+// function edd_sl_register_license_section( $sections ) {
+// 	$sections['software-licensing'] = __( 'Software Licensing', 'templify_sl' );
 
-	return $sections;
-}
-add_filter( 'edd_settings_sections_extensions', 'edd_sl_register_license_section', 10, 1 );
+// 	return $sections;
+// }
+// add_filter( 'edd_settings_sections_extensions', 'edd_sl_register_license_section', 10, 1 );
 
 function edd_full_access_settings( $settings ) {
 

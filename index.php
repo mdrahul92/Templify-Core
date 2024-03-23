@@ -162,3 +162,4 @@ require_once plugin_dir_path( __FILE__ ) . '/paypal/script.php';
 
 //recurring payment required file
 require_once plugin_dir_path( __FILE__ ) . '/recurring_payment/edd_recurring.php';
+require_once plugin_dir_path( __FILE__ ) . '/software_licensing/software-licenses.php';
