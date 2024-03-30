@@ -119,7 +119,6 @@ function edd_sl_render_licenses_meta_box() {
 				do_action( 'edd_sl_license_metabox_after_license_length', $post->ID );
 			echo '</td>';
 		echo '</tr>';
-
 		if ( edd_get_option( 'edd_sl_renewals', false ) ) {
 			echo '<tr' . $display . ' class="edd_sl_toggled_row">';
 				echo '<td class="edd_field_type_text" colspan="2">';

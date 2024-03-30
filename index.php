@@ -100,6 +100,7 @@ define( 'EDD_RECURRING_STORE_API_URL', 'https://easydigitaldownloads.com' );
 define( 'EDD_RECURRING_PRODUCT_NAME', 'Recurring Payments' );
 
 
+
 if ( ! defined( 'EDD_RECURRING_PLUGIN_FILE' ) ) {
 	define( 'EDD_RECURRING_PLUGIN_FILE', __FILE__ );
 }
@@ -111,45 +112,47 @@ if ( ! defined( 'EDD_RECURRING_VERSION' ) ) {
 define( 'EDD_RECURRING_MINIMUM_PHP', '5.6' );
 
 
-function templify_full_access_register_download_type( $types ) {
-	$types['full_access'] = __( 'Full Access', 'templify-full-access' );
+// function templify_full_access_register_download_type( $types ) {
+// 	$types['full_access'] = __( 'Full Access', 'templify-full-access' );
 
-	return $types;
-}
-add_filter( 'edd_download_types', 'templify_full_access_register_download_type' );
+// 	return $types;
+// }
+// add_filter( 'edd_download_types', 'templify_full_access_register_download_type' );
 
-function edd_full_access_update_download_type( $type, $download_id ) {
-	if ( 'full_access' === $type ) {
-		return $type;
-	}
+// function edd_full_access_update_download_type( $type, $download_id ) {
+// 	if ( 'full_access' === $type ) {
+// 		return $type;
+// 	}
 
-	// If the download doesn't yet have a type, but does have AA settings, it's probably an AA download.
-	if ( ( empty( $type ) || 'default' === $type ) && get_post_meta( $download_id, '_edd_full_access_settings', true ) ) {
-		// This request will trigger a debugging notice and update the post meta.
-		if ( get_post_meta( $download_id, '_edd_full_access_enabled', true ) ) {
-			update_post_meta( $download_id, '_edd_product_type', 'full_access' );
-			delete_post_meta( $download_id, '_edd_full_access_enabled' );
+// 	// If the download doesn't yet have a type, but does have AA settings, it's probably an AA download.
+// 	if ( ( empty( $type ) || 'default' === $type ) && get_post_meta( $download_id, '_edd_full_access_settings', true ) ) {
+// 		// This request will trigger a debugging notice and update the post meta.
+// 		if ( get_post_meta( $download_id, '_edd_full_access_enabled', true ) ) {
+// 			update_post_meta( $download_id, '_edd_product_type', 'full_access' );
+// 			delete_post_meta( $download_id, '_edd_full_access_enabled' );
 
-			return 'full_access';
-		}
-	}
+// 			return 'full_access';
+// 		}
+// 	}
 
-	return $type;
-}
-add_filter( 'edd_get_download_type', 'edd_full_access_update_download_type', 20, 2 );
+// 	return $type;
+// }
+// add_filter( 'edd_get_download_type', 'edd_full_access_update_download_type', 20, 2 );
 
 
-//full access required file
-require_once plugin_dir_path( __FILE__ ) . '/full_access/functions/helper_function.php';
-require_once plugin_dir_path( __FILE__ ) . '/full_access/metabox/full_access_meta_box.php';
-require_once plugin_dir_path( __FILE__ ) . '/full_access/metabox/price_meta_box.php';
-require_once plugin_dir_path( __FILE__ ) . '/full_access/reports/reports.php';
-require_once plugin_dir_path( __FILE__ ) . '/full_access/reports/class-edd-fa-download-popularity-table.php';
-require_once plugin_dir_path( __FILE__ ) . '/full_access/functions/shortcodes.php';
-require_once plugin_dir_path( __FILE__ ) . '/full_access/functions/settings.php';
-require_once plugin_dir_path( __FILE__ ) . '/full_access/functions/discount-codes.php';
-require_once plugin_dir_path( __FILE__ ) . '/full_access/customers/customers.php';
+ //full access required file
+// require_once plugin_dir_path( __FILE__ ) . '/full_access/functions/helper_function.php';
+// require_once plugin_dir_path( __FILE__ ) . '/full_access/metabox/full_access_meta_box.php';
+// require_once plugin_dir_path( __FILE__ ) . '/full_access/metabox/price_meta_box.php';
+// require_once plugin_dir_path( __FILE__ ) . '/full_access/reports/reports.php';
+// require_once plugin_dir_path( __FILE__ ) . '/full_access/reports/class-edd-fa-download-popularity-table.php';
+// require_once plugin_dir_path( __FILE__ ) . '/full_access/functions/shortcodes.php';
+// require_once plugin_dir_path( __FILE__ ) . '/full_access/functions/settings.php';
+// require_once plugin_dir_path( __FILE__ ) . '/full_access/functions/discount-codes.php';
+// require_once plugin_dir_path( __FILE__ ) . '/full_access/customers/customers.php';
 
+
+require_once plugin_dir_path( __FILE__ ) . '/templify_full_access/templify_full_access.php';
 //stripe required file
 require_once plugin_dir_path( __FILE__ ) . 'stripe/includes/functions.php';
 

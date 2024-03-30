@@ -260,6 +260,7 @@ class EDD_SL_Download extends EDD_Download {
 		return $has_beta;
 	}
 
+
 	/**
 	 * Retrieve the stable version string.
 	 *
