@@ -100,7 +100,6 @@ if ( ! class_exists( 'EDD_All_Access' ) ) {
 		 * @return      void
 		 */
 		private function includes() {
-
 			// Include scripts.
 			require_once EDD_ALL_ACCESS_DIR . 'includes/functions/enqueue-scripts.php';
 
@@ -252,51 +251,3 @@ require_once dirname( __FILE__ ) . '/vendor/autoload.php';
 	'easy-digital-downloads' => '3.0',
 	'wp'                     => '5.4',
 ) );
-
-/**
- * Admin notice used if EDD is not updated to 2.8 or later.
- *
- * @deprecated 1.2 In favour of ExtensionLoader class.
- *
- * @since       1.0.0
- */
-function edd_all_access_edd_too_old_notice() {
-	_deprecated_function( __FUNCTION__, '1.2' );
-	?>
-	<div class="notice notice-error">
-	<p><?php echo esc_html( __( 'EDD All Access: Your version of Easy Digital Downloads must be updated to version 2.8 or later to use the All Access extension', 'templify-full-access' ) ); ?></p>
-	</div>
-	<?php
-}
-
-/**
- * Upon fresh activation, this function fires and prevents all previous upgrade routines from running as they are not needed on fresh installs.
- *
- * @since       1.0.0
- */
-function edd_all_access_install() {
-
-	$current_version = get_option( 'edd_all_access_version' );
-
-	if ( ! $current_version ) {
-
-		if ( defined( 'EDD_PLUGIN_DIR' ) ) {
-
-			require_once EDD_PLUGIN_DIR . 'includes/admin/upgrades/upgrade-functions.php';
-
-			// When new upgrade routines are added, mark them as complete on fresh install.
-			$upgrade_routines = array(
-				'aa_v1_reorganize_customer_meta',
-				'aa_fix_utc_timezones',
-			);
-
-			foreach ( $upgrade_routines as $upgrade ) {
-				edd_set_upgrade_complete( $upgrade );
-			}
-		}
-	}
-
-	add_option( 'edd_all_access_version', EDD_ALL_ACCESS_VER, '', false );
-
-}
-register_activation_hook( __FILE__, 'edd_all_access_install' );

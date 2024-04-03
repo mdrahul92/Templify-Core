@@ -2,7 +2,7 @@
 /**
  * Admin Settings.
  *
- * @package     EDD All Access
+ * @package     EDD Full Access
  * @since       1.0.0
  */
 
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array $sections The modified array of extension menu sections for edd
  */
 function edd_all_access_settings_menu( $sections ) {
-	$sections['all-access'] = __( 'All Access', 'edd-all-access' );
+	$sections['all-access'] = __( 'Full Access', 'edd-all-access' );
 	return $sections;
 }
 add_filter( 'edd_settings_sections_extensions', 'edd_all_access_settings_menu' );
@@ -56,19 +56,19 @@ function edd_all_access_site_wide_settings( $settings ) {
 
 	$settings[] = array(
 		'id'   => 'all_access_settings_header',
-		'name' => '<strong>' . __( 'All Access Settings:', 'edd-all-access' ) . '</strong>',
-		'desc' => __( 'Configure All Access Settings', 'edd-all-access' ),
+		'name' => '<strong>' . __( 'Full Access Settings:', 'edd-all-access' ) . '</strong>',
+		'desc' => __( 'Configure Full Access Settings', 'edd-all-access' ),
 		'type' => 'header',
 		'size' => 'regular',
 	);
 
 	$settings[] = array(
 		'id'   => 'all_access_download_now_text',
-		'name' => __( '"Download Now" button text.', 'edd-all-access' ),
-		'desc' => __( 'What text should be on the "Download Now" buttons?', 'edd-all-access' ),
+		'name' => __( '"View Credentials" button text.', 'edd-all-access' ),
+		'desc' => __( 'What text should be on the "View Credentials" buttons?', 'edd-all-access' ),
 		'type' => 'text',
 		'size' => 'medium',
-		'std'  => __( 'Download Now', 'edd-all-access' ),
+		'std'  => __( 'View Credentials', 'edd-all-access' ),
 	);
 
 	if ( version_compare( EDD_VERSION, '3.0', '<' ) ) {
@@ -91,7 +91,7 @@ function edd_all_access_site_wide_settings( $settings ) {
 
 	$settings[] = array(
 		'id'   => 'all_access_settings_expired_header',
-		'name' => '<strong>' . __( 'If All Access Expired:', 'edd-all-access' ) . '</strong>',
+		'name' => '<strong>' . __( 'If Full Access Expired:', 'edd-all-access' ) . '</strong>',
 		'desc' => __( 'Set up the messages shown to users.', 'edd-all-access' ),
 		'type' => 'header',
 		'size' => 'regular',
@@ -100,16 +100,16 @@ function edd_all_access_site_wide_settings( $settings ) {
 	$settings[] = array(
 		'id'   => 'all_access_expired_text',
 		'name' => __( 'Message shown to user:', 'edd-all-access' ),
-		'desc' => __( 'Enter the text the user should see if their All Access is expired and they attempt a product download.', 'edd-all-access' ),
+		'desc' => __( 'Enter the text the user should see if their Full Access is expired and they attempt a product download.', 'edd-all-access' ),
 		'type' => 'textarea',
 		'size' => 'large',
-		'std'  => __( 'Your All Access Pass is expired.', 'edd-all-access' ),
+		'std'  => __( 'Your Full Access Pass is expired.', 'edd-all-access' ),
 	);
 
 	$settings[] = array(
 		'id'   => 'all_access_expired_redirect',
 		'name' => __( 'Redirect URL (Optional):', 'edd-all-access' ),
-		'desc' => __( 'Instead of seeing the above error message, if you\'d like the customer to be redirected to a specific page when they attempt to download a product using an expired All Access pass, enter that URL here.', 'edd-all-access' ),
+		'desc' => __( 'Instead of seeing the above error message, if you\'d like the customer to be redirected to a specific page when they attempt to download a product using an expired Full Access pass, enter that URL here.', 'edd-all-access' ),
 		'type' => 'text',
 		'size' => 'large',
 		'std'  => '',
@@ -126,7 +126,7 @@ function edd_all_access_site_wide_settings( $settings ) {
 	$settings[] = array(
 		'id'   => 'all_access_category_not_included_text',
 		'name' => __( 'Message shown to user:', 'edd-all-access' ),
-		'desc' => __( 'Enter the text the user should see if they attempt to download a product in a category they don\'t have All Access for.', 'edd-all-access' ),
+		'desc' => __( 'Enter the text the user should see if they attempt to download a product in a category they don\'t have Full Access for.', 'edd-all-access' ),
 		'type' => 'textarea',
 		'size' => 'large',
 		'std'  => __( 'Your account does not have access to products in this category.', 'edd-all-access' ),
@@ -135,7 +135,7 @@ function edd_all_access_site_wide_settings( $settings ) {
 	$settings[] = array(
 		'id'   => 'all_access_category_not_included_redirect',
 		'name' => __( 'Redirect URL (Optional):', 'edd-all-access' ),
-		'desc' => __( 'Instead of seeing the above error message, if you\'d like the customer to be redirected to a specific page when they attempt to download a product using an expired All Access pass, enter that URL here.', 'edd-all-access' ),
+		'desc' => __( 'Instead of seeing the above error message, if you\'d like the customer to be redirected to a specific page when they attempt to download a product using an expired Full Access pass, enter that URL here.', 'edd-all-access' ),
 		'type' => 'text',
 		'size' => 'large',
 		'std'  => '',
@@ -152,7 +152,7 @@ function edd_all_access_site_wide_settings( $settings ) {
 	$settings[] = array(
 		'id'   => 'all_access_price_id_not_included_text',
 		'name' => __( 'Message shown to user:', 'edd-all-access' ),
-		'desc' => __( 'Enter the text the user should see if they attempt to download a price variation they don\'t have All Access for.', 'edd-all-access' ),
+		'desc' => __( 'Enter the text the user should see if they attempt to download a price variation they don\'t have Full Access for.', 'edd-all-access' ),
 		'type' => 'textarea',
 		'size' => 'large',
 		'std'  => __( 'Your account does not have access to this product variation.', 'edd-all-access' ),
@@ -161,7 +161,7 @@ function edd_all_access_site_wide_settings( $settings ) {
 	$settings[] = array(
 		'id'   => 'all_access_price_id_not_included_redirect',
 		'name' => __( 'Redirect URL (Optional):', 'edd-all-access' ),
-		'desc' => __( 'Instead of seeing the above error message, if you\'d like the customer to be redirected to a specific page when they attempt to download a product using an expired All Access pass, enter that URL here.', 'edd-all-access' ),
+		'desc' => __( 'Instead of seeing the above error message, if you\'d like the customer to be redirected to a specific page when they attempt to download a product using an expired Full Access pass, enter that URL here.', 'edd-all-access' ),
 		'type' => 'text',
 		'size' => 'large',
 		'std'  => '',
@@ -181,7 +181,7 @@ function edd_all_access_site_wide_settings( $settings ) {
 		'desc' => __( 'When a customer reaches their download limit, what message should they read?', 'edd-all-access' ),
 		'type' => 'textarea',
 		'size' => 'large',
-		'std'  => __( 'Sorry. You\'ve hit the maximum number of downloads allowed for your All Access account.', 'edd-all-access' ),
+		'std'  => __( 'Sorry. You\'ve hit the maximum number of downloads allowed for your Full Access account.', 'edd-all-access' ),
 	);
 
 	$settings[] = array(
@@ -195,8 +195,8 @@ function edd_all_access_site_wide_settings( $settings ) {
 
 	$settings[] = array(
 		'id'   => 'all_access_modify_download_now_form',
-		'name' => '<strong>' . __( 'The "Download Now" area:', 'edd-all-access' ) . '</strong>',
-		'desc' => __( 'These options control how the "Download Now" area appears. .', 'edd-all-access' ),
+		'name' => '<strong>' . __( 'The "View Credentials" area:', 'edd-all-access' ) . '</strong>',
+		'desc' => __( 'These options control how the "View Credentials" area appears. .', 'edd-all-access' ),
 		'type' => 'header',
 		'size' => 'regular',
 	);
@@ -204,22 +204,22 @@ function edd_all_access_site_wide_settings( $settings ) {
 	$settings[] = array(
 		'id'            => 'all_access_hide_non_relevant_variable_prices',
 		'name'          => __( 'Hide non-relevant variable prices?', 'edd-all-access' ),
-		'desc'          => __( 'If a customer has an All Access pass but that pass doesn\'t provide access to a specific variable price, should it be hidden? For example, if the All Access Pass gives access to a "Large" version and thus you want to hide the "Medium" and "Small" versions, choose "Yes" and they will be hidden from those All Access Pass holders. Note they will still appear to people without an All Access pass where they normally would.', 'edd-all-access' ),
+		'desc'          => __( 'If a customer has an Full Access pass but that pass doesn\'t provide access to a specific variable price, should it be hidden? For example, if the Full Access Pass gives access to a "Large" version and thus you want to hide the "Medium" and "Small" versions, choose "Yes" and they will be hidden from those Full Access Pass holders. Note they will still appear to people without an Full Access pass where they normally would.', 'edd-all-access' ),
 		'type'          => 'radio',
 		'options'       => array(
-			'no'  => __( 'No. I want to show all variable prices to customers with an All Access Pass - even if they don\'t get access to them.', 'edd-all-access' ),
-			'yes' => __( 'Yes. Hide non-relevant variable prices from customers with an All Access Pass.', 'edd-all-access' ),
+			'no'  => __( 'No. I want to show all variable prices to customers with an Full Access Pass - even if they don\'t get access to them.', 'edd-all-access' ),
+			'yes' => __( 'Yes. Hide non-relevant variable prices from customers with an Full Access Pass.', 'edd-all-access' ),
 
 		),
 		'std'           => 'no',
 		'tooltip_title' => __( 'Hide non-relevant variable prices', 'edd-all-access' ),
-		'tooltip_desc'  => __( 'This is perfect for a scenario where your highest variable price would include whatever is in the lower versions and you don\'t want them to show. Make sure your All Access product does NOT include the variations you want to hide. However, if you want to show all variable price options simply set this to no. For example, a photo store might want to allow downloading of small, medium, and large photos. ', 'edd-all-access' ),
+		'tooltip_desc'  => __( 'This is perfect for a scenario where your highest variable price would include whatever is in the lower versions and you don\'t want them to show. Make sure your Full Access product does NOT include the variations you want to hide. However, if you want to show all variable price options simply set this to no. For example, a photo store might want to allow downloading of small, medium, and large photos. ', 'edd-all-access' ),
 	);
 
 	$settings[] = array(
 		'id'   => 'all_access_purchase_form_display_header',
 		'name' => '<strong>' . __( 'Change the way purchase buttons are displayed (optional):', 'edd-all-access' ) . '</strong>',
-		'desc' => __( 'If you wan to sell ONLY All Access Passes and do not wish to sell items individually, you may wish to hide normal purchase buttons and show All Access purchase buttons in their place. The section gives you the option to change the way the normal purchase button area works. ', 'edd-all-access' ),
+		'desc' => __( 'If you wan to sell ONLY Full Access Passes and do not wish to sell items individually, you may wish to hide normal purchase buttons and show Full Access purchase buttons in their place. The section gives you the option to change the way the normal purchase button area works. ', 'edd-all-access' ),
 		'type' => 'header',
 		'size' => 'regular',
 	);
@@ -231,22 +231,22 @@ function edd_all_access_site_wide_settings( $settings ) {
 		'type'          => 'radio',
 		'options'       => array(
 			'normal-mode'         => __( '1. Show normal "Add To Cart" buttons only.', 'edd-all-access' ),
-			'aa-only-mode'        => __( '2. Show "Buy All Access" and "Login" buttons instead of "Add To Cart" (if the product is included in an All Access Pass).', 'edd-all-access' ),
-			'normal-plus-aa-mode' => __( '3. Show both normal "Add To Cart" buttons and "Buy All Access" and "Login" buttons below.', 'edd-all-access' ),
+			'aa-only-mode'        => __( '2. Show "Buy Full Access" and "Login" buttons instead of "Add To Cart" (if the product is included in an Full Access Pass).', 'edd-all-access' ),
+			'normal-plus-aa-mode' => __( '3. Show both normal "Add To Cart" buttons and "Buy Full Access" and "Login" buttons below.', 'edd-all-access' ),
 		),
 		'std'           => 'normal-mode',
 		'tooltip_title' => __( 'Add To Cart Display Mode', 'edd-all-access' ),
-		'tooltip_desc'  => __( 'This setting controls what customers will see if they do not have All Access to a product. Note that All Access buy buttons will only be shown if the product is not excluded from All Access. The All Access Pass that will be sold is the last-created one which includes the product being viewed.', 'edd-all-access' ),
+		'tooltip_desc'  => __( 'This setting controls what customers will see if they do not have Full Access to a product. Note that Full Access buy buttons will only be shown if the product is not excluded from Full Access. The Full Access Pass that will be sold is the last-created one which includes the product being viewed.', 'edd-all-access' ),
 	);
 
 	$settings[] = array(
 		'id'            => 'all_access_show_buy_instructions',
-		'name'          => __( 'Show "Buy All Access" Instructional Text?', 'edd-all-access' ),
-		'desc'          => __( 'If your "Add To Cart" Display Mode is set to option 2 or 3, should instructional text be shown above the "Buy All Access" button?', 'edd-all-access' ),
+		'name'          => __( 'Show "Buy Full Access" Instructional Text?', 'edd-all-access' ),
+		'desc'          => __( 'If your "Add To Cart" Display Mode is set to option 2 or 3, should instructional text be shown above the "Buy Full Access" button?', 'edd-all-access' ),
 		'type'          => 'radio',
 		'options'       => array(
-			'show' => __( 'Yes. Show the instructional text above the "Buy All Access" button.', 'edd-all-access' ),
-			'hide' => __( 'No. Do not show the instructional text above the "Buy All Access" button.', 'edd-all-access' ),
+			'show' => __( 'Yes. Show the instructional text above the "Buy Full Access" button.', 'edd-all-access' ),
+			'hide' => __( 'No. Do not show the instructional text above the "Buy Full Access" button.', 'edd-all-access' ),
 		),
 		'std'           => 'show',
 		'tooltip_title' => __( 'Show instructional text', 'edd-all-access' ),
@@ -255,12 +255,12 @@ function edd_all_access_site_wide_settings( $settings ) {
 
 	$settings[] = array(
 		'id'            => 'all_access_buy_instructions',
-		'name'          => __( '"Buy All Access" Instructional Text:', 'edd-all-access' ),
-		'desc'          => __( 'If your "Add To Cart" Display Mode is set to option 2 or 3, what should the text above the "Buy All Access" button say? Default: "To get access, purchase an All Access Pass here."', 'edd-all-access' ),
+		'name'          => __( '"Buy Full Access" Instructional Text:', 'edd-all-access' ),
+		'desc'          => __( 'If your "Add To Cart" Display Mode is set to option 2 or 3, what should the text above the "Buy Full Access" button say? Default: "To get access, purchase an Full Access Pass here."', 'edd-all-access' ),
 		'type'          => 'textarea',
-		'std'           => __( 'To get access, purchase an All Access Pass here.', 'edd-all-access' ),
-		'tooltip_title' => __( 'Buy All Access Instructional Text', 'edd-all-access' ),
-		'tooltip_desc'  => __( 'Give people instructional text above All Access purchase buttons. Note: this also affects the text output by the [all_access] shortcode unless overwritten by shortcode args', 'edd-all-access' ),
+		'std'           => __( 'To get access, purchase an Full Access Pass here.', 'edd-all-access' ),
+		'tooltip_title' => __( 'Buy Full Access Instructional Text', 'edd-all-access' ),
+		'tooltip_desc'  => __( 'Give people instructional text above Full Access purchase buttons. Note: this also affects the text output by the [all_access] shortcode unless overwritten by shortcode args', 'edd-all-access' ),
 	);
 
 	$settings[] = array(
@@ -280,25 +280,25 @@ function edd_all_access_site_wide_settings( $settings ) {
 	$settings[] = array(
 		'id'            => 'all_access_login_instructions',
 		'name'          => __( '"Log In" Instructional Text:', 'edd-all-access' ),
-		'desc'          => __( 'When a "Login" link is shown below the "Buy All Access" button, what should the text before the link say? Default: "Already purchased?"', 'edd-all-access' ),
+		'desc'          => __( 'When a "Login" link is shown below the "Buy Full Access" button, what should the text before the link say? Default: "Already purchased?"', 'edd-all-access' ),
 		'type'          => 'textarea',
 		'std'           => __( 'Already purchased?', 'edd-all-access' ),
 		'tooltip_title' => __( 'Login Instructional Text', 'edd-all-access' ), // Radio Buttons don't work for tool tip in EDD core yet.
-		'tooltip_desc'  => __( 'Give people instructions to log in in order to use their All Access Pass.', 'edd-all-access' ),
+		'tooltip_desc'  => __( 'Give people instructions to log in in order to use their Full Access Pass.', 'edd-all-access' ),
 	);
 
 	$settings[] = array(
 		'id'            => 'all_access_replace_aa_btns_with_custom_btn',
-		'name'          => __( 'Bonus Option: Replace "Buy All Access" buttons with a Custom URL button? (Optional)', 'edd-all-access' ),
-		'desc'          => __( 'If your "Add To Cart" Display Mode is set to option 2 or 3, instead of showing the "Buy All Access" buttons it describes, you can choose to show a custom button pointing that that URL will display instead. This is perfect if you have a custom-built "pricing" page you\'d like to direct your potential customers to.', 'edd-all-access' ),
+		'name'          => __( 'Bonus Option: Replace "Buy Full Access" buttons with a Custom URL button? (Optional)', 'edd-all-access' ),
+		'desc'          => __( 'If your "Add To Cart" Display Mode is set to option 2 or 3, instead of showing the "Buy Full Access" buttons it describes, you can choose to show a custom button pointing that that URL will display instead. This is perfect if you have a custom-built "pricing" page you\'d like to direct your potential customers to.', 'edd-all-access' ),
 		'type'          => 'radio',
 		'options'       => array(
-			'normal_aa_btns' => __( 'No. Show the "Buy All Access" buttons for all relevant All Access products.', 'edd-all-access' ),
-			'custom_btn'     => __( 'Yes. Replace the "Buy All Access" buttons with a single, custom URL button.', 'edd-all-access' ),
+			'normal_aa_btns' => __( 'No. Show the "Buy Full Access" buttons for all relevant Full Access products.', 'edd-all-access' ),
+			'custom_btn'     => __( 'Yes. Replace the "Buy Full Access" buttons with a single, custom URL button.', 'edd-all-access' ),
 		),
 		'std'           => 'show',
-		'tooltip_title' => __( 'Replace Buy All Access buttons?', 'edd-all-access' ),
-		'tooltip_desc'  => __( 'If using option 2 or 3 above, you can replace the default Buy All Access buttons and show a custom button that links to your own custom page instead. Leave this blank if you don\'t wish to use it.', 'edd-all-access' ),
+		'tooltip_title' => __( 'Replace Buy Full Access buttons?', 'edd-all-access' ),
+		'tooltip_desc'  => __( 'If using option 2 or 3 above, you can replace the default Buy Full Access buttons and show a custom button that links to your own custom page instead. Leave this blank if you don\'t wish to use it.', 'edd-all-access' ),
 	);
 
 	$settings[] = array(
@@ -325,9 +325,9 @@ function edd_all_access_site_wide_settings( $settings ) {
 add_filter( 'edd_all_access_settings', 'edd_all_access_site_wide_settings' );
 
 /**
- * All Access Product Selector Callback
+ * Full Access Product Selector Callback
  *
- * Renders a "chosen" select field containing only All Access enabled products.
+ * Renders a "chosen" select field containing only Full Access enabled products.
  *
  * @since 1.0.0
  * @param array $args Arguments passed by the setting.
@@ -374,9 +374,9 @@ function edd_all_access_all_product_dropdown_multiple_callback( $args ) {
 }
 
 /**
- * All Access Product Selector Callback
+ * Full Access Product Selector Callback
  *
- * Renders a "chosen" select field containing only All Access enabled products.
+ * Renders a "chosen" select field containing only Full Access enabled products.
  *
  * @since 1.0.0
  * @param array $args Arguments passed by the setting.
@@ -438,7 +438,7 @@ function edd_all_access_product_dropdown( $args = array() ) {
 		'posts_per_page' => $args['number'],
 	);
 
-	// Only include All Access Posts.
+	// Only include Full Access Posts.
 	$product_args['meta_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 		'relation' => 'AND',
 		array(

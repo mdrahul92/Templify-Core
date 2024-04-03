@@ -10,10 +10,7 @@ Author: Templify
 function templify_core_check_edd() {
     $edd_path = 'easy-digital-downloads/easy-digital-downloads.php';
     $edd_active = in_array($edd_path, (array)get_option('active_plugins', array()));
-
 	return $edd_active || is_plugin_active($edd_path);
-
-
     //return array('edd_active' => $edd_active);
 }
 
@@ -34,23 +31,122 @@ function templify_core_admin_enqueue_scripts() {
 }
 add_action('admin_enqueue_scripts', 'templify_core_admin_enqueue_scripts');
 
+
 // Activation Hook
 register_activation_hook(__FILE__, 'templify_core_activation');
 
 function templify_core_activation() {
-
-    if (templify_core_check_edd() ) {
-     
-    } else {
-        // Deactivate the plugin
-        deactivate_plugins(plugin_basename(__FILE__));
+    // Check if Easy Digital Downloads is active
+    if (!templify_core_check_edd()) {
         // Set a transient to show the notice
         set_transient('templify_core_edd_notice', true, 5 * MINUTE_IN_SECONDS);
+        // Deactivate the plugin
+        deactivate_plugins(plugin_basename(__FILE__));
+        return; // Make sure to return after deactivating to prevent further execution
+    }
+
+    // Initialize default settings if not already set
+    if (false === get_option('templify_core_plugin_settings')) {
+        $default_settings = array(
+            'all_access_enabled' => false,
+            'paypal_enabled' => false,
+            'recurring_payments_enabled' => false,
+            'software_licensing_enabled' => false,
+        );
+        update_option('templify_core_plugin_settings', $default_settings);
+    }
+}
+
+// Function to display settings page
+function templify_core_settings_page() {
+    $options = get_option('templify_core_plugin_settings'); // Retrieve plugin settings
+    $all_access_enabled = isset($options['all_access_enabled']) ? $options['all_access_enabled'] : false;
+    $paypal_enabled = isset($options['paypal_enabled']) ? $options['paypal_enabled'] : false;
+    $recurring_payments_enabled = isset($options['recurring_payments_enabled']) ? $options['recurring_payments_enabled'] : false;
+    $software_licensing_enabled = isset($options['software_licensing_enabled']) ? $options['software_licensing_enabled'] : false;
+    ?>
+    <div class="wrap">
+        <h2>Templify Core Settings</h2>
+        <form method="post" action="options.php">
+            <?php settings_fields('templify_core_plugin_settings'); ?>
+            <table class="form-table">
+                <tr>
+                    <th scope="row">Enable Full Access</th>
+                    <td><input type="checkbox" name="templify_core_plugin_settings[all_access_enabled]" <?php checked($all_access_enabled,"on"); ?> /></td>
+                </tr>
+                <tr>
+                    <th scope="row">Enable PayPal</th>
+                    <td><input type="checkbox" name="templify_core_plugin_settings[paypal_enabled]" <?php checked($paypal_enabled,"on"); ?> /></td>
+                </tr>
+                <tr>
+                    <th scope="row">Enable Recurring Payments</th>
+                    <td><input type="checkbox" name="templify_core_plugin_settings[recurring_payments_enabled]" <?php checked($recurring_payments_enabled,"on"); ?> /></td>
+                </tr>
+                <tr>
+                    <th scope="row">Enable Software Licensing</th>
+                    <td><input type="checkbox" name="templify_core_plugin_settings[software_licensing_enabled]" <?php checked($software_licensing_enabled,"on"); ?> /></td>
+                </tr>
+            </table>
+            <?php submit_button(); ?>
+        </form>
+    </div>
+    <?php
+}
+
+// Hook into option update to include/exclude files based on settings
+add_action('update_option_templify_core_plugin_settings', 'templify_core_update_settings_files', 10, 2);
+
+function templify_core_update_settings_files($old_value, $new_value) {
+    // Check the difference in settings
+    if ($old_value !== $new_value) {
+        // Log the old and new values for debugging
+        error_log('Old Value: ' . print_r($old_value, true));
+        error_log('New Value: ' . print_r($new_value, true));
+
+        // Re-evaluate which files to include/exclude based on the updated settings
+        templify_core_include_files_based_on_settings($new_value);
+    }
+}
+
+// Check plugin settings and include necessary files accordingly
+function templify_core_include_files_based_on_settings() {
+    $options = get_option('templify_core_plugin_settings'); // Retrieve plugin settings
+
+    if (isset($options['all_access_enabled']) && $options['all_access_enabled']) {
+        require_once plugin_dir_path(__FILE__) . '/templify_full_access/templify_full_access.php';
+    }
+
+    if (isset($options['paypal_enabled']) && $options['paypal_enabled']) {
+        // Include PayPal related files
+        require_once plugin_dir_path(__FILE__) . '/paypal/edd-paypal.php';
+    }
+
+    if (isset($options['recurring_payments_enabled']) && $options['recurring_payments_enabled']) {
+        // Include Recurring Payments related file
+        require_once plugin_dir_path(__FILE__) . '/recurring_payment/edd_recurring.php';
+    }
+
+    if (isset($options['software_licensing_enabled']) && $options['software_licensing_enabled']) {
+        // Include Software Licensing related file
+        require_once plugin_dir_path(__FILE__) . '/software_licensing/software-licenses.php';
     }
 }
 
 
-// Admin Notics
+// Register settings
+function templify_core_register_settings() {
+    register_setting('templify_core_plugin_settings', 'templify_core_plugin_settings');
+}
+add_action('admin_init', 'templify_core_register_settings');
+
+// Add settings page to admin menu
+function templify_core_add_settings_menu() {
+    add_menu_page('Templify Core Settings', 'Templify Settings', 'manage_options', 'templify-core-settings', 'templify_core_settings_page');
+}
+add_action('admin_menu', 'templify_core_add_settings_menu');
+
+
+// Admin Notices
 add_action('admin_notices', 'templify_core_admin_notices');
 
 function templify_core_admin_notices() {
@@ -91,11 +187,7 @@ function templify_core_deactivate() {
 }
 register_deactivation_hook(__FILE__, 'templify_core_deactivate');
 
-//all addon define constant names
-define( 'EDD_PAYPAL_PRO_VERSION', '1.0.3' );
-define( 'EDD_PAYPAL_PRO_FILE', __FILE__ .'/paypal' );
-define( 'EDD_PAYPAL_PRO_DIR', dirname( EDD_PAYPAL_PRO_FILE ) );
-define( 'EDD_PAYPAL_PRO_URL', plugin_dir_url( EDD_PAYPAL_PRO_FILE ) );
+
 define( 'EDD_RECURRING_STORE_API_URL', 'https://easydigitaldownloads.com' );
 define( 'EDD_RECURRING_PRODUCT_NAME', 'Recurring Payments' );
 
@@ -111,58 +203,4 @@ if ( ! defined( 'EDD_RECURRING_VERSION' ) ) {
 
 define( 'EDD_RECURRING_MINIMUM_PHP', '5.6' );
 
-
-// function templify_full_access_register_download_type( $types ) {
-// 	$types['full_access'] = __( 'Full Access', 'templify-full-access' );
-
-// 	return $types;
-// }
-// add_filter( 'edd_download_types', 'templify_full_access_register_download_type' );
-
-// function edd_full_access_update_download_type( $type, $download_id ) {
-// 	if ( 'full_access' === $type ) {
-// 		return $type;
-// 	}
-
-// 	// If the download doesn't yet have a type, but does have AA settings, it's probably an AA download.
-// 	if ( ( empty( $type ) || 'default' === $type ) && get_post_meta( $download_id, '_edd_full_access_settings', true ) ) {
-// 		// This request will trigger a debugging notice and update the post meta.
-// 		if ( get_post_meta( $download_id, '_edd_full_access_enabled', true ) ) {
-// 			update_post_meta( $download_id, '_edd_product_type', 'full_access' );
-// 			delete_post_meta( $download_id, '_edd_full_access_enabled' );
-
-// 			return 'full_access';
-// 		}
-// 	}
-
-// 	return $type;
-// }
-// add_filter( 'edd_get_download_type', 'edd_full_access_update_download_type', 20, 2 );
-
-
- //full access required file
-// require_once plugin_dir_path( __FILE__ ) . '/full_access/functions/helper_function.php';
-// require_once plugin_dir_path( __FILE__ ) . '/full_access/metabox/full_access_meta_box.php';
-// require_once plugin_dir_path( __FILE__ ) . '/full_access/metabox/price_meta_box.php';
-// require_once plugin_dir_path( __FILE__ ) . '/full_access/reports/reports.php';
-// require_once plugin_dir_path( __FILE__ ) . '/full_access/reports/class-edd-fa-download-popularity-table.php';
-// require_once plugin_dir_path( __FILE__ ) . '/full_access/functions/shortcodes.php';
-// require_once plugin_dir_path( __FILE__ ) . '/full_access/functions/settings.php';
-// require_once plugin_dir_path( __FILE__ ) . '/full_access/functions/discount-codes.php';
-// require_once plugin_dir_path( __FILE__ ) . '/full_access/customers/customers.php';
-
-
-require_once plugin_dir_path( __FILE__ ) . '/templify_full_access/templify_full_access.php';
-//stripe required file
 require_once plugin_dir_path( __FILE__ ) . 'stripe/includes/functions.php';
-
-// paypal commerce required file
-require_once plugin_dir_path( __FILE__ ) . '/paypal/upgrades.php';
-require_once plugin_dir_path( __FILE__ ) . '/paypal/main.php';
-require_once plugin_dir_path( __FILE__ ) . '/paypal/admin/settings.php';
-require_once plugin_dir_path( __FILE__ ).  '/paypal/checkout.php';
-require_once plugin_dir_path( __FILE__ ) . '/paypal/script.php';
-
-//recurring payment required file
-require_once plugin_dir_path( __FILE__ ) . '/recurring_payment/edd_recurring.php';
-require_once plugin_dir_path( __FILE__ ) . '/software_licensing/software-licenses.php';

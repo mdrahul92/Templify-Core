@@ -29,14 +29,14 @@ if ( function_exists( 'edd_add_order' ) ) {
  * @return      array $views The modified list of available reports in EDD, with this report added.
  */
 function edd_all_access_most_popular_products_report_view( $views ) {
-	$views['edd_aa_popular_products'] = __( 'All Access: Download Popularity', 'edd-all-access' );
+	$views['edd_aa_popular_products'] = __( 'Full Access: Download Popularity', 'edd-all-access' );
 
 	return $views;
 }
 
 /**
- * Filter the product dropdown arguments to only show All Access Passes in the list.
- * This only runs when viewing the All Access report.
+ * Filter the product dropdown arguments to only show Full Access Passes in the list.
+ * This only runs when viewing the Full Access report.
  *
  * @param array $query_args
  *
@@ -75,7 +75,7 @@ function edd_all_access_register_reports( $reports ) {
 
 	try {
 		$reports->add_report( 'all_access', array(
-			'label'     => __( 'All Access', 'edd-all-access' ),
+			'label'     => __( 'Full Access', 'edd-all-access' ),
 			'icon'      => 'welcome-widgets-menus',
 			'priority'  => 60,
 			'endpoints' => array(
@@ -103,7 +103,7 @@ function edd_all_access_register_reports( $reports ) {
 }
 
 /**
- * Generate the output for the Popular Products report for All Access.
+ * Generate the output for the Popular Products report for Full Access.
  *
  * @since       1.1.2
  */
@@ -134,11 +134,11 @@ function edd_all_access_most_popular_products_report() {
 		// Try and see if any exist and use the first one.
 		if ( empty( $aa_product_ids ) ) {
 			?>
-			<p><?php echo esc_html( __( 'No All Access Products were found.', 'edd-all-access' ) ); ?></p>
+			<p><?php echo esc_html( __( 'No Full Access Products were found.', 'edd-all-access' ) ); ?></p>
 			<?php
 			return;
 		} else {
-			// Default to the first All Access product available.
+			// Default to the first Full Access product available.
 			$all_access_product_id = reset( $aa_product_ids );
 		}
 	}
@@ -149,7 +149,7 @@ function edd_all_access_most_popular_products_report() {
 		<div class="alignleft actions"><?php edd_report_views(); ?></div>
 	</div>
 
-	<h2><?php echo esc_html( __( 'All Access: Download Popularity', 'edd-all-access' ) ); ?></h2>
+	<h2><?php echo esc_html( __( 'Full Access: Download Popularity', 'edd-all-access' ) ); ?></h2>
 
 	<?php
 

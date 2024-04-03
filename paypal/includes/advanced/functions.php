@@ -2,7 +2,7 @@
 /**
  * Functions
  *
- * @package   edd-paypal-commerce-pro
+ * @package   templify-paypal-pro
  * @copyright Copyright (c) 2021, Sandhills Development, LLC
  * @license   GPL2+
  * @since     1.0
@@ -30,7 +30,7 @@ function advanced_payments_enabled() {
 	}
 
 	// Recurring payments not supported. @todo Confirm this.
-	if ( cart_contains_recurring() ) {
+	if ( function_exists( 'EDD_Recurring' ) && EDD_Recurring()->cart_contains_recurring() ) {
 		return false;
 	}
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Functions that deal with outputting/saving the metabox called "All Access".
+ * Functions that deal with outputting/saving the metabox called "Full Access".
  *
  * @package     EDD\EDDAllAccess\Post Meta Functions
  * @since       1.0.0
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Add the All Access metabox to the product settings in wp-admin.
+ * Add the Full Access metabox to the product settings in wp-admin.
  *
  * @since       1.0.0
  * @return      void
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function edd_all_access_add_meta_box() {
 
 	if ( current_user_can( 'manage_shop_settings' ) ) {
-		add_meta_box( 'edd_downloads_all_access', __( 'All Access', 'edd-all-access' ), 'edd_all_access_render_all_access_meta_box', 'download', 'normal', 'default' );
+		add_meta_box( 'edd_downloads_all_access', __( 'Full Access', 'edd-all-access' ), 'edd_all_access_render_all_access_meta_box', 'download', 'normal', 'default' );
 	}
 }
 add_action( 'add_meta_boxes', 'edd_all_access_add_meta_box' );
@@ -47,12 +47,12 @@ function edd_all_access_render_all_access_meta_box() {
 		<tr class="edd_all_access_categories_row edd_all_access_row">
 			<td class="edd_field_type_text" colspan="2">
 				<p>
-					<strong><?php echo esc_html( __( 'All Access To:', 'edd-all-access' ) ); ?>
-						<span alt="f223" class="edd-help-tip dashicons dashicons-editor-help" title="<?php echo wp_kses_post( __( '<strong>Limit by category</strong>: You can choose which products customers can download with this All Access pass. For example, if you want to sell an All Access pass to just a category called Photos, choose that category here. Note that the category must already exist for it to show up here. You can make product categories under Downloads > Categories.', 'edd-all-access' ) ); ?>"></span>
+					<strong><?php echo esc_html( __( 'Full Access To:', 'edd-all-access' ) ); ?>
+						<span alt="f223" class="edd-help-tip dashicons dashicons-editor-help" title="<?php echo wp_kses_post( __( '<strong>Limit by category</strong>: You can choose which products customers can download with this Full Access pass. For example, if you want to sell an Full Access pass to just a category called Photos, choose that category here. Note that the category must already exist for it to show up here. You can make product categories under Downloads > Categories.', 'edd-all-access' ) ); ?>"></span>
 					</strong>
 				</p>
 				<label for="edd_all_access_meta_all_access_categories">
-					<?php echo esc_html( __( 'To which product categories does the customer get "All Access"', 'edd-all-access' ) ); ?>
+					<?php echo esc_html( __( 'To which product categories does the customer get "Full Access"', 'edd-all-access' ) ); ?>
 				</label>
 				<br />
 				<?php
@@ -88,10 +88,10 @@ function edd_all_access_render_all_access_meta_box() {
 	
 		<tr class="edd_all_access_row">
 			<td class="edd_field_type_text" colspan="2">
-				<p><strong><?php echo esc_html( __( '"All Access" Duration:', 'edd-all-access' ) ); ?></strong>
-				<span alt="f223" class="edd-help-tip dashicons dashicons-editor-help" title="<?php echo wp_kses_post( __( '<strong>What is All Access duration?</strong>: You can set an expiration date for this All Access pass. Once a customer\'s All Access pass expires, they can no longer download products using that pass. If you want to make this renewable (like an ongoing membership), you will want to use the EDD Recurring extension so that this All Access pass is automatically repurchased by the customer once it expires.', 'edd-all-access' ) ); ?>"></span>
+				<p><strong><?php echo esc_html( __( '"Full Access" Duration:', 'edd-all-access' ) ); ?></strong>
+				<span alt="f223" class="edd-help-tip dashicons dashicons-editor-help" title="<?php echo wp_kses_post( __( '<strong>What is Full Access duration?</strong>: You can set an expiration date for this Full Access pass. Once a customer\'s Full Access pass expires, they can no longer download products using that pass. If you want to make this renewable (like an ongoing membership), you will want to use the EDD Recurring extension so that this Full Access pass is automatically repurchased by the customer once it expires.', 'edd-all-access' ) ); ?>"></span>
 				</p>
-				<label for="edd_all_access_meta_all_access_duration_unit"><?php echo esc_html( __( 'How long should "All Access" last?', 'edd-all-access' ) ); ?></label><br />
+				<label for="edd_all_access_meta_all_access_duration_unit"><?php echo esc_html( __( 'How long should "Full Access" last?', 'edd-all-access' ) ); ?></label><br />
 				<input
 					type="number"
 					class="small-text"
@@ -148,7 +148,7 @@ function edd_all_access_render_all_access_meta_box() {
 			</td>
 		</tr>
 		<?php
-			// All Access Price Variations - How many?
+			// Full Access Price Variations - How many?
 			?>
 			<tr class="edd_all_access_number_of_price_ids_row edd_all_access_row">
 				<td class="edd_field_type_text" colspan="2">
@@ -166,7 +166,7 @@ function edd_all_access_render_all_access_meta_box() {
 				</td>
 		</tr>
 		<?php
-			// All Access Price Variations - Which are included?.
+			// Full Access Price Variations - Which are included?.
 		?>
 		<tr
 			<?php if ( empty( $product->number_price_ids ) ) : ?>
@@ -176,7 +176,7 @@ function edd_all_access_render_all_access_meta_box() {
 		>
 			<td class="edd_field_type_text" colspan="2">
 				<p><strong><?php echo esc_html( __( 'Included Price Variations:', 'edd-all-access' ) ); ?></strong></p>
-				<?php echo esc_html( __( 'Which price variations should be included in this All Access?', 'edd-all-access' ) ); ?>
+				<?php echo esc_html( __( 'Which price variations should be included in this Full Access?', 'edd-all-access' ) ); ?>
 				<ul id="edd_all_access_included_price_ids">
 					<?php
 					for ( $price_id = 1; $price_id <= $product->number_price_ids; $price_id++ ) {
@@ -198,12 +198,12 @@ function edd_all_access_render_all_access_meta_box() {
 			</td>
 		</tr>
 		<?php
-		// All Access Receipt options.
+		// Full Access Receipt options.
 		?>
 		<tr class="edd_all_access_row">
 			<td class="edd_field_type_text" colspan="2">
-				<p><strong><?php echo esc_html( __( 'Receipts: Show link to All Access?:', 'edd-all-access' ) ); ?></strong></p>
-				<label for="edd_all_access_receipt_meta_show_link"><?php echo esc_html( __( 'Would you like to output a custom link in the receipts your customers receive directing them to use their All Access Pass? Note: For email Receipts, you must be using the', 'edd-all-access' ) ); ?>
+				<p><strong><?php echo esc_html( __( 'Receipts: Show link to Full Access?:', 'edd-all-access' ) ); ?></strong></p>
+				<label for="edd_all_access_receipt_meta_show_link"><?php echo esc_html( __( 'Would you like to output a custom link in the receipts your customers receive directing them to use their Full Access Pass? Note: For email Receipts, you must be using the', 'edd-all-access' ) ); ?>
 					<a href="http://docs.easydigitaldownloads.com/article/864-email-settings" target="_blank">{download_list}</a>
 					<?php echo esc_html( __( 'email tag.', 'edd-all-access' ) ); ?>
 				</label><br />
@@ -215,12 +215,12 @@ function edd_all_access_render_all_access_meta_box() {
 			<td>
 		</tr>
 		<?php
-		// All Access Receipt Link Message.
+		// Full Access Receipt Link Message.
 		?>
 		<tr class="edd_all_access_row">
 			<td class="edd_field_type_text" colspan="2">
 				<p>
-					<strong><?php echo esc_html( __( 'Receipts: All Access Link Message:', 'edd-all-access' ) ); ?></strong>
+					<strong><?php echo esc_html( __( 'Receipts: Full Access Link Message:', 'edd-all-access' ) ); ?></strong>
 				</p>
 				<label for="edd_all_access_receipt_meta_link_message"><?php echo esc_html( __( 'What should the link in the receipt say to the user?', 'edd-all-access' ) ); ?></label>
 				<p>
@@ -229,7 +229,7 @@ function edd_all_access_render_all_access_meta_box() {
 			<td>
 		</tr>
 		<?php
-		// All Access Receipt Link URL.
+		// Full Access Receipt Link URL.
 		?>
 		<tr class="edd_all_access_row">
 			<td class="edd_field_type_text" colspan="2">
@@ -249,7 +249,7 @@ function edd_all_access_render_all_access_meta_box() {
 }
 
 /**
- * Save data from the All Access metabox
+ * Save data from the Full Access metabox
  *
  * @access      public
  * @since       1.0.0
@@ -380,13 +380,13 @@ function edd_all_access_download_meta_box_save( $post_id ) {
 		}
 	}
 
-	// Run the function to rebuild the list of All Access products.
+	// Run the function to rebuild the list of Full Access products.
 	edd_all_access_get_all_access_downloads( true );
 }
 add_action( 'save_post', 'edd_all_access_download_meta_box_save' );
 
 /**
- * Register the All Access download type.
+ * Register the Full Access download type.
  *
  * @since  1.2.5
  * @param  array $types The existing download types.

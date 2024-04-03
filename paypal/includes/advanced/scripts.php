@@ -2,7 +2,7 @@
 /**
  * Scripts
  *
- * @package   edd-paypal-commerce-pro
+ * @package   templify-paypal-pro
  * @copyright Copyright (c) 2021, Sandhills Development, LLC
  * @license   GPL2+
  * @since     1.0
@@ -59,11 +59,11 @@ add_action( 'wp_enqueue_scripts', function () {
 
 		$timestamp = time();
 		wp_localize_script( 'edd-paypal-pro-checkout', 'eddPayPalPro', array(
-			'error'             => esc_html__( 'Error', 'edd-paypal-commerce-pro' ),
-			'prefixCardNumber'  => esc_html__( 'Card Number', 'edd-paypal-commerce-pro' ),
-			'prefixCvv'         => esc_html__( 'CVV', 'edd-paypal-commerce-pro' ),
-			'prefixExpiration'  => esc_html__( 'Expiration Date', 'edd-paypal-commerce-pro' ),
-			'threeDSecureError' => esc_html__( 'An error occurred while authenticating your card. Please try again or use a different payment method.', 'edd-paypal-commerce-pro' ),
+			'error'             => esc_html__( 'Error', 'templify-paypal-pro' ),
+			'prefixCardNumber'  => esc_html__( 'Card Number', 'templify-paypal-pro' ),
+			'prefixCvv'         => esc_html__( 'CVV', 'templify-paypal-pro' ),
+			'prefixExpiration'  => esc_html__( 'Expiration Date', 'templify-paypal-pro' ),
+			'threeDSecureError' => esc_html__( 'An error occurred while authenticating your card. Please try again or use a different payment method.', 'templify-paypal-pro' ),
 			'timestamp'         => $timestamp,
 			'token'             => \EDD\Utils\Tokenizer::tokenize( $timestamp ),
 		) );
