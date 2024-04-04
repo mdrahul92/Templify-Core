@@ -30,10 +30,10 @@ add_action( 'plugins_loaded', function () {
 
 	require_once dirname( __FILE__ ) . '/includes/upgrades.php';
 
-		require_once dirname( __FILE__ ) . '/includes/payment-method-filters.php';
-		require_once dirname( __FILE__ ) . '/includes/advanced/admin/settings.php';
-		require_once dirname( __FILE__ ) . '/includes/advanced/checkout-actions.php';
-		require_once dirname( __FILE__ ) . '/includes/advanced/functions.php';
-		require_once dirname( __FILE__ ) . '/includes/advanced/scripts.php';
+	require_once dirname( __FILE__ ) . '/includes/payment-method-filters.php';
+	require_once dirname( __FILE__ ) . '/includes/advanced/admin/settings.php';
+	require_once dirname( __FILE__ ) . '/includes/advanced/checkout-actions.php';
+	require_once dirname( __FILE__ ) . '/includes/advanced/functions.php';
+	require_once dirname( __FILE__ ) . '/includes/advanced/scripts.php';
 	
 } );

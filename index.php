@@ -57,93 +57,138 @@ function templify_core_activation() {
     }
 }
 
-// Function to display settings page
+// Add menu item in admin dashboard
+function templify_core_add_settings_menu() {
+    add_menu_page('Templify Core Settings', 'Templify Settings', 'manage_options', 'templify-core-settings', 'templify_core_settings_page');
+}
+add_action('admin_menu', 'templify_core_add_settings_menu');
+
+// Define settings and fields
 function templify_core_settings_page() {
-    $options = get_option('templify_core_plugin_settings'); // Retrieve plugin settings
-    $all_access_enabled = isset($options['all_access_enabled']) ? $options['all_access_enabled'] : false;
-    $paypal_enabled = isset($options['paypal_enabled']) ? $options['paypal_enabled'] : false;
-    $recurring_payments_enabled = isset($options['recurring_payments_enabled']) ? $options['recurring_payments_enabled'] : false;
-    $software_licensing_enabled = isset($options['software_licensing_enabled']) ? $options['software_licensing_enabled'] : false;
     ?>
     <div class="wrap">
         <h2>Templify Core Settings</h2>
         <form method="post" action="options.php">
             <?php settings_fields('templify_core_plugin_settings'); ?>
-            <table class="form-table">
-                <tr>
-                    <th scope="row">Enable Full Access</th>
-                    <td><input type="checkbox" name="templify_core_plugin_settings[all_access_enabled]" <?php checked($all_access_enabled,"on"); ?> /></td>
-                </tr>
-                <tr>
-                    <th scope="row">Enable PayPal</th>
-                    <td><input type="checkbox" name="templify_core_plugin_settings[paypal_enabled]" <?php checked($paypal_enabled,"on"); ?> /></td>
-                </tr>
-                <tr>
-                    <th scope="row">Enable Recurring Payments</th>
-                    <td><input type="checkbox" name="templify_core_plugin_settings[recurring_payments_enabled]" <?php checked($recurring_payments_enabled,"on"); ?> /></td>
-                </tr>
-                <tr>
-                    <th scope="row">Enable Software Licensing</th>
-                    <td><input type="checkbox" name="templify_core_plugin_settings[software_licensing_enabled]" <?php checked($software_licensing_enabled,"on"); ?> /></td>
-                </tr>
-            </table>
+            <?php do_settings_sections('templify_core_settings'); ?>
             <?php submit_button(); ?>
         </form>
     </div>
     <?php
 }
 
-// Hook into option update to include/exclude files based on settings
-add_action('update_option_templify_core_plugin_settings', 'templify_core_update_settings_files', 10, 2);
+add_action('admin_init', 'templify_core_plugin_settings');
 
-function templify_core_update_settings_files($old_value, $new_value) {
-    // Check the difference in settings
-    if ($old_value !== $new_value) {
-        // Log the old and new values for debugging
-        error_log('Old Value: ' . print_r($old_value, true));
-        error_log('New Value: ' . print_r($new_value, true));
+function templify_core_plugin_settings() {
+    register_setting('templify_core_plugin_settings', 'templify_core_plugin_settings', 'templify_core_plugin_sanitize');
 
-        // Re-evaluate which files to include/exclude based on the updated settings
-        templify_core_include_files_based_on_settings($new_value);
-    }
+    add_settings_section('templify_core_settings', '', 'templify_core_settings_callback', 'templify_core_settings');
+
+    add_settings_field('all_access_enabled', 'Enable Full Access', 'all_access_enabled_callback', 'templify_core_settings', 'templify_core_settings');
+    add_settings_field('paypal_enabled', 'Enable PayPal', 'paypal_enabled_callback', 'templify_core_settings', 'templify_core_settings');
+    add_settings_field('recurring_payments_enabled', 'Enable Recurring Payments', 'recurring_payments_enabled_callback', 'templify_core_settings', 'templify_core_settings');
+    add_settings_field('software_licensing_enabled', 'Enable Software Licensing', 'software_licensing_enabled_callback', 'templify_core_settings', 'templify_core_settings');
 }
 
-// Check plugin settings and include necessary files accordingly
-function templify_core_include_files_based_on_settings() {
-    $options = get_option('templify_core_plugin_settings'); // Retrieve plugin settings
+function templify_core_settings_callback() {
+    echo '<p>Enable or disable addons.</p>';
+}
 
-    if (isset($options['all_access_enabled']) && $options['all_access_enabled']) {
-        require_once plugin_dir_path(__FILE__) . '/templify_full_access/templify_full_access.php';
-    }
+function all_access_enabled_callback() {
+    $options = get_option('templify_core_plugin_settings');
+    $all_access_enabled = isset($options['all_access_enabled']) ? $options['all_access_enabled'] : '';
+    echo '<input type="checkbox" id="all_access_enabled" name="templify_core_plugin_settings[all_access_enabled]" value="1" ' . checked(1, $all_access_enabled, false) . ' />';
+}
 
-    if (isset($options['paypal_enabled']) && $options['paypal_enabled']) {
-        // Include PayPal related files
-        require_once plugin_dir_path(__FILE__) . '/paypal/edd-paypal.php';
-    }
+function paypal_enabled_callback() {
+    $options = get_option('templify_core_plugin_settings');
+    $paypal_enabled = isset($options['paypal_enabled']) ? $options['paypal_enabled'] : '';
+    echo '<input type="checkbox" id="paypal_enabled" name="templify_core_plugin_settings[paypal_enabled]" value="1" ' . checked(1, $paypal_enabled, false) . ' />';
+}
 
-    if (isset($options['recurring_payments_enabled']) && $options['recurring_payments_enabled']) {
-        // Include Recurring Payments related file
-        require_once plugin_dir_path(__FILE__) . '/recurring_payment/edd_recurring.php';
-    }
+function recurring_payments_enabled_callback() {
+    $options = get_option('templify_core_plugin_settings');
+    $recurring_payments_enabled = isset($options['recurring_payments_enabled']) ? $options['recurring_payments_enabled'] : '';
+    echo '<input type="checkbox" id="recurring_payments_enabled" name="templify_core_plugin_settings[recurring_payments_enabled]" value="1" ' . checked(1, $recurring_payments_enabled, false) . ' />';
+}
 
-    if (isset($options['software_licensing_enabled']) && $options['software_licensing_enabled']) {
-        // Include Software Licensing related file
-        require_once plugin_dir_path(__FILE__) . '/software_licensing/software-licenses.php';
-    }
+function software_licensing_enabled_callback() {
+    $options = get_option('templify_core_plugin_settings');
+    $software_licensing_enabled = isset($options['software_licensing_enabled']) ? $options['software_licensing_enabled'] : '';
+    echo '<input type="checkbox" id="software_licensing_enabled" name="templify_core_plugin_settings[software_licensing_enabled]" value="1" ' . checked(1, $software_licensing_enabled, false) . ' />';
 }
 
 
-// Register settings
-function templify_core_register_settings() {
-    register_setting('templify_core_plugin_settings', 'templify_core_plugin_settings');
+function templify_core_plugin_sanitize($input) {
+    $output = array();
+    foreach ($input as $key => $value) {
+        $output[$key] = sanitize_text_field($value);
+    }
+    return $output;
 }
-add_action('admin_init', 'templify_core_register_settings');
 
-// Add settings page to admin menu
-function templify_core_add_settings_menu() {
-    add_menu_page('Templify Core Settings', 'Templify Settings', 'manage_options', 'templify-core-settings', 'templify_core_settings_page');
+
+// Plugin path.
+define( 'TEMPLIFY_CORE_DIR', plugin_dir_path( __FILE__ ) );
+
+
+define( 'EDD_RECURRING_STORE_API_URL', 'https://easydigitaldownloads.com' );
+define( 'EDD_RECURRING_PRODUCT_NAME', 'Recurring Payments' );
+
+
+
+if ( ! defined( 'EDD_RECURRING_PLUGIN_FILE' ) ) {
+	define( 'EDD_RECURRING_PLUGIN_FILE', __FILE__ );
 }
-add_action('admin_menu', 'templify_core_add_settings_menu');
+
+if ( ! defined( 'EDD_RECURRING_VERSION' ) ) {
+	define( 'EDD_RECURRING_VERSION', '2.11.11.1' );
+}
+
+define( 'EDD_RECURRING_MINIMUM_PHP', '5.6' );
+
+// Include respective addon files if enabled
+function include_addon_files() {
+    $options = get_option('templify_core_plugin_settings');
+    //var_dump($options); 
+    if (isset($options['all_access_enabled']) && $options['all_access_enabled'] == "1") {
+        $file_path = plugin_dir_path( __FILE__ ) . '/templify_full_access/templify_full_access.php';
+        if (file_exists($file_path)) {
+            require_once $file_path;
+            //echo "ok";
+        } else {
+            error_log("Templify Core: Full Access addon file not found at: $file_path");
+        }
+    }
+    if (isset($options['paypal_enabled']) && $options['paypal_enabled'] == "1") {
+        $file_path = plugin_dir_path( __FILE__ ) . '/paypal/edd-paypal.php';
+        if (file_exists($file_path)) {
+            require_once $file_path;
+        } else {
+            error_log("Templify Core: PayPal addon file not found at: $file_path");
+        }
+    }
+    if (isset($options['recurring_payments_enabled']) && $options['recurring_payments_enabled'] == "1") {
+        $file_path = plugin_dir_path( __FILE__ ) . '/recurring_payment/edd_recurring.php';
+        if (file_exists($file_path)) {
+            require_once $file_path;
+        } else {
+            error_log("Templify Core: Recurring Payments addon file not found at: $file_path");
+        }
+    }
+    if (isset($options['software_licensing_enabled']) && $options['software_licensing_enabled'] == "1") {
+        $file_path =    plugin_dir_path( __FILE__ ) . '/software_licensing/software-licenses.php';
+        if (file_exists($file_path)) {
+            require_once $file_path;
+        } else {
+            error_log("Templify Core: Software Licensing addon file not found at: $file_path");
+        }
+    }
+
+
+}
+add_action('plugins_loaded', 'include_addon_files');
+
 
 
 // Admin Notices
@@ -188,19 +233,6 @@ function templify_core_deactivate() {
 register_deactivation_hook(__FILE__, 'templify_core_deactivate');
 
 
-define( 'EDD_RECURRING_STORE_API_URL', 'https://easydigitaldownloads.com' );
-define( 'EDD_RECURRING_PRODUCT_NAME', 'Recurring Payments' );
 
-
-
-if ( ! defined( 'EDD_RECURRING_PLUGIN_FILE' ) ) {
-	define( 'EDD_RECURRING_PLUGIN_FILE', __FILE__ );
-}
-
-if ( ! defined( 'EDD_RECURRING_VERSION' ) ) {
-	define( 'EDD_RECURRING_VERSION', '2.11.11.1' );
-}
-
-define( 'EDD_RECURRING_MINIMUM_PHP', '5.6' );
 
 require_once plugin_dir_path( __FILE__ ) . 'stripe/includes/functions.php';
