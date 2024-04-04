@@ -48,10 +48,10 @@ function templify_core_activation() {
     // Initialize default settings if not already set
     if (false === get_option('templify_core_plugin_settings')) {
         $default_settings = array(
-            'all_access_enabled' => false,
-            'paypal_enabled' => false,
-            'recurring_payments_enabled' => false,
-            'software_licensing_enabled' => false,
+            'all_access_enabled' => 0,
+            'paypal_enabled' => 0,
+            'recurring_payments_enabled' => 0,
+            'software_licensing_enabled' => 0,
         );
         update_option('templify_core_plugin_settings', $default_settings);
     }
@@ -121,11 +121,17 @@ function software_licensing_enabled_callback() {
 
 function templify_core_plugin_sanitize($input) {
     $output = array();
-    foreach ($input as $key => $value) {
-        $output[$key] = sanitize_text_field($value);
+    
+    // Check if $input is not null
+    if (!is_null($input)) {
+        foreach ($input as $key => $value) {
+            $output[$key] = sanitize_text_field($value);
+        }
     }
+    
     return $output;
 }
+
 
 
 // Plugin path.
@@ -162,8 +168,18 @@ function include_addon_files() {
     }
     if (isset($options['paypal_enabled']) && $options['paypal_enabled'] == "1") {
         $file_path = plugin_dir_path( __FILE__ ) . '/paypal/edd-paypal.php';
+       $file_path1 =  plugin_dir_path( __FILE__ ) . '/paypal/includes/payment-method-filters.php';
+       $file_path2 =  plugin_dir_path( __FILE__ ) . '/paypal/includes/advanced/admin/settings.php';
+       $file_path3 =  plugin_dir_path( __FILE__ ) . '/paypal/includes/advanced/checkout-actions.php';
+       $file_path4 =  plugin_dir_path( __FILE__ ) . '/paypal/includes/advanced/functions.php';
+       $file_path5 =  plugin_dir_path( __FILE__ ) . '/paypal/includes/advanced/scripts.php';
         if (file_exists($file_path)) {
             require_once $file_path;
+            require_once $file_path1;
+            require_once $file_path2;
+            require_once $file_path3;
+            require_once $file_path4;
+            require_once $file_path5;
         } else {
             error_log("Templify Core: PayPal addon file not found at: $file_path");
         }

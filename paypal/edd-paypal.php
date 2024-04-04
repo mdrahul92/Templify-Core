@@ -7,7 +7,7 @@
  * Author: Easy Digital Downloads
  * Author URI: https://easydigitaldownloads.com/
  *
- * @package   templify-paypal-pro
+ * @package   edd-paypal-commerce-pro
  * @copyright Copyright (c) 2021, Easy Digital Downloads
  * @license   GPL2+
  */
@@ -24,16 +24,13 @@ add_action( 'plugins_loaded', function () {
 		add_action( 'edd_extension_license_init', function( \EDD\Extensions\ExtensionRegistry $registry ) {
 			$registry->addExtension( EDD_PAYPAL_PRO_FILE, 'PayPal Commerce Pro Payment Gateway', 1687512, EDD_PAYPAL_PRO_VERSION );
 		} );
-	} elseif ( class_exists( 'EDD_License' ) ) {
+} elseif ( class_exists( 'EDD_License' ) ) {
 		new \EDD_License( EDD_PAYPAL_PRO_FILE, 'PayPal Commerce Pro Payment Gateway', EDD_PAYPAL_PRO_VERSION, 'Easy Digital Downloads', null, null, 1687512 );
 	}
 
 	require_once dirname( __FILE__ ) . '/includes/upgrades.php';
 
-	require_once dirname( __FILE__ ) . '/includes/payment-method-filters.php';
-	require_once dirname( __FILE__ ) . '/includes/advanced/admin/settings.php';
-	require_once dirname( __FILE__ ) . '/includes/advanced/checkout-actions.php';
-	require_once dirname( __FILE__ ) . '/includes/advanced/functions.php';
-	require_once dirname( __FILE__ ) . '/includes/advanced/scripts.php';
-	
+	// if ( class_exists( '\\EDD\\Gateways\\PayPal\\API' ) ) {
+		
+	//}
 } );
