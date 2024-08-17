@@ -168,19 +168,19 @@ function include_addon_files() {
     }
     if (isset($options['paypal_enabled']) && $options['paypal_enabled'] == "1") {
         $file_path = plugin_dir_path( __FILE__ ) . '/paypal/edd-paypal.php';
-<<<<<<< HEAD
+
         $file_path1 =  plugin_dir_path( __FILE__ ) . '/paypal/includes/payment-method-filters.php';
         $file_path2 =  plugin_dir_path( __FILE__ ) . '/paypal/includes/advanced/admin/settings.php';
         $file_path3 =  plugin_dir_path( __FILE__ ) . '/paypal/includes/advanced/checkout-actions.php';
         $file_path4 =  plugin_dir_path( __FILE__ ) . '/paypal/includes/advanced/functions.php';
         $file_path5 =  plugin_dir_path( __FILE__ ) . '/paypal/includes/advanced/scripts.php';
-=======
+
        $file_path1 =  plugin_dir_path( __FILE__ ) . '/paypal/includes/payment-method-filters.php';
        $file_path2 =  plugin_dir_path( __FILE__ ) . '/paypal/includes/advanced/admin/settings.php';
        $file_path3 =  plugin_dir_path( __FILE__ ) . '/paypal/includes/advanced/checkout-actions.php';
        $file_path4 =  plugin_dir_path( __FILE__ ) . '/paypal/includes/advanced/functions.php';
        $file_path5 =  plugin_dir_path( __FILE__ ) . '/paypal/includes/advanced/scripts.php';
->>>>>>> origin/master
+
         if (file_exists($file_path)) {
             require_once $file_path;
             require_once $file_path1;
@@ -259,7 +259,7 @@ register_deactivation_hook(__FILE__, 'templify_core_deactivate');
 
 
 
-<<<<<<< HEAD
+
 add_action('rest_api_init', 'register_custom_api_endpoint');
 
 function register_custom_api_endpoint() {
@@ -382,6 +382,6 @@ function fetch_library_by_license_callback($request) {
 
 }
 
-=======
->>>>>>> origin/master
+
+
 require_once plugin_dir_path( __FILE__ ) . 'stripe/includes/functions.php';

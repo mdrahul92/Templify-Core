@@ -1,7 +1,7 @@
 <?php
-<<<<<<< HEAD
 
-=======
+
+
 /**
  * Plugin Name: Easy Digital Downloads - PayPal Commerce Pro
  * Plugin URI: https://easydigitaldownloads.com/downloads/paypal-commerce-pro/
@@ -14,7 +14,7 @@
  * @copyright Copyright (c) 2021, Easy Digital Downloads
  * @license   GPL2+
  */
->>>>>>> origin/master
+
 
 namespace EDD_PayPal_Commerce_Pro;
 
@@ -34,11 +34,11 @@ add_action( 'plugins_loaded', function () {
 
 	require_once dirname( __FILE__ ) . '/includes/upgrades.php';
 
-<<<<<<< HEAD
 
-=======
+
+
 	// if ( class_exists( '\\EDD\\Gateways\\PayPal\\API' ) ) {
 		
 	//}
->>>>>>> origin/master
+
 } );

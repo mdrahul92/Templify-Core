@@ -42,10 +42,10 @@ if ( is_user_logged_in() ) :
 
 									<li class="edd-sl-child">
 										<span>
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
+
+
+
 											<?php
 											echo edd_software_licensing()->get_license_download_display_name( $child_license );
 											if ( ! edd_software_licensing()->force_increase() ) {
@@ -65,11 +65,11 @@ if ( is_user_logged_in() ) :
 						<?php endif; ?>
 					</td>
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> origin/master
+
+
+
 					<td>
 						<span class="edd_sl_status_label"><?php esc_html_e( 'Status:', 'templify_sl' ); ?>&nbsp;</span>
 						<span class="edd_sl_license_status edd-sl-<?php echo esc_attr( $license->status ); ?>">

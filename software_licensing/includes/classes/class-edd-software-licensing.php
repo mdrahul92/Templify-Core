@@ -714,14 +714,14 @@ class EDD_Software_Licensing {
 			'item_name' => $item_name,
 		), $result );
 
-<<<<<<< HEAD
+
 		//$license_id = false !== $license ? $license->ID : 0;
 
 
 		$license_id = $license->ID;
-=======
+
 		$license_id = false !== $license ? $license->ID : 0;
->>>>>>> origin/master
+
 		$result     = apply_filters( 'edd_remote_license_activation_response', $result, $args, $license_id );
 
 		$this->send_response( $result );
@@ -1029,13 +1029,13 @@ class EDD_Software_Licensing {
 			'checksum'  => $checksum,
 		), $response );
 
-<<<<<<< HEAD
+
 		//$license_id = ! empty( $license->ID ) ? $license->ID : false;
 
 		$license_id = $license->ID;
-=======
+
 		$license_id = ! empty( $license->ID ) ? $license->ID : false;
->>>>>>> origin/master
+
 		$response   = apply_filters( 'edd_remote_license_check_response', $response, $args, $license_id );
 		$should_return = apply_filters( 'edd_remote_license_check_return', false );
 
@@ -2312,15 +2312,15 @@ class EDD_Software_Licensing {
 	 */
 	function get_license_status( $license_id ) {
 		$license = $this->get_license( $license_id );
-<<<<<<< HEAD
+
 		// if ( false === $license ) {
 		// 	return false;
 		// }
-=======
+
 		if ( false === $license ) {
 			return false;
 		}
->>>>>>> origin/master
+
 
 		return $license->status;
 	}

@@ -270,11 +270,11 @@ function edd_sl_render_license_upgrade_paths_meta_box() {
 	<?php
 }
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> origin/master
+
+
+
 add_action( 'edd_sl_render_upgrade_row', 'edd_sl_render_upgrade_row', 10, 4 );
 /**
  * Render the individual upgrade path rows.

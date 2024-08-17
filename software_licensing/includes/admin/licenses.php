@@ -371,7 +371,7 @@ function edd_sl_licenses_view( $license ) {
 							<td>
 								<?php
 								$limit = $license->license_limit();
-<<<<<<< HEAD
+
 							
 								 $data  = '';
 
@@ -401,7 +401,7 @@ function edd_sl_licenses_view( $license ) {
 
 								// 	echo '&nbsp;<span alt="f223" class="edd-help-tip dashicons dashicons-editor-help" title="<strong>'. __( 'Change License Limit', 'templify_sl' ) . '</strong>: ' . $message . '"></span>';
 								// }
-=======
+
 								$data  = '';
 
 								if ( $license->parent ) {
@@ -430,7 +430,7 @@ function edd_sl_licenses_view( $license ) {
 
 									echo '&nbsp;<span alt="f223" class="edd-help-tip dashicons dashicons-editor-help" title="<strong>'. __( 'Change License Limit', 'templify_sl' ) . '</strong>: ' . $message . '"></span>';
 								}
->>>>>>> origin/master
+
 								?>
 							</td>
 						</tr>

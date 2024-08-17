@@ -1060,15 +1060,15 @@ class EDD_SL_License {
 	 * @return bool|int Returns true or false if if updated, and the new meta ID if the meta did not exist prior to this.
 	 */
 	private function set_activation_count( $count ) {
-<<<<<<< HEAD
+
 		// if ( ! edd_software_licensing()->force_increase() ) {
 		// 	return false;
 		// }
-=======
+
 		if ( ! edd_software_licensing()->force_increase() ) {
 			return false;
 		}
->>>>>>> origin/master
+
 
 		$count = $count > 0 ? absint( $count ) : 0;
 
@@ -1083,10 +1083,10 @@ class EDD_SL_License {
 	 */
 	private function get_activation_count() {
 		$count = 0;
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/master
+
+
+
 		/**
 		 * In the event a store does URL checking, has licenses activated, and then disables URL checking
 		 * we have to verify the activation count meta is a numeric value first.
@@ -1360,11 +1360,11 @@ class EDD_SL_License {
 			'activated'  => 1,
 		) );
 
-<<<<<<< HEAD
+
 		$is_active =  true;
-=======
+
 		$is_active = ! empty( $is_active ) ? true : false;
->>>>>>> origin/master
+
 		return (bool) apply_filters( 'edd_sl_is_site_active', $is_active, $this->ID, $site_url );
 	}
 
@@ -1559,17 +1559,17 @@ class EDD_SL_License {
 	public function add_site( $site, $environment = 'production' ) {
 
 		$added    = false;
-<<<<<<< HEAD
+
 		// $is_local = edd_software_licensing()->is_local_url( $site, $environment );
 		// if ( ( $this->is_at_limit() && ! $is_local ) && ( ! is_admin() && ! current_user_can( 'manage_licenses' ) ) ) {
 		// 	return $added;
 		// }
-=======
+
 		$is_local = edd_software_licensing()->is_local_url( $site, $environment );
 		if ( ( $this->is_at_limit() && ! $is_local ) && ( ! is_admin() && ! current_user_can( 'manage_licenses' ) ) ) {
 			return $added;
 		}
->>>>>>> origin/master
+
 
 		if ( edd_software_licensing()->force_increase() ) {
 			$current_activation_count = $this->get_activation_count();
