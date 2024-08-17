@@ -1,0 +1,35 @@
+.wpt-settings-container {
+    display: flex;
+}
+
+.wpt-settings-menu {
+    width: 20%;
+    padding-right: 20px;
+}
+
+.wpt-settings-menu .nav-tab-wrapper {
+    list-style: none;
+    border-bottom:none;
+    margin: 0;
+    padding: 0;
+}
+
+.wpt-settings-menu .nav-tab {
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: 5px;
+    border: 0; /* Remove border */
+    background-color: #f9f9f9;
+    width: 100%; /* Set width to 100% */
+    text-align: left; /* Align text to the left */
+}
+
+.wpt-settings-menu .nav-tab-active {
+    border-left: 2px solid #0073aa; /* Add left border for active tab */
+    background-color: #fff;
+}
+
+.wpt-settings-content {
+    width: 75%;
+    padding: 0 10%;
+}
