@@ -371,6 +371,7 @@ function edd_sl_licenses_view( $license ) {
 							<td>
 								<?php
 								$limit = $license->license_limit();
+<<<<<<< HEAD
 							
 								 $data  = '';
 
@@ -400,6 +401,36 @@ function edd_sl_licenses_view( $license ) {
 
 								// 	echo '&nbsp;<span alt="f223" class="edd-help-tip dashicons dashicons-editor-help" title="<strong>'. __( 'Change License Limit', 'templify_sl' ) . '</strong>: ' . $message . '"></span>';
 								// }
+=======
+								$data  = '';
+
+								if ( $license->parent ) {
+									$data .= 'data-parent="' . $license->parent . '"';
+								}
+								$active_count = $license->activation_count;
+								$limit_text   = '<span id="edd-sl-' . $license->ID . '-limit" ' . $data . '>' . $limit . '</span>';
+
+								echo '<span class="edd-sl-limit-wrap">' . $active_count . ' / ' . $limit_text . '</span>';
+
+								if ( ! $license->parent ) {
+									echo '<span style="margin-left: 15px">';
+									echo '<a href="#" class="edd-sl-adjust-limit button-secondary" data-action="increase" data-id="' . absint( $license->ID ) . '" data-download="' . absint( $license->download_id ) . '">+</a>';
+									echo '&nbsp;<a href="#" class="edd-sl-adjust-limit button-secondary" data-action="decrease" data-id="' . absint( $license->ID ) . '" data-download="' . absint( $license->download_id ) . '">-</a>';
+									echo '</span>';
+
+									$default_count = $license->get_default_activation_count();
+
+									$message = sprintf(
+										__( 'The default activation limit for this license is %s, which is controlled by the %s product.', 'templify_sl' ),
+										! empty( $default_count ) ? $default_count : __( 'Unlimited', 'templify_sl' ),
+										$license->get_download()->get_name()
+									);
+									$message .= '<br /><br />';
+									$message .= __( 'To modify this license, use the +/- to increase or decrease the number of activations, respectively. To allow unlimited activations for this license, reduce the activation limit to 0.', 'templify_sl' );
+
+									echo '&nbsp;<span alt="f223" class="edd-help-tip dashicons dashicons-editor-help" title="<strong>'. __( 'Change License Limit', 'templify_sl' ) . '</strong>: ' . $message . '"></span>';
+								}
+>>>>>>> origin/master
 								?>
 							</td>
 						</tr>
