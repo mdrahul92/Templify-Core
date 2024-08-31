@@ -1,6 +1,6 @@
 <?php
 /**
- *  EDD Template File which overrides the [edd_aa_customer_passes] shortcode with the details of a single All Access Pass.
+ *  EDD Template File which overrides the [edd_aa_customer_passes] shortcode with the details of a single Full Access Pass.
  *
  * @description: Place this template file within your theme directory under /my-theme/edd_templates/ - For more information see: https://easydigitaldownloads.com/videos/template-files/
  *
@@ -16,11 +16,11 @@ if ( is_user_logged_in() ) {
 
 	// Check if the current user can view this pass.
 	if ( empty( $all_access_pass->payment->user_id ) || get_current_user_id() !== (int) $all_access_pass->payment->user_id ) {
-		esc_html_e( 'You do not have permimssion to view this All Access pass.', 'edd-all-access' );
+		esc_html_e( 'You do not have permimssion to view this Full Access pass.', 'edd-all-access' );
 		return;
 	}
 
-	// Check if this All Access Pass has been upgraded
+	// Check if this Full Access Pass has been upgraded
 	if ( 'upgraded' == $all_access_pass->status ) {
 		$upgraded_aa_data         = explode( '_', $all_access_pass->is_prior_of );
 		$upgraded_payment_id      = intval( $upgraded_aa_data[0] );
@@ -101,9 +101,9 @@ if ( is_user_logged_in() ) {
 					<?php
 				}
 
-				// If this All Access Pass has renewal payments waiting to take over
+				// If this Full Access Pass has renewal payments waiting to take over
 				if ( ! empty( $all_access_pass->renewal_payment_ids ) && 'active' == $all_access_pass->status && 'never' !== $all_access_pass->expiration_time ) {
-					// If we got to here, this All Access pass has an actual expiration date - it's not infinite.
+					// If we got to here, this Full Access pass has an actual expiration date - it's not infinite.
 					$duration_time = strtotime( $all_access_pass->duration_number . ' ' . $all_access_pass->duration_unit, 0 );
 					if ( $duration_time ) {
 						?>
@@ -151,18 +151,18 @@ if ( is_user_logged_in() ) {
 								$aa_status       = $all_access_pass->status;
 								$aa_status_label = edd_all_access_get_status_label( $aa_status );
 
-								// If this All Access Pass has expired and been renewed by a newer payment than the one attached to this pass.
+								// If this Full Access Pass has expired and been renewed by a newer payment than the one attached to this pass.
 							if ( 'renewed' == $all_access_pass->status ) {
 
 								$customer = new EDD_Customer( get_current_user_id(), true );
 
-								// Get the customer's current All Access Passes from the customer meta
+								// Get the customer's current Full Access Passes from the customer meta
 								$customer_all_access_passes = edd_all_access_get_customer_passes( $customer );
 
-								// Get the payent ID attached to the current/latest All Access Pass for this product directly from the customer meta
+								// Get the payent ID attached to the current/latest Full Access Pass for this product directly from the customer meta
 								$latest_payment_id = $customer_all_access_passes[ $all_access_pass->download_id . '_' . $all_access_pass->price_id ]['payment_id'];
 
-								// Get the URL of the upgraded All Access Pass
+								// Get the URL of the upgraded Full Access Pass
 								$view_latest_aa_pass_url = add_query_arg(
 									array(
 										'action'      => 'view_all_access_pass',
@@ -176,17 +176,17 @@ if ( is_user_logged_in() ) {
 
 							} elseif ( 'upcoming' == $all_access_pass->status ) {
 
-								// If this All Access Pass is a renewal payment waiting for expiration of the current pass, link the customer to the current.
+								// If this Full Access Pass is a renewal payment waiting for expiration of the current pass, link the customer to the current.
 
 								$customer = new EDD_Customer( get_current_user_id(), true );
 
-								// Get the customer's current All Access Passes from the customer meta
+								// Get the customer's current Full Access Passes from the customer meta
 								$customer_all_access_passes = edd_all_access_get_customer_passes( $customer );
 
-								// Get the payent ID attached to the current/latest All Access Pass for this product directly from the customer meta
+								// Get the payent ID attached to the current/latest Full Access Pass for this product directly from the customer meta
 								$latest_payment_id = $customer_all_access_passes[ $all_access_pass->download_id . '_' . $all_access_pass->price_id ]['payment_id'];
 
-								// Get the URL of the upgraded All Access Pass
+								// Get the URL of the upgraded Full Access Pass
 								$view_latest_aa_pass_url = add_query_arg(
 									array(
 										'action'      => 'view_all_access_pass',
@@ -200,9 +200,9 @@ if ( is_user_logged_in() ) {
 
 							} elseif ( 'upgraded' == $all_access_pass->status ) {
 
-								// If this All Access Pass has been upgraded to another one - making this one expired before its time, let the customer know.
+								// If this Full Access Pass has been upgraded to another one - making this one expired before its time, let the customer know.
 
-								// Get the URL of the upgraded All Access Pass
+								// Get the URL of the upgraded Full Access Pass
 								$view_upgraded_aa_pass_url = add_query_arg(
 									array(
 										'action'      => 'view_all_access_pass',
@@ -233,7 +233,7 @@ if ( is_user_logged_in() ) {
 					<?php do_action( 'edd_all_access_pass_details_row_end', $all_access_pass ); ?>
 				</tr>
 				<?php
-				// If this All Access Pass has been upgraded, renewed, or is awaiting activation, the rest of the data is irrelevant so only show if relevant
+				// If this Full Access Pass has been upgraded, renewed, or is awaiting activation, the rest of the data is irrelevant so only show if relevant
 				if ( 'renewed' != $all_access_pass->status && 'upgraded' != $all_access_pass->status && 'upcoming' != $all_access_pass->status ) {
 					?>
 					<tr class="edd_all_access_pass_details_row">
@@ -269,7 +269,7 @@ if ( is_user_logged_in() ) {
 					</tr>
 					<tr class="edd_all_access_pass_details_row">
 						<td class="row-label">
-							<span class="edd-aa-access-duration-label"><?php _e( 'All Access Duration:', 'edd-all-access' ); ?></span>
+							<span class="edd-aa-access-duration-label"><?php _e( 'Full Access Duration:', 'edd-all-access' ); ?></span>
 						</td>
 						<td class="row-value">
 							<span class="edd-aa-access-duration-value"><?php echo edd_all_access_duration_string( $all_access_pass ); ?></span>
@@ -499,7 +499,7 @@ if ( is_user_logged_in() ) {
 			<?php } ?>
 			<span>
 				<?php
-					// Translators: 1: The current page of All Access file downloads being viewed. 2: The total number of pages.
+					// Translators: 1: The current page of Full Access file downloads being viewed. 2: The total number of pages.
 					echo esc_html( sprintf( __( 'Page %1$s of %2$s', 'edd-all-access' ), $current_page, $number_of_pages ) );
 				?>
 			</span>

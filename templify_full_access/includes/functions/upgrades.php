@@ -1,6 +1,6 @@
 <?php
 /**
- * Upgrade functions for All Access.
+ * Upgrade functions for Full Access.
  *
  * @package     EDD\EDDAllAccess\Functions
  * @since       1.0.0
@@ -23,12 +23,12 @@ function edd_all_access_register_upgrades_page() {
 		return;
 	}
 
-	add_submenu_page( null, __( 'EDD All Access Upgrades', 'edd-all-access' ), __( 'EDD Upgrades', 'edd-all-access' ), 'manage_shop_settings', 'edd-aa-upgrades', 'edd_all_access_upgrades_screen' );
+	add_submenu_page( null, __( 'EDD Full Access Upgrades', 'edd-all-access' ), __( 'EDD Upgrades', 'edd-all-access' ), 'manage_shop_settings', 'edd-aa-upgrades', 'edd_all_access_upgrades_screen' );
 }
 add_action( 'admin_menu', 'edd_all_access_register_upgrades_page', 10 );
 
 /**
- * This function controls what is shown on the upgrades page for All Access
+ * This function controls what is shown on the upgrades page for Full Access
  *
  * @since       1.0.0
  * @return      void
@@ -54,7 +54,7 @@ function edd_all_access_upgrades_screen() {
 
 	?>
 	<div class="wrap">
-		<h2><?php esc_html_e( 'All Access - Upgrades', 'edd-all-access' ); ?></h2>
+		<h2><?php esc_html_e( 'Full Access - Upgrades', 'edd-all-access' ); ?></h2>
 		<div id="edd-upgrade-status">
 			<p><?php esc_html_e( 'The upgrade process is running, please be patient.', 'edd-all-access' ); ?></p>
 			<?php // Translators: 1: The step number being executed in the upgrade. 2: The total steps in the upgrade. ?>
@@ -97,7 +97,7 @@ function edd_all_access_show_upgrade_notice() {
 				echo wp_kses_post(
 					sprintf(
 						// Translators: The URL for where the data can be upgraded.
-						'<div class="updated"><p>' . __( 'The customer data needs to be upgraded for All Access, click <a href="%s">here</a> to start the upgrade.', 'edd-all-access' ) . '</p></div>',
+						'<div class="updated"><p>' . __( 'The customer data needs to be upgraded for Full Access, click <a href="%s">here</a> to start the upgrade.', 'edd-all-access' ) . '</p></div>',
 						esc_url( add_query_arg( array( 'edd_action' => 'aa_v1_reorganize_customer_meta' ), admin_url() ) )
 					)
 				);
@@ -108,7 +108,7 @@ function edd_all_access_show_upgrade_notice() {
 				echo wp_kses_post(
 					sprintf(
 						// Translators: The URL for where the data can be upgraded.
-						'<div class="updated"><p>' . __( 'The All Access data needs to be upgraded. Click <a href="%s">here</a> to start the upgrade.', 'edd-all-access' ) . '</p></div>',
+						'<div class="updated"><p>' . __( 'The Full Access data needs to be upgraded. Click <a href="%s">here</a> to start the upgrade.', 'edd-all-access' ) . '</p></div>',
 						esc_url( add_query_arg( array( 'edd_action' => 'aa_fix_utc_timezones' ), admin_url() ) )
 					)
 				);
@@ -181,7 +181,7 @@ function edd_all_access_v1_upgrades_callback() {
 			 */
 			$customer = new EDD_Customer( $payment->customer_id );
 
-			// Get the All Access passes saved to this customer meta.
+			// Get the Full Access passes saved to this customer meta.
 			$customer_all_access_passes = edd_all_access_get_customer_passes( $customer );
 
 			// If this customer has no all access data, we don't need to do anything for them so skip this customer.
@@ -189,7 +189,7 @@ function edd_all_access_v1_upgrades_callback() {
 				continue;
 			}
 
-			// Loop through each All Access Pass saved to the customer meta.
+			// Loop through each Full Access Pass saved to the customer meta.
 			foreach ( $customer_all_access_passes as $aa_pass_key => $aa_datas ) {
 
 				// If one of the all access passes does not have a download and price id saved directly them them, they are old data and need to be updated.
@@ -216,7 +216,7 @@ function edd_all_access_v1_upgrades_callback() {
 
 		}
 
-		// Customers with All Access data found so upgrade them.
+		// Customers with Full Access data found so upgrade them.
 		$step++;
 		$redirect = add_query_arg(
 			array(
@@ -243,7 +243,7 @@ function edd_all_access_v1_upgrades_callback() {
 add_action( 'edd_aa_v1_reorganize_customer_meta', 'edd_all_access_v1_upgrades_callback' );
 
 /**
- * Upgrade function which resets all timestamps saved in relation to All Access. Originally, timestamps were converted the the timezone
+ * Upgrade function which resets all timestamps saved in relation to Full Access. Originally, timestamps were converted the the timezone
  * of the WordPress store before being saved. This is not a good idea. Timestamps should always be saved in UTC. The only place they should
  * be converted to the WordPress timezone is upon display. This way, the timezone of the WP can be changed as often as needed, without the times
  * being thrown off. For more see https://github.com/easydigitaldownloads/edd-all-access/issues/210
@@ -304,10 +304,10 @@ function edd_aa_fix_utc_timezones_callback() {
 
 		foreach ( $payments as $payment ) {
 
-			// Get the customer attached to this purchase of an All Access pass.
+			// Get the customer attached to this purchase of an Full Access pass.
 			$customer = new EDD_Customer( $payment->customer_id );
 
-			// Get the All Access passes saved to this customer meta.
+			// Get the Full Access passes saved to this customer meta.
 			$customer_all_access_passes = edd_all_access_get_customer_passes( $customer );
 
 			// If this customer has no all access data, we don't need to do anything for them so skip this customer.
@@ -315,7 +315,7 @@ function edd_aa_fix_utc_timezones_callback() {
 				continue;
 			}
 
-			// Loop through each All Access Pass saved to the customer meta.
+			// Loop through each Full Access Pass saved to the customer meta.
 			foreach ( $customer_all_access_passes as $aa_pass_key => $aa_data ) {
 
 				// If these times are already in UTC, no changes need to be made here.
@@ -395,7 +395,7 @@ function edd_aa_fix_utc_timezones_callback() {
 
 		}
 
-		// Customers with All Access data found so upgrade them.
+		// Customers with Full Access data found so upgrade them.
 		$step++;
 		$redirect = add_query_arg(
 			array(

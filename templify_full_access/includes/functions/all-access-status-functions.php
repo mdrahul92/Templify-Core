@@ -1,8 +1,8 @@
 <?php
 /**
- * All Access Status Functions. This file contains all functions that *trigger* activating or deactivating an All Access pass.
+ * Full Access Status Functions. This file contains all functions that *trigger* activating or deactivating an Full Access pass.
  *
- * @package     EDD All Access
+ * @package     EDD Full Access
  * @since       1.0.0
  */
 
@@ -12,14 +12,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Check for any All Access Payments whose time period have passed and need to be expired.
+ * Check for any Full Access Payments whose time period have passed and need to be expired.
  *
  * @since       1.0.0
  * @return      void
  */
 function edd_all_access_check_expired_periods() {
 
-	// Get all Payments with All Access products listed as active.
+	// Get all Payments with Full Access products listed as active.
 	$payments                                 = new EDD_Payments_Query( array( 'meta_key' => '_edd_aa_active_ids' ) );
 	$payments_with_active_aa                  = $payments->get_payments();
 	$payments_to_check_for_expired_all_access = $payments_with_active_aa;
@@ -46,7 +46,7 @@ function edd_all_access_check_expired_periods() {
 }
 
 /**
- * When an All Access payment is freshly purchased, add it to the list of payments that need to be checked for expiration later.
+ * When an Full Access payment is freshly purchased, add it to the list of payments that need to be checked for expiration later.
  *
  * @since       1.0.0
  * @param       int         $payment_id The Payment ID being saved.
@@ -80,7 +80,7 @@ function edd_all_access_check_updated_payment( $payment_id, $payment ) {
 
 		$all_access_enabled = edd_all_access_enabled_for_download( $purchased_download['id'] );
 
-		// If the product being purchased/saved has All Access enabled, attempt to activate an All Access Pass for it.
+		// If the product being purchased/saved has Full Access enabled, attempt to activate an Full Access Pass for it.
 		if ( $all_access_enabled ) {
 			$price_id = isset( $purchased_download['options']['price_id'] ) ? $purchased_download['options']['price_id'] : 0;
 			edd_all_access_get_and_activate_pass( $payment->ID, $purchased_download['id'], $price_id );
@@ -135,7 +135,7 @@ function edd_all_access_update_meta_on_trash( $old_status, $new_status, $order_i
 add_action( 'edd_transition_order_status', 'edd_all_access_update_meta_on_trash', 10, 3 );
 
 /**
- * When a payment status changes, check to see if any of it's purchased products should have All Access enabled or disabled.
+ * When a payment status changes, check to see if any of it's purchased products should have Full Access enabled or disabled.
  *
  * Note: Priority is set to 101 to ensure it triggers after the `edd_complete_purchase()` function in EDD 3.0.
  * That's the function that sets the payment `date_completed`, which is used in the AAP activation process.
@@ -149,7 +149,7 @@ add_action( 'edd_transition_order_status', 'edd_all_access_update_meta_on_trash'
  * @return mixed
  */
 function edd_all_access_check_updated_payment_on_status_change( $payment_id, $new_status, $old_status ) {
-	// All Access will neither activate or expire unless the status is valid.
+	// Full Access will neither activate or expire unless the status is valid.
 	if ( function_exists( 'edd_get_order' ) || ! in_array( $new_status, edd_all_access_valid_order_statuses(), true ) ) {
 		// Come back later when your status is valid (pending becomes complete sometimes after a Payment Gateway finalizes payments).
 		return false;
@@ -161,7 +161,7 @@ function edd_all_access_check_updated_payment_on_status_change( $payment_id, $ne
 add_action( 'edd_update_payment_status', 'edd_all_access_check_updated_payment_on_status_change', 101, 3 );
 
 /**
- * Deletes the related All Access Pass(es) when a payment is deleted.
+ * Deletes the related Full Access Pass(es) when a payment is deleted.
  *
  * @since 1.1.5
  * @param int $payment_id The ID of the payment being deleted.
@@ -215,7 +215,7 @@ function edd_all_access_delete_pass_by_payment( $payment_id ) {
 add_action( 'edd_payment_delete', 'edd_all_access_delete_pass_by_payment' );
 
 /**
- * Once a day, check for any All Access Payments that may have expired.
+ * Once a day, check for any Full Access Payments that may have expired.
  *
  * @since       1.0.0
  * @return      void

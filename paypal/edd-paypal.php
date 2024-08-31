@@ -28,14 +28,11 @@ add_action( 'plugins_loaded', function () {
 		add_action( 'edd_extension_license_init', function( \EDD\Extensions\ExtensionRegistry $registry ) {
 			$registry->addExtension( EDD_PAYPAL_PRO_FILE, 'PayPal Commerce Pro Payment Gateway', 1687512, EDD_PAYPAL_PRO_VERSION );
 		} );
-} elseif ( class_exists( 'EDD_License' ) ) {
+	} elseif ( class_exists( 'EDD_License' ) ) {
 		new \EDD_License( EDD_PAYPAL_PRO_FILE, 'PayPal Commerce Pro Payment Gateway', EDD_PAYPAL_PRO_VERSION, 'Easy Digital Downloads', null, null, 1687512 );
 	}
 
 	require_once dirname( __FILE__ ) . '/includes/upgrades.php';
-
-
-
 
 	// if ( class_exists( '\\EDD\\Gateways\\PayPal\\API' ) ) {
 		

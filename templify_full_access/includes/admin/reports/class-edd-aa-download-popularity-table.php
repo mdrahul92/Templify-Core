@@ -79,7 +79,7 @@ class EDD_AA_Download_Popularity_Table extends WP_List_Table {
 	 *
 	 * @param int             $all_access_product_id The id of the AA product in question.
 	 * @param int             $all_access_price_id   The variable price id of the AA product in question.
-	 * @param array           $aa_product_ids        The All Access products on this site.
+	 * @param array           $aa_product_ids        The Full Access products on this site.
 	 * @param DateTime|string $start_date            The date object for the start date for which we want to get the
 	 *                                               results.
 	 * @param DateTime|string $end_date              The date object for the end date for which we want to get the
@@ -279,8 +279,8 @@ class EDD_AA_Download_Popularity_Table extends WP_List_Table {
 	/**
 	 * Get the popular products from the database.
 	 *
-	 * @param int      $all_access_product_id The id of the EDD Download which is an All Access Pass, and for which we want to know which products were downloaded.
-	 * @param int      $all_access_price_id The variable price id of the EDD Download which is an All Access Pass, and for which we want to know which products were downloaded.
+	 * @param int      $all_access_product_id The id of the EDD Download which is an Full Access Pass, and for which we want to know which products were downloaded.
+	 * @param int      $all_access_price_id The variable price id of the EDD Download which is an Full Access Pass, and for which we want to know which products were downloaded.
 	 * @param DateTime $start_date The date object for the start date for which we want to get the results.
 	 * @param DateTime $end_date The date object for the end date for which we want to get the results.
 	 * @since 1.1.2
@@ -390,7 +390,7 @@ class EDD_AA_Download_Popularity_Table extends WP_List_Table {
 		}
 		?>
 		<div id="edd-payment-filters" style="overflow:initial;">
-			<span><strong><?php echo esc_html( __( 'All Access Product:', 'edd-all-access' ) ); ?></strong></span>
+			<span><strong><?php echo esc_html( __( 'Full Access Product:', 'edd-all-access' ) ); ?></strong></span>
 			<form action="">
 				<input type="hidden" name="view" value="edd_aa_popular_products" />
 				<input type="hidden" name="page" value="edd-reports" />
@@ -406,7 +406,7 @@ class EDD_AA_Download_Popularity_Table extends WP_List_Table {
 							'id'               => 'edd_all_access_products',
 							'class'            => 'edd_all_access_products',
 							'chosen'           => true,
-							'placeholder'      => esc_attr( __( 'Type to search All Access Products', 'edd-all-access' ) ),
+							'placeholder'      => esc_attr( __( 'Type to search Full Access Products', 'edd-all-access' ) ),
 							'multiple'         => false,
 							'show_option_all'  => false,
 							'show_option_none' => false,
@@ -442,9 +442,9 @@ class EDD_AA_Download_Popularity_Table extends WP_List_Table {
 		$message = __( 'No items found.', 'edd-all-access' );
 
 		if ( empty( $this->all_access_product_id ) || 'all' === $this->all_access_product_id ) {
-			$message = __( 'Please select an All Access Pass.', 'edd-all-access' );
+			$message = __( 'Please select a Full Access Pass.', 'edd-all-access' );
 		} elseif ( ! in_array( $this->all_access_product_id, $this->aa_product_ids ) ) {
-			$message = __( 'The selected product is not an All Access Pass.', 'edd-all-access' );
+			$message = __( 'The selected product is not a Full Access Pass.', 'edd-all-access' );
 		}
 
 		echo esc_html( $message );

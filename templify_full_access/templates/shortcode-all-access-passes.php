@@ -14,7 +14,7 @@ if ( is_user_logged_in() ):
 	//Get the customer
 	$customer = new EDD_Customer( get_current_user_id(), true );
 
-	// Get the All Access passes saved to this customer meta
+	// Get the Full Access passes saved to this customer meta
 	$customer_all_access_passes = edd_all_access_get_customer_pass_objects( $customer );
 
 	$at_least_one_pass_to_show = false;

@@ -168,10 +168,8 @@ final class EDD_Recurring {
 			'edd-recurring-subscriber.php',
 			'edd-recurring-shortcodes.php',
 			'gateways/edd-recurring-gateway.php',
-
 			'edd-recurring-checkout.php',
 			'edd-recurring-reminders.php',
-	
 			'plugin-auto-register.php',
 			'plugin-invoices.php',
 			'plugin-fraud-monitor.php',

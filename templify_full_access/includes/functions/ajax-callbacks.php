@@ -2,7 +2,7 @@
 /**
  * Ajax Callback Functions
  *
- * @package     EDD All Access
+ * @package     EDD Full Access
  * @since       1.0.0
  */
 
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Ajax callback for switching variable price IDs and putting the right download URL onto the "Download" button for All Access.
+ * Ajax callback for switching variable price IDs and putting the right download URL onto the "Download" button for Full Access.
  *
  * @since    1.0.0
  * @return   void
@@ -48,14 +48,14 @@ add_action( 'wp_ajax_edd_all_access_update_download_url', 'edd_all_access_update
 add_action( 'wp_ajax_nopriv_edd_all_access_update_download_url', 'edd_all_access_update_download_url' );
 
 /**
- * Process All Access Payments via ajax.
+ * Process Full Access Payments via ajax.
  *
  * There are 2 stages, or modes, which this function runs through.
- * The first stage is resetting all All Access Customer meta to be blank.
- * The second stage is re-creating/activating/deactivating each payment's All Access Passes.
- * The reason this is done is 2 stages, is because an All Access pass might be upgraded, renewed, or it could be fresh.
+ * The first stage is resetting all Full Access Customer meta to be blank.
+ * The second stage is re-creating/activating/deactivating each payment's Full Access Passes.
+ * The reason this is done is 2 stages, is because an Full Access pass might be upgraded, renewed, or it could be fresh.
  * By deleting the customer meta first, and then, in stage 2, re-creating all of the AAPs for that customer from the beginning of time,
- * each All Access Pass will correctly use any prior passes to determine if it is a renewal or an upgrade, or if it is a fresh purchase.
+ * each Full Access Pass will correctly use any prior passes to determine if it is a renewal or an upgrade, or if it is a fresh purchase.
  *
  * @since 1.0.0
  * @return void
@@ -94,7 +94,7 @@ function edd_all_access_do_ajax_process() {
 		}
 	}
 
-	// Get all product/downloads which are All Access-enabled.
+	// Get all product/downloads which are Full Access-enabled.
 	$all_access_products = edd_all_access_get_all_access_downloads();
 
 	if ( class_exists( '\\EDD\\Database\\Queries\\Order' ) ) {
@@ -185,16 +185,16 @@ function edd_all_access_do_ajax_process() {
 
 						$price_id = isset( $purchased_download['options']['price_id'] ) ? $purchased_download['options']['price_id'] : 0;
 
-						// Set up the All Access Pass object.
+						// Set up the Full Access Pass object.
 						$all_access_pass = edd_all_access_get_pass( $payment->ID, $purchased_download['id'], $price_id );
 
 						// Run a check which fixes incorrect meta data due to issue 152 on GitHub.
 						all_access_issue_152_check( $all_access_pass, $payment->ID, $purchased_download['id'], $price_id );
 
-						// Attempt to activate the All Access Pass.
+						// Attempt to activate the Full Access Pass.
 						$all_access_pass->maybe_activate();
 
-						// Attempt to expire the All Access Pass.
+						// Attempt to expire the Full Access Pass.
 						$all_access_pass->maybe_expire();
 
 						// Run a check which fixes in correct start times due to issue 229 on Github (upgrades from non-aa to aa-enabled).
@@ -202,7 +202,7 @@ function edd_all_access_do_ajax_process() {
 
 					}
 
-					$payment->add_note( __( 'This payment was processed by the All Access processing tool.', 'edd-all-access' ) );
+					$payment->add_note( __( 'This payment was processed by the Full Access processing tool.', 'edd-all-access' ) );
 				}
 			}
 		}
@@ -259,7 +259,7 @@ function edd_all_access_do_ajax_process() {
 				$percentage = ( ( $step * 10 ) / $total_steps ) * 100;
 			}
 
-			$message = __( 'All Access Customer meta reset. Beginning regeneration of passes.', 'edd-all-access' );
+			$message = __( 'Full Access Customer meta reset. Beginning regeneration of passes.', 'edd-all-access' );
 
 			echo wp_json_encode(
 				array(
@@ -273,7 +273,7 @@ function edd_all_access_do_ajax_process() {
 
 		} elseif ( 'process_passes' === $form['mode'] ) {
 
-			$message = __( 'All Access passes successfully processed.', 'edd-all-access' );
+			$message = __( 'Full Access passes successfully processed.', 'edd-all-access' );
 
 			echo wp_json_encode(
 				array(
@@ -292,7 +292,7 @@ function edd_all_access_do_ajax_process() {
 add_action( 'wp_ajax_edd_all_access_do_ajax_process', 'edd_all_access_do_ajax_process' );
 
 /**
- * Check if a being-updated All Access would would be set to expire so we know whether to show the "Are you sure" popup.
+ * Check if a being-updated Full Access would would be set to expire so we know whether to show the "Are you sure" popup.
  *
  * @since 1.0.0
  * @return void
@@ -303,7 +303,7 @@ function edd_all_access_expiration_check() {
 	$would_be_duration_unit   = isset( $_POST['duration_unit'] ) ? sanitize_text_field( wp_unslash( $_POST['duration_unit'] ) ) : null;
 	$all_access_pass_id       = isset( $_POST['all_access_pass_id'] ) ? sanitize_text_field( wp_unslash( $_POST['all_access_pass_id'] ) ) : null;
 
-	// Lets set up the All Access Pass object using the id from the url.
+	// Lets set up the Full Access Pass object using the id from the url.
 	$aa_data     = explode( '_', $all_access_pass_id );
 	$payment_id  = intval( $aa_data[0] );
 	$download_id = intval( $aa_data[1] );
@@ -319,7 +319,7 @@ function edd_all_access_expiration_check() {
 		die();
 	}
 
-	// Set up an All Access Pass using the passed-in values.
+	// Set up an Full Access Pass using the passed-in values.
 	$all_access_pass = edd_all_access_get_pass( $payment_id, $download_id, $price_id );
 
 	// If this pass is not active, this check is irrelevant.

@@ -1,8 +1,8 @@
 <?php
 /**
- * This file contains all functions the handle/modify the way that the EDD Download Form is displayed to a user with All Access.
+ * This file contains all functions the handle/modify the way that the EDD Download Form is displayed to a user with Full Access.
  *
- * @package     EDD All Access
+ * @package     EDD Full Access
  * @since       1.0.0
  */
 
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Override the download form for users logged-in with an active All Access pass.
+ * Override the download form for users logged-in with an active Full Access pass.
  * This is where the "Buy Now" button is turned into a "Download Now" button.
  *
  * @since       1.0.0
@@ -53,7 +53,7 @@ function edd_all_access_download_form( $purchase_form, $args ) {
 	// Check whether the site owner has chosen to hide non relevant price IDs.
 	$hide_non_relevant_prices = edd_get_option( 'all_access_hide_non_relevant_variable_prices', 'no' );
 
-	// This filter can be used by extensions to Ignore All Access for products that don't make sense - like products that aren't actually download-able (IE Bookings).
+	// This filter can be used by extensions to Ignore Full Access for products that don't make sense - like products that aren't actually download-able (IE Bookings).
 	$allow_all_access = apply_filters( 'edd_all_access_allow', true, $purchase_form, $args, $download_id, $price_id );
 
 	if ( ! $allow_all_access ) {
@@ -74,7 +74,7 @@ function edd_all_access_download_form( $purchase_form, $args ) {
 
 	$args = wp_parse_args( $args, $defaults );
 
-	// Check if this download is an "All Access" product. If it is, return the normal purchase form - you can't download an All Access product - you can only buy them.
+	// Check if this download is an "Full Access" product. If it is, return the normal purchase form - you can't download an Full Access product - you can only buy them.
 	$all_access_enabled = edd_all_access_enabled_for_download( $download_id );
 
 	if ( $all_access_enabled ) {
@@ -107,7 +107,7 @@ function edd_all_access_download_form( $purchase_form, $args ) {
 		// We need to check if they have access to ANY of the variable prices in this product.
 		$relevant_variable_prices = edd_all_access_get_relevant_prices( $download_id );
 
-		// If the customer cannot access at least one of the variable prices with an All Access pass, return the normal purchase form as is.
+		// If the customer cannot access at least one of the variable prices with an Full Access pass, return the normal purchase form as is.
 		if ( empty( $relevant_variable_prices ) ) {
 			// Return the normal form.
 			return $purchase_form;
@@ -116,7 +116,7 @@ function edd_all_access_download_form( $purchase_form, $args ) {
 			// If we got to here, we know that the customer does not have access to the current variable price id but DOES have access to at least one of the variable prices.
 
 			// If we are doing ajax, it means the customer changed one of the price/file radio buttons
-			// on the AA purchase form to an option they do not have All Access to.
+			// on the AA purchase form to an option they do not have Full Access to.
 			if ( $doing_ajax && ! $is_lazy_load ) {
 				// Return the normal form.
 				return $purchase_form;
@@ -266,7 +266,7 @@ function edd_all_access_download_form( $purchase_form, $args ) {
 add_filter( 'edd_purchase_download_form', 'edd_all_access_download_form', 11, 2 );
 
 /**
- * Add the CSS class "edd_all_access_price_options" to the price option HTML if this product can be downloaded using an All Access pass by this user.
+ * Add the CSS class "edd_all_access_price_options" to the price option HTML if this product can be downloaded using an Full Access pass by this user.
  *
  * @since    1.0.0
  * @param    array $price_options_classes The array of all class names that will be output on the edd-price-options div.
@@ -290,8 +290,8 @@ function edd_all_access_price_options_classes( $price_options_classes, $download
 add_filter( 'edd_price_options_classes', 'edd_all_access_price_options_classes', 10, 2 );
 
 /**
- * If this product can be downloaded using All Access, override the multi price mode to be OFF.
- * Multi Price mode needs to be off for All Access because you can only download 1 file at a time.
+ * If this product can be downloaded using Full Access, override the multi price mode to be OFF.
+ * Multi Price mode needs to be off for Full Access because you can only download 1 file at a time.
  * It won't zip multiple price options together for a single download. This likely will never become supported because tokenization wouldn't be supported.
  *
  * @since       1.0.0
@@ -313,7 +313,7 @@ function edd_all_access_override_multi_price_mode( $is_multi_enabled, $download_
 add_filter( 'edd_single_price_option_mode', 'edd_all_access_override_multi_price_mode', 10, 2 );
 
 /**
- * When viewing a product with an All Access pass, if quantities are enabled, disable them here.
+ * When viewing a product with an Full Access pass, if quantities are enabled, disable them here.
  * People don't need to download multiple copies of the same file at once.
  *
  * @since       1.0.0
@@ -336,7 +336,7 @@ function edd_all_access_disable_quantities( $quantity_input, $download_id, $args
 add_filter( 'edd_purchase_form_quantity_input', 'edd_all_access_disable_quantities', 10, 3 );
 
 /**
- * Hide the price amount when showing variable prices to All Access customers.
+ * Hide the price amount when showing variable prices to Full Access customers.
  * For example, this will hide the "$1.00" on variable prices.
  *
  * @since   1.0.3
@@ -350,7 +350,7 @@ add_filter( 'edd_purchase_form_quantity_input', 'edd_all_access_disable_quantiti
  */
 function edd_all_access_remove_price_amounts( $price_output, $download_id, $price_id, $price, $form_id, $item_prop ) {
 
-	// Check if the customer has All Access to this price ID. If they do, don't show the price.
+	// Check if the customer has Full Access to this price ID. If they do, don't show the price.
 	$all_access_check_args = array(
 		'download_id' => $download_id,
 		'price_id'    => $price_id,
@@ -374,7 +374,7 @@ function edd_all_access_remove_price_amounts( $price_output, $download_id, $pric
 add_filter( 'edd_price_option_output', 'edd_all_access_remove_price_amounts', 10, 6 );
 
 /**
- * Should we hide non relevant variable prices from customers with All Access?
+ * Should we hide non relevant variable prices from customers with Full Access?
  * For example, this is useful if you want to hide "Small" and "Medium" price options from customers who have access to the "Large" version.
  *
  * @since       1.0.2
@@ -418,7 +418,7 @@ function edd_all_access_hide_non_relevant_prices( $variable_prices, $download_id
 }
 
 /**
- * Modify the default price ID to be the first one that the customer has All Access to. This is in a scenario where the first variable price is not included in All Access.
+ * Modify the default price ID to be the first one that the customer has Full Access to. This is in a scenario where the first variable price is not included in Full Access.
  *
  * @since  1.0.3
  * @param  int $price_id    The default Price ID to select.
@@ -452,7 +452,7 @@ function edd_all_access_modify_default_price_id( $price_id, $download_id ) {
 /**
  * This function is a modified version of the "edd_purchase_variable_pricing" function in EDD Core.
  *
- * It outputs the files available to download beneath each variable price so that All Access members can pick which file they want.
+ * It outputs the files available to download beneath each variable price so that Full Access members can pick which file they want.
  *
  * @since 1.0.9
  * @param  int   $download_id Download ID.

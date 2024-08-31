@@ -1,9 +1,9 @@
 <?php
 /**
- * All Access Pass Object
+ * Full Access Pass Object
  *
- * @package     EDD All Access
- * @subpackage  Classes/All Access Pass
+ * @package     EDD Full Access
+ * @subpackage  Classes/Full Access Pass
  * @copyright   Copyright (c) 2016, Phil Johnston
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0.0
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class EDD_All_Access_Pass {
 
 	/**
-	 * The ID of this All Access Pass
+	 * The ID of this Full Access Pass
 	 *
 	 * @var string
 	 * @since 1.0.0
@@ -46,7 +46,7 @@ class EDD_All_Access_Pass {
 	private $payment_id = null;
 
 	/**
-	 * The array containing the All Access Passes stored in this customer
+	 * The array containing the Full Access Passes stored in this customer
 	 *
 	 * @var array
 	 * @since 1.0.0
@@ -54,7 +54,7 @@ class EDD_All_Access_Pass {
 	private $customer_all_access_passes = null;
 
 	/**
-	 * The download id of the purchased All Access-enabled product
+	 * The download id of the purchased Full Access-enabled product
 	 *
 	 * @var int
 	 * @since 1.0.0
@@ -62,7 +62,7 @@ class EDD_All_Access_Pass {
 	private $download_id = null;
 
 	/**
-	 * The price of this purchased All Access-enabled product
+	 * The price of this purchased Full Access-enabled product
 	 *
 	 * @var int
 	 * @since 1.0.0
@@ -70,7 +70,7 @@ class EDD_All_Access_Pass {
 	private $price_id = null;
 
 	/**
-	 * The status of this All Access pass
+	 * The status of this Full Access pass
 	 *
 	 * @var string
 	 * @since 1.0.0
@@ -79,7 +79,7 @@ class EDD_All_Access_Pass {
 
 	/**
 	 * There are two possible meta values we can use. The ones saved at the time of purchase, or customer specific ones.
-	 * Which one is used for a customer is set on their Customer > All Access pass settings in wp-admin.
+	 * Which one is used for a customer is set on their Customer > Full Access pass settings in wp-admin.
 	 *
 	 * @var array
 	 * @since 1.0.0
@@ -87,7 +87,7 @@ class EDD_All_Access_Pass {
 	private $meta_to_use = null;
 
 	/**
-	 * The Start Time connected to this All Access pass
+	 * The Start Time connected to this Full Access pass
 	 *
 	 * @var string
 	 * @since 1.0.0
@@ -95,7 +95,7 @@ class EDD_All_Access_Pass {
 	private $start_time = null;
 
 	/**
-	 * The Expiration Time connected to this All Access pass
+	 * The Expiration Time connected to this Full Access pass
 	 *
 	 * @var string
 	 * @since 1.0.0
@@ -103,7 +103,7 @@ class EDD_All_Access_Pass {
 	private $expiration_time = null;
 
 	/**
-	 * Boolean that gets whether the time period attached to this All Access pass is still valid.
+	 * Boolean that gets whether the time period attached to this Full Access pass is still valid.
 	 *
 	 * @var bool
 	 * @since 1.0.0
@@ -111,7 +111,7 @@ class EDD_All_Access_Pass {
 	private $time_period_still_valid = null;
 
 	/**
-	 * The Duration Number for this All Access pass
+	 * The Duration Number for this Full Access pass
 	 *
 	 * @var int
 	 * @since 1.0.0
@@ -119,7 +119,7 @@ class EDD_All_Access_Pass {
 	private $duration_number = null;
 
 	/**
-	 * The Duration Unit (Days, Months, etc) for this All Access pass
+	 * The Duration Unit (Days, Months, etc) for this Full Access pass
 	 *
 	 * @var string
 	 * @since 1.0.0
@@ -127,7 +127,7 @@ class EDD_All_Access_Pass {
 	private $duration_unit = null;
 
 	/**
-	 * The Download Limit on this All Access pass
+	 * The Download Limit on this Full Access pass
 	 *
 	 * @var int
 	 * @since 1.0.0
@@ -135,7 +135,7 @@ class EDD_All_Access_Pass {
 	private $download_limit = null;
 
 	/**
-	 * The Download Limit Time Period (Per day, Per month, etc) on this All Access pass
+	 * The Download Limit Time Period (Per day, Per month, etc) on this Full Access pass
 	 *
 	 * @var string
 	 * @since 1.0.0
@@ -175,7 +175,7 @@ class EDD_All_Access_Pass {
 	private $downloads_used_last_reset = null;
 
 	/**
-	 * The number of downloads this All Access Pass has been used for in this time period (eg per day, year etc).
+	 * The number of downloads this Full Access Pass has been used for in this time period (eg per day, year etc).
 	 *
 	 * @var int
 	 * @since 1.0.0
@@ -223,7 +223,7 @@ class EDD_All_Access_Pass {
 	private $setup_is_completed = false;
 
 	/**
-	 * The object containing the data for the All Access enabled product.
+	 * The object containing the data for the Full Access enabled product.
 	 *
 	 * @since 1.2
 	 * @var \EDD\AllAccess\Models\AllAccessProduct
@@ -282,9 +282,9 @@ class EDD_All_Access_Pass {
 	 */
 	public function __get( $key ) {
 
-		// If the product purchased was not an All Access pass.
+		// If the product purchased was not an Full Access pass.
 		if ( 'status' !== $key && 'invalid' === $this->status ) {
-			return new WP_Error( 'edd-all-access-pass-invalid', __( 'This is not an All Access Pass', 'edd-all-access' ) );
+			return new WP_Error( 'edd-all-access-pass-invalid', __( 'This is not an Full Access Pass', 'edd-all-access' ) );
 		}
 
 		if ( method_exists( $this, 'get_' . $key ) ) {
@@ -352,14 +352,14 @@ class EDD_All_Access_Pass {
 	}
 
 	/**
-	 * Setup minimum required default data for an All Access Pass.
+	 * Setup minimum required default data for an Full Access Pass.
 	 *
 	 * @since    1.0.0
 	 * @since    1.2.4.2 - Updated to accept the EDD_Payment object, we will look it up if it's an ID still.
 	 *
-	 * @param    EDD_Payment $payment      The EDD_Payment object attached to the All Access Pass.
-	 * @param    int         $download_id  The ID of the download attached to the All Access Pass.
-	 * @param    int         $price_id The ID of the price attached to the All Access Pass.
+	 * @param    EDD_Payment $payment      The EDD_Payment object attached to the Full Access Pass.
+	 * @param    int         $download_id  The ID of the download attached to the Full Access Pass.
+	 * @param    int         $price_id The ID of the price attached to the Full Access Pass.
 	 * @return   void
 	 */
 	private function setup( $payment, $download_id, $price_id ) {
@@ -377,13 +377,13 @@ class EDD_All_Access_Pass {
 		$this->price_id                   = absint( $price_id );
 		$this->customer_all_access_passes = edd_all_access_get_customer_passes( $this->get_customer() );
 
-		// Set the if of this All Access Pass.
+		// Set the if of this Full Access Pass.
 		$this->id = $this->payment->ID . '_' . $this->download_id . '_' . $this->price_id;
 
-		// Get all posts which count as "All Access" posts.
+		// Get all posts which count as "Full Access" posts.
 		$this->all_access_posts = $this->get_all_access_posts();
 
-		// Get the correct meta for this Customer's All Access pass ($payment tells us which customer).
+		// Get the correct meta for this Customer's Full Access pass ($payment tells us which customer).
 		$this->all_access_meta = $this->all_access_meta();
 
 		// Get the status.
@@ -392,7 +392,7 @@ class EDD_All_Access_Pass {
 		$this->downloads_used = $this->get_downloads_used();
 		$this->download_limit = $this->get_download_limit();
 
-		// Every time an active All Access Pass Object is created, run the check to see if we should reset the downloads-used counter.
+		// Every time an active Full Access Pass Object is created, run the check to see if we should reset the downloads-used counter.
 		if ( 'active' === $this->status ) {
 			$this->maybe_reset_downloads_used_counter();
 		}
@@ -401,10 +401,10 @@ class EDD_All_Access_Pass {
 	}
 
 	/**
-	 * Get the status of an All Access pass.
+	 * Get the status of an Full Access pass.
 	 *
 	 * @since    1.0.0
-	 * @return   string - "active" if still active. 'expired' if expired. 'invalid' if no All Access product was purchased.
+	 * @return   string - "active" if still active. 'expired' if expired. 'invalid' if no Full Access product was purchased.
 	 */
 	private function get_status() {
 
@@ -421,13 +421,13 @@ class EDD_All_Access_Pass {
 
 		// If no all access posts were returned.
 		if ( empty( $this->all_access_posts ) ) {
-			edd_debug_log( 'AA: Status invalid for ' . $this->ID . ' because there were no All Access products found in the store.' );
+			edd_debug_log( 'AA: Status invalid for ' . $this->ID . ' because there were no Full Access products found in the store.' );
 			return $this->set_and_return_status( 'invalid' );
 		}
 
-		// If this purchased product is not an "All Access" enabled post.
+		// If this purchased product is not an "Full Access" enabled post.
 		if ( ! in_array( $this->download_id, $this->all_access_posts, true ) ) {
-			edd_debug_log( 'AA: Status invalid for ' . $this->ID . ' because the download id is not All Access enabled, or the product is not published.' );
+			edd_debug_log( 'AA: Status invalid for ' . $this->ID . ' because the download id is not Full Access enabled, or the product is not published.' );
 			return $this->set_and_return_status( 'invalid' );
 		}
 
@@ -460,20 +460,20 @@ class EDD_All_Access_Pass {
 			}
 		}
 
-		// If the product is not in the payment, this is an invalid All Access Pass.
+		// If the product is not in the payment, this is an invalid Full Access Pass.
 		if ( ! $product_is_in_payment ) {
 			edd_debug_log( 'AA: Status invalid for ' . $this->ID . ' because the AA product is not in this purchase.' );
 			return $this->set_and_return_status( 'invalid' );
 		}
 
-		// If this All Access pass has been upgraded, the status is "upgraded".
+		// If this Full Access pass has been upgraded, the status is "upgraded".
 		if ( $this->get_is_prior_of() ) {
 			return $this->set_and_return_status( 'upgraded' );
 		}
 
-		// Make sure the All Access Pass we were given is stored in the customer's meta - otherwise it is invalid (it hasn't been properly activated yet).
+		// Make sure the Full Access Pass we were given is stored in the customer's meta - otherwise it is invalid (it hasn't been properly activated yet).
 		if ( ! isset( $this->customer_all_access_passes[ $this->download_id . '_' . $this->price_id ] ) ) {
-			edd_debug_log( 'AA: Status invalid for ' . $this->ID . ' because it is not in the customer\'s All Access meta.' );
+			edd_debug_log( 'AA: Status invalid for ' . $this->ID . ' because it is not in the customer\'s Full Access meta.' );
 			return $this->set_and_return_status( 'invalid' );
 		}
 
@@ -492,10 +492,10 @@ class EDD_All_Access_Pass {
 			return $this->set_and_return_status( 'invalid' );
 		}
 
-		// If a newer payment for this All Access Pass exists in the customer than the payment passed to this object, it has been renewed.
+		// If a newer payment for this Full Access Pass exists in the customer than the payment passed to this object, it has been renewed.
 		$possibly_renewed_payment_id = $this->customer_all_access_passes[ $this->download_id . '_' . $this->price_id ]['payment_id'];
 
-		// If the newest customer-listed All Access Pass payment is not the one attached to this current object.
+		// If the newest customer-listed Full Access Pass payment is not the one attached to this current object.
 		if ( $possibly_renewed_payment_id !== $this->payment_id ) {
 
 			$possibly_renewed_payment = edd_get_payment( $possibly_renewed_payment_id );
@@ -504,13 +504,13 @@ class EDD_All_Access_Pass {
 			if ( ! $possibly_renewed_payment || ! isset( $possibly_renewed_payment->ID ) || 0 === intval( $possibly_renewed_payment->ID ) ) {
 				return $this->set_and_return_status( 'invalid' );
 			} elseif ( edd_all_access_get_payment_utc_timestamp( $possibly_renewed_payment ) > edd_all_access_get_aap_purchase_timestamp( $this ) ) {
-				// If the newest customer-listed All Access Pass payment is newer than this pass's one (it is more recent).
+				// If the newest customer-listed Full Access Pass payment is newer than this pass's one (it is more recent).
 
 				// Then this object has been renewed and is no longer active (or valid). Set the status to be "Renewed".
 				return $this->set_and_return_status( 'renewed' );
 			} else {
 
-				// If the newest customer-listed All Access Pass payment is older than the one attached to this one, it's a renewal payment in waiting.
+				// If the newest customer-listed Full Access Pass payment is older than the one attached to this one, it's a renewal payment in waiting.
 				return $this->set_and_return_status( 'upcoming' );
 			}
 		}
@@ -528,7 +528,7 @@ class EDD_All_Access_Pass {
 			$all_access_active_ids = $this->get_order_meta( '_edd_aa_active_ids' );
 			$all_access_active_ids = empty( $all_access_active_ids ) ? array() : $all_access_active_ids;
 
-			// Active/Incative All Access purchases are stored in the _edd_aa_active_ids and _edd_aa_expired_ids using the Download Id and Price ID combined into a string.
+			// Active/Incative Full Access purchases are stored in the _edd_aa_active_ids and _edd_aa_expired_ids using the Download Id and Price ID combined into a string.
 			// For example, if the download id is 5456 and the purchased price id was 3, the array key will be 5456-3.
 			$purchased_aa_download_key = $this->download_id . '-' . $this->price_id;
 
@@ -579,9 +579,9 @@ class EDD_All_Access_Pass {
 		}
 
 		/**
-		 * Filter the status of an All Access Pass.
+		 * Filter the status of an Full Access Pass.
 		 *
-		 * @param string              $status The status of the All Access Pass.
+		 * @param string              $status The status of the Full Access Pass.
 		 * @param EDD_All_Access_Pass $this   The EDD_All_Access_Pass object.
 		 */
 		$status = apply_filters( 'edd_all_access_pass_status', $status, $this );
@@ -602,7 +602,7 @@ class EDD_All_Access_Pass {
 	 * We especially need to use this when making changes to data or modifying it so we call this at the start of each _set function.
 	 *
 	 * @since    1.0.0
-	 * @return   array The All Access meta attached to the customer in the customer meta table.
+	 * @return   array The Full Access meta attached to the customer in the customer meta table.
 	 */
 	private function retrieve_fresh_data() {
 
@@ -615,10 +615,10 @@ class EDD_All_Access_Pass {
 
 		$current_hash = md5( json_encode( $this->all_access_meta ) );
 
-		// Get a fresh copy of the All Access meta for this customer from the database.
+		// Get a fresh copy of the Full Access meta for this customer from the database.
 		$this->customer_all_access_passes = edd_all_access_get_customer_passes( $pass_customer );
 
-		// Get the correct meta for this Customer's All Access pass ($payment tells us which customer).
+		// Get the correct meta for this Customer's Full Access pass ($payment tells us which customer).
 		$this->all_access_meta = $this->all_access_meta();
 
 		$new_hash = md5( json_encode( $this->all_access_meta ) );
@@ -630,10 +630,10 @@ class EDD_All_Access_Pass {
 	}
 
 	/**
-	 * Get the payment_id attached to this All Access Pass
+	 * Get the payment_id attached to this Full Access Pass
 	 *
 	 * @since    1.0.0
-	 * @return   int - The ID of the payment attached to this All Access Pass.
+	 * @return   int - The ID of the payment attached to this Full Access Pass.
 	 */
 	private function get_payment_id() {
 		if ( ! empty( $this->payment->ID ) && (int) $this->payment->ID !== (int) $this->payment_id ) {
@@ -644,52 +644,52 @@ class EDD_All_Access_Pass {
 	}
 
 	/**
-	 * Get the payment object attached to this All Access Pass
+	 * Get the payment object attached to this Full Access Pass
 	 *
 	 * @since    1.0.0
-	 * @return   int - The ID of the payment attached to this All Access Pass.
+	 * @return   int - The ID of the payment attached to this Full Access Pass.
 	 */
 	private function get_payment() {
 		return $this->payment;
 	}
 
 	/**
-	 * Get the customer object attached to this All Access Pass
+	 * Get the customer object attached to this Full Access Pass
 	 *
 	 * @since    1.0.0
 	 * @since    1.2.4.2 - Returns the live data from the customer, instead of holding it on the pass.
-	 * @return   EDD_Customer - The ID of the payment attached to this All Access Pass.
+	 * @return   EDD_Customer - The ID of the payment attached to this Full Access Pass.
 	 */
 	private function get_customer() {
 		return new EDD_Customer( $this->payment->customer_id );
 	}
 
 	/**
-	 * Get the download id purchased which created this All Access Pass
+	 * Get the download id purchased which created this Full Access Pass
 	 *
 	 * @since    1.0.0
 
-	 * @return   int - The ID of the payment attached to this All Access Pass.
+	 * @return   int - The ID of the payment attached to this Full Access Pass.
 	 */
 	private function get_download_id() {
 		return $this->download_id;
 	}
 
 	/**
-	 * Get the price id purchased which created this All Access Pass
+	 * Get the price id purchased which created this Full Access Pass
 	 *
 	 * @since    1.0.0
-	 * @return   int - The ID of the payment attached to this All Access Pass.
+	 * @return   int - The ID of the payment attached to this Full Access Pass.
 	 */
 	private function get_price_id() {
 		return $this->price_id;
 	}
 
 	/**
-	 * Get the id of this All Access Pass
+	 * Get the id of this Full Access Pass
 	 *
 	 * @since    1.0.0
-	 * @return   int - The ID of the payment attached to this All Access Pass.
+	 * @return   int - The ID of the payment attached to this Full Access Pass.
 	 */
 	private function get_id() {
 		return $this->id;
@@ -699,7 +699,7 @@ class EDD_All_Access_Pass {
 	 * Get the all_access_posts set up in this store
 	 *
 	 * @since    1.0.0
-	 * @return   array - An array containing the All Access enabled products in this digital shop.
+	 * @return   array - An array containing the Full Access enabled products in this digital shop.
 	 */
 	private function get_all_access_posts() {
 
@@ -713,10 +713,10 @@ class EDD_All_Access_Pass {
 	}
 
 	/**
-	 * Get the start time (in seconds) for this All Access Pass.
+	 * Get the start time (in seconds) for this Full Access Pass.
 	 *
 	 * @since    1.0.0
-	 * @return   mixed int/string- The start time of this All Access Pass in seconds.
+	 * @return   mixed int/string- The start time of this Full Access Pass in seconds.
 	 */
 	private function get_start_time() {
 
@@ -725,7 +725,7 @@ class EDD_All_Access_Pass {
 			return $this->start_time;
 		}
 
-		// Get the duration variables from the returned All Access meta.
+		// Get the duration variables from the returned Full Access meta.
 		$all_access_start_time = $this->all_access_meta['all_access_start_time'];
 
 		// If, for some reason start_time has no value, return the payment time.
@@ -739,11 +739,11 @@ class EDD_All_Access_Pass {
 	}
 
 	/**
-	 * Set the start time (in seconds) for this All Access Pass.
+	 * Set the start time (in seconds) for this Full Access Pass.
 	 *
 	 * @since   1.0.0
 	 * @param   int $start_time The timestamp to which the start time will be set.
-	 * @return  mixed int/string- The start time of this All Access Pass in seconds.
+	 * @return  mixed int/string- The start time of this Full Access Pass in seconds.
 	 */
 	private function set_start_time( $start_time ) {
 
@@ -756,13 +756,13 @@ class EDD_All_Access_Pass {
 			$this->customer_all_access_passes = array();
 		}
 
-		// For the new All Access Pass, set the "Time of Activation" start time.
+		// For the new Full Access Pass, set the "Time of Activation" start time.
 		$this->customer_all_access_passes[ $all_access_pass_key ]['time_of_activation_meta']['all_access_start_time'] = $start_time;
 
-		// Also for the new All Access Pass, set the "Customer Specific" start time.
+		// Also for the new Full Access Pass, set the "Customer Specific" start time.
 		$this->customer_all_access_passes[ $all_access_pass_key ]['customer_specific_meta']['all_access_start_time'] = $start_time;
 
-		// Update the All Access Pass data in the database.
+		// Update the Full Access Pass data in the database.
 		$updated = $this->get_customer()->update_meta( 'all_access_passes', $this->customer_all_access_passes );
 		$this->retrieve_fresh_data();
 
@@ -775,11 +775,11 @@ class EDD_All_Access_Pass {
 	}
 
 	/**
-	 * Get the expiration time (in seconds) for a Payment containing an All Access download.
+	 * Get the expiration time (in seconds) for a Payment containing an Full Access download.
 	 *
 	 * @since    1.0.0
 
-	 * @return   mixed int/string- The number of seconds that an All Access should last based on the string passed-in. (This is essentially the the start and duration time added together).
+	 * @return   mixed int/string- The number of seconds that an Full Access should last based on the string passed-in. (This is essentially the the start and duration time added together).
 	 */
 	private function get_expiration_time() {
 
@@ -788,7 +788,7 @@ class EDD_All_Access_Pass {
 			return $this->expiration_time;
 		}
 
-		// Get the duration variables from the returned All Access meta.
+		// Get the duration variables from the returned Full Access meta.
 		$all_access_start_time      = $this->get_start_time();
 		$all_access_duration_number = $this->get_duration_number();
 		$all_access_duration_unit   = $this->get_duration_unit();
@@ -802,7 +802,7 @@ class EDD_All_Access_Pass {
 			$expiration_time = 'never';
 		}
 
-		// If this All Access account never expires, return the string "never".
+		// If this Full Access account never expires, return the string "never".
 		if ( 'never' === $all_access_duration_unit ) {
 			$expiration_time = 'never';
 		}
@@ -893,7 +893,7 @@ class EDD_All_Access_Pass {
 	}
 
 	/**
-	 * Get the categories included in this All Access pass.
+	 * Get the categories included in this Full Access pass.
 	 *
 	 * @since    1.0.0
 
@@ -930,7 +930,7 @@ class EDD_All_Access_Pass {
 	}
 
 	/**
-	 * Get the total number of price ids/variations to consider for this All Access pass (this includes the total - even price ids that aren't included in All Access).
+	 * Get the total number of price ids/variations to consider for this Full Access pass (this includes the total - even price ids that aren't included in Full Access).
 	 *
 	 * @since    1.0.0
 
@@ -949,7 +949,7 @@ class EDD_All_Access_Pass {
 	}
 
 	/**
-	 * Get the price ids/variations included in this All Access pass.
+	 * Get the price ids/variations included in this Full Access pass.
 	 *
 	 * @since    1.0.0
 
@@ -978,7 +978,7 @@ class EDD_All_Access_Pass {
 	}
 
 	/**
-	 * Get the Customer setting for which All Access meta should be used for the All Access pass in question.
+	 * Get the Customer setting for which Full Access meta should be used for the Full Access pass in question.
 	 *
 	 * @since    1.0.0
 	 * @return   string - The array key which is used to determine which set of meta to use.
@@ -1004,11 +1004,11 @@ class EDD_All_Access_Pass {
 	}
 
 	/**
-	 * Get the metadata for an All Access pass.
+	 * Get the metadata for an Full Access pass.
 	 *
 	 * @since    1.0.0
 
-	 * @return   array $meta This will be all of the meta data used by the All Access pass to determine expiration, downloads per day, and more.
+	 * @return   array $meta This will be all of the meta data used by the Full Access pass to determine expiration, downloads per day, and more.
 	 */
 	public function all_access_meta() {
 
@@ -1028,15 +1028,15 @@ class EDD_All_Access_Pass {
 				// Set the blank customer specific array to match the time of purchase array.
 				$meta = $this->customer_all_access_passes[ $this->download_id . '_' . $this->price_id ]['time_of_activation_meta'];
 			} else {
-				// Get the right set of meta to use for this All Access pass using the $meta_to_use from the customer's All Access meta.
+				// Get the right set of meta to use for this Full Access pass using the $meta_to_use from the customer's Full Access meta.
 				$meta = $this->customer_all_access_passes[ $this->download_id . '_' . $this->price_id ][ $meta_to_use ];
 			}
 		}
 
-		// If this is a new purchase and the customer meta has not yet been set up, use the meta from the All Access product itself.
+		// If this is a new purchase and the customer meta has not yet been set up, use the meta from the Full Access product itself.
 		if ( ! isset( $meta ) ) {
 
-			// First through, lets actually make sure All Access is enabled for this product.
+			// First through, lets actually make sure Full Access is enabled for this product.
 			$all_access_enabled = (bool) edd_all_access_enabled_for_download( $this->download_id );
 
 			if ( ! $all_access_enabled ) {
@@ -1070,11 +1070,11 @@ class EDD_All_Access_Pass {
 	}
 
 	/**
-	 * This function will check if an actually-purchased All Access pass's expiration-time is still valid. That is, is it still within its allowed time.
-	 * Note that this does not account for All Access passes with a status of "expired". It only checks the time period.
+	 * This function will check if an actually-purchased Full Access pass's expiration-time is still valid. That is, is it still within its allowed time.
+	 * Note that this does not account for Full Access passes with a status of "expired". It only checks the time period.
 	 * In fact, the get_status method uses this function to figure out the status.
-	 * If you have changed an All Access pass to be expired, even though the period might still be valid, that pass itself is expired.
-	 * This function just checks the time period - not the status. To get the status of an All Access pass, use EDD_All_Access_Pass->get_status.
+	 * If you have changed an Full Access pass to be expired, even though the period might still be valid, that pass itself is expired.
+	 * This function just checks the time period - not the status. To get the status of an Full Access pass, use EDD_All_Access_Pass->get_status.
 	 *
 	 * @since       1.0.0
 	 * @return      bool
@@ -1092,14 +1092,14 @@ class EDD_All_Access_Pass {
 
 		$expiration_time = $this->get_expiration_time();
 
-		// If this All Access pass's time period is still valid.
+		// If this Full Access pass's time period is still valid.
 		if ( $current_time < $expiration_time ) {
 			$is_active = true;
 		} else {
 			$is_active = false;
 		}
 
-		// If this All Access pass is set to never expire.
+		// If this Full Access pass is set to never expire.
 		if ( 'never' === $expiration_time ) {
 			$is_active = true;
 		}
@@ -1109,7 +1109,7 @@ class EDD_All_Access_Pass {
 	}
 
 	/**
-	 * Get the value for is_prior_of. If this pass has been upgraded, it will be the ID of the All Access Pass, if not, false.
+	 * Get the value for is_prior_of. If this pass has been upgraded, it will be the ID of the Full Access Pass, if not, false.
 	 *
 	 * @since       1.0.0
 	 * @return      bool
@@ -1125,7 +1125,7 @@ class EDD_All_Access_Pass {
 
 		$is_prior_of = false;
 
-		// If this is an All Access pass that hasn't been saved to the database yet (being purchased at this moment).
+		// If this is an Full Access pass that hasn't been saved to the database yet (being purchased at this moment).
 		if ( ! isset( $this->customer_all_access_passes[ $this->download_id . '_' . $this->price_id ] ) ) {
 			return false;
 		}
@@ -1143,7 +1143,7 @@ class EDD_All_Access_Pass {
 	}
 
 	/**
-	 * Check if this All Access Pass has been upgraded-to by checking if it has prior all access passes attached to it.
+	 * Check if this Full Access Pass has been upgraded-to by checking if it has prior all access passes attached to it.
 	 *
 	 * @since       1.0.0
 	 * @return      array
@@ -1170,7 +1170,7 @@ class EDD_All_Access_Pass {
 	}
 
 	/**
-	 * Check if this All Access Pass contains any renewal payment IDs which will "take over" when the current one expires.
+	 * Check if this Full Access Pass contains any renewal payment IDs which will "take over" when the current one expires.
 	 *
 	 * @since       1.0.0
 	 * @return      array
@@ -1188,7 +1188,7 @@ class EDD_All_Access_Pass {
 			$renewal_payment_ids = $this->customer_all_access_passes[ $this->download_id . '_' . $this->price_id ]['renewal_payment_ids'];
 		}
 
-		// Get the payment statuses that count as "valid" for All Access.
+		// Get the payment statuses that count as "valid" for Full Access.
 		$valid_payment_statuses = edd_all_access_valid_order_statuses();
 
 		if ( empty( $renewal_payment_ids ) ) {
@@ -1313,7 +1313,7 @@ class EDD_All_Access_Pass {
 	 *
 	 * @since       1.0.0
 	 * @param       int $time_of_last_download The timestamp of when the last download took place.
-	 * @return      int The last date (in PHP time format) this All Access Pass was used to download a product.
+	 * @return      int The last date (in PHP time format) this Full Access Pass was used to download a product.
 	 */
 	public function set_downloads_used_last_reset( $time_of_last_download ) {
 
@@ -1335,10 +1335,10 @@ class EDD_All_Access_Pass {
 	}
 
 	/**
-	 * Get the number of downloads this All Access Pass has been used for.
+	 * Get the number of downloads this Full Access Pass has been used for.
 	 *
 	 * @since       1.0.0
-	 * @return      int The number of downloads this All Access Pass has been used for during this time period (per day, year etc).
+	 * @return      int The number of downloads this Full Access Pass has been used for during this time period (per day, year etc).
 	 */
 	private function get_downloads_used() {
 
@@ -1357,11 +1357,11 @@ class EDD_All_Access_Pass {
 	}
 
 	/**
-	 * Set the number of downloads this All Access Pass has been used for.
+	 * Set the number of downloads this Full Access Pass has been used for.
 	 *
 	 * @since       1.0.0
 	 * @param       int $downloads_used The value to which the number of downloads used should be set.
-	 * @return      int The number of downloads this All Access Pass has been used for during this time period (per day, year etc).
+	 * @return      int The number of downloads this Full Access Pass has been used for during this time period (per day, year etc).
 	 */
 	public function set_downloads_used( $downloads_used ) {
 
@@ -1428,16 +1428,16 @@ class EDD_All_Access_Pass {
 	}
 
 	/**
-	 * This method relates to upgrades. Use this method to upgrade this All Access Pass to a new All Access Pass.
-	 * Upgrading will set the start_date of the new All Access Pass to the start_date of the current one.
-	 * It will also add a flag to the current All Access Pass letting it know it is an "prior" one.
-	 * Additionally, it will add a new key to the new All Access Pass's meta containing all prior passes.
-	 * If the current All Access Pass already contains prior passes (because it has already been upgraded)
+	 * This method relates to upgrades. Use this method to upgrade this Full Access Pass to a new Full Access Pass.
+	 * Upgrading will set the start_date of the new Full Access Pass to the start_date of the current one.
+	 * It will also add a flag to the current Full Access Pass letting it know it is an "prior" one.
+	 * Additionally, it will add a new key to the new Full Access Pass's meta containing all prior passes.
+	 * If the current Full Access Pass already contains prior passes (because it has already been upgraded)
 	 * those will be passed along to the new one as well. This will happen in a scenario where upgrade paths are more than 2 (Small -> Medium -> Large).
 	 *
 	 * @since       1.0.0
-	 * @param       EDD_All_Access_Pass $new_all_access_pass     The new All Access Pass object which this pass is being upgraded to.
-	 * @return      boolean Whether this All Access Pass is an prior one or not.
+	 * @param       EDD_All_Access_Pass $new_all_access_pass     The new Full Access Pass object which this pass is being upgraded to.
+	 * @return      boolean Whether this Full Access Pass is an prior one or not.
 	 */
 	public function do_upgrade( $new_all_access_pass ) {
 
@@ -1449,14 +1449,14 @@ class EDD_All_Access_Pass {
 		// Make sure we have fresh copies of all data and they are old-cache free.
 		$this->retrieve_fresh_data();
 
-		// You can't do an All Access upgrade for something that isn't an All Access pass. Only All Access -> All Access upgrades are handled here.
+		// You can't do an Full Access upgrade for something that isn't an Full Access pass. Only Full Access -> Full Access upgrades are handled here.
 		if ( 'active' !== $this->status ) {
 			return array(
-				'error' => __( 'You cannot do an All Access upgrade from a product that is not All Access enabled.', 'edd-all-access' ),
+				'error' => __( 'You cannot do an Full Access upgrade from a product that is not Full Access enabled.', 'edd-all-access' ),
 			);
 		}
 
-		// Ensure that the new All Access Pass has been activated.
+		// Ensure that the new Full Access Pass has been activated.
 		if ( 'active' !== $new_all_access_pass->status ) {
 
 			$activation_result = $new_all_access_pass->maybe_activate();
@@ -1466,10 +1466,10 @@ class EDD_All_Access_Pass {
 			}
 		}
 
-		// If this All Access Pass has already been upgraded, you can't upgrade something twice so fail.
+		// If this Full Access Pass has already been upgraded, you can't upgrade something twice so fail.
 		if ( $this->get_is_prior_of() ) {
 			return array(
-				'error' => __( 'This All Access Pass has already been upgraded. It cannot be upgraded again.', 'edd-all-access' ),
+				'error' => __( 'This Full Access Pass has already been upgraded. It cannot be upgraded again.', 'edd-all-access' ),
 			);
 		}
 
@@ -1480,14 +1480,14 @@ class EDD_All_Access_Pass {
 			);
 		}
 
-		// If the new All Access Pass has already been upgraded-to, you can't upgrade-to something twice so fail.
+		// If the new Full Access Pass has already been upgraded-to, you can't upgrade-to something twice so fail.
 		if ( isset( $new_all_access_pass->customer_all_access_passes[ $new_all_access_pass->download_id . '_' . $new_all_access_pass->price_id ]['prior_all_access_passes'] ) ) {
 			return array(
-				'error' => __( 'The new All Access Pass has already been upgraded-to. It cannot be upgraded-to again.', 'edd-all-access' ),
+				'error' => __( 'The new Full Access Pass has already been upgraded-to. It cannot be upgraded-to again.', 'edd-all-access' ),
 			);
 		}
 
-		// If this All Access Pass has prior All Access Passes, store those and then remove them.
+		// If this Full Access Pass has prior Full Access Passes, store those and then remove them.
 		if ( isset( $this->customer_all_access_passes[ $this->download_id . '_' . $this->price_id ]['prior_all_access_passes'] ) ) {
 			$prior_all_access_passes = $this->customer_all_access_passes[ $this->download_id . '_' . $this->price_id ]['prior_all_access_passes'];
 			unset( $this->customer_all_access_passes[ $this->download_id . '_' . $this->price_id ]['prior_all_access_passes'] );
@@ -1495,36 +1495,36 @@ class EDD_All_Access_Pass {
 			$prior_all_access_passes = array();
 		}
 
-		// Add this All Access Pass to the list of inital ones.
+		// Add this Full Access Pass to the list of inital ones.
 		$prior_all_access_passes[ $this->get_id() ] = $this->get_id();
 
-		// For the new All Access Pass, set the "Time of Activation" start time for the time of activation meta to match the start time of the intitial All Access Pass.
+		// For the new Full Access Pass, set the "Time of Activation" start time for the time of activation meta to match the start time of the intitial Full Access Pass.
 		$this->customer_all_access_passes[ $new_all_access_pass->download_id . '_' . $new_all_access_pass->price_id ]['time_of_activation_meta']['all_access_start_time'] = $this->get_start_time();
 
-		// Also for the new All Access Pass, set the "Customer Specific" start time for the time of activation meta to match the start time of the intitial All Access Pass.
+		// Also for the new Full Access Pass, set the "Customer Specific" start time for the time of activation meta to match the start time of the intitial Full Access Pass.
 		$this->customer_all_access_passes[ $new_all_access_pass->download_id . '_' . $new_all_access_pass->price_id ]['customer_specific_meta']['all_access_start_time'] = $this->get_start_time();
 
-		// Tell this All Access Pass which pass ID it was upgraded to.
+		// Tell this Full Access Pass which pass ID it was upgraded to.
 		$this->customer_all_access_passes[ $this->download_id . '_' . $this->price_id ]['is_prior_of'] = $new_all_access_pass->id;
 
-		// Add the prior All Access Passes list to the new All Access Pass.
+		// Add the prior Full Access Passes list to the new Full Access Pass.
 		$this->customer_all_access_passes[ $new_all_access_pass->download_id . '_' . $new_all_access_pass->price_id ]['prior_all_access_passes'] = $prior_all_access_passes;
 
-		// Update the customer meta for this All Access Pass.
+		// Update the customer meta for this Full Access Pass.
 		$this->get_customer()->update_meta( 'all_access_passes', $this->customer_all_access_passes );
 		$this->retrieve_fresh_data();
 
-		// Save a note in the old prior EDD Payment that the All Access Pass has been upgraded for this product.
-		// Translators: The name of the All Access Product to use in the payment note.
-		$activation_note_old = sprintf( __( 'All Access "%1$s" has been upgraded to All Access "%2$s".', 'edd-all-access' ), get_the_title( $this->download_id ), get_the_title( $new_all_access_pass->download_id ) );
+		// Save a note in the old prior EDD Payment that the Full Access Pass has been upgraded for this product.
+		// Translators: The name of the Full Access Product to use in the payment note.
+		$activation_note_old = sprintf( __( 'Full Access "%1$s" has been upgraded to Full Access "%2$s".', 'edd-all-access' ), get_the_title( $this->download_id ), get_the_title( $new_all_access_pass->download_id ) );
 		edd_insert_payment_note( $this->payment->ID, $activation_note_old );
 
-		// Save a note in the newly upgraded EDD Payment that the All Access Pass has been upgraded for this product.
-		// Translators: The name of the All Access Product to use in the payment note.
-		$activation_note_new = sprintf( __( 'All Access "%1$s" was an upgrade from All Access "%2$s".', 'edd-all-access' ), get_the_title( $new_all_access_pass->download_id ), get_the_title( $this->download_id ) );
+		// Save a note in the newly upgraded EDD Payment that the Full Access Pass has been upgraded for this product.
+		// Translators: The name of the Full Access Product to use in the payment note.
+		$activation_note_new = sprintf( __( 'Full Access "%1$s" was an upgrade from Full Access "%2$s".', 'edd-all-access' ), get_the_title( $new_all_access_pass->download_id ), get_the_title( $this->download_id ) );
 		edd_insert_payment_note( $new_all_access_pass->payment->ID, $activation_note_new );
 
-		// Expire the prior All Access Pass now as it has been upgraded.
+		// Expire the prior Full Access Pass now as it has been upgraded.
 		$this->maybe_expire( array( 'override_time_period' => true ) );
 
 		return array(
@@ -1533,7 +1533,7 @@ class EDD_All_Access_Pass {
 	}
 
 	/**
-	 * Attempt to renew an All Access Pass.
+	 * Attempt to renew an Full Access Pass.
 	 *
 	 * @since       1.0.0
 	 * @return      mixed
@@ -1549,7 +1549,7 @@ class EDD_All_Access_Pass {
 		if ( 'expired' !== $this->status ) {
 
 			return array(
-				'error' => __( 'This All Access Pass is not expired. Unable to renew.', 'edd-all-access' ),
+				'error' => __( 'This Full Access Pass is not expired. Unable to renew.', 'edd-all-access' ),
 			);
 		}
 
@@ -1559,7 +1559,7 @@ class EDD_All_Access_Pass {
 		if ( empty( $renewal_payment_ids ) ) {
 
 			return array(
-				'error' => __( 'No renewal payments are attached to this All Access pass.', 'edd-all-access' ),
+				'error' => __( 'No renewal payments are attached to this Full Access pass.', 'edd-all-access' ),
 			);
 		}
 
@@ -1570,7 +1570,7 @@ class EDD_All_Access_Pass {
 	}
 
 	/**
-	 * Convert an All Access Payment to be an active one. There are a few different things that make an All Access pass active.
+	 * Convert an Full Access Payment to be an active one. There are a few different things that make an Full Access pass active.
 	 * All of those things are carried out by this function.
 	 *
 	 * @since       1.0.0
@@ -1586,16 +1586,16 @@ class EDD_All_Access_Pass {
 		// Make sure we have fresh copies of all data and they are old-cache free.
 		$this->retrieve_fresh_data();
 
-		// If this purchased download is not an "All Access" post.
+		// If this purchased download is not an "Full Access" post.
 		if ( ! in_array( $this->download_id, $this->all_access_posts, true ) ) {
 			return array(
-				'error' => __( 'The purchased download is not an All Access enabled product', 'edd-all-access' ),
+				'error' => __( 'The purchased download is not an Full Access enabled product', 'edd-all-access' ),
 			);
 		}
 
 		if ( ! in_array( $this->payment->status, edd_all_access_valid_order_statuses(), true ) ) {
 			return array(
-				'error' => __( 'Payment does not have valid payment status for All Access', 'edd-all-access' ),
+				'error' => __( 'Payment does not have valid payment status for Full Access', 'edd-all-access' ),
 			);
 		}
 
@@ -1607,12 +1607,12 @@ class EDD_All_Access_Pass {
 		$all_access_expired_ids = $this->get_order_meta( '_edd_aa_expired_ids', true );
 		$all_access_expired_ids = is_array( $all_access_expired_ids ) ? $all_access_expired_ids : array();
 
-		// Active/Inactive All Access purchases are stored in the _edd_aa_active_ids and _edd_aa_expired_ids using the Download Id and Price ID combined into a string.
+		// Active/Inactive Full Access purchases are stored in the _edd_aa_active_ids and _edd_aa_expired_ids using the Download Id and Price ID combined into a string.
 		// For example, if the download id is 5456 and the purchased price id was 3, the array key will be 5456-3.
 		$purchased_aa_download_key = $this->download_id . '-' . $this->price_id;
 
 		/**
-		 * If this All Access purchase is already listed as active in this payment's meta, while also being active in this customer's meta, don't attempt a re-creation.
+		 * If this Full Access purchase is already listed as active in this payment's meta, while also being active in this customer's meta, don't attempt a re-creation.
 		 * The reason this prevention is here is the following scenario:
 		 * - "Person A" buys AA pass.
 		 * - "Person A" manually renews AA pass early.
@@ -1634,32 +1634,32 @@ class EDD_All_Access_Pass {
 		) {
 			// Don't attempt a reactivation.
 			return array(
-				'error' => __( 'This All Access Pass is already active.', 'edd-all-access' ),
+				'error' => __( 'This Full Access Pass is already active.', 'edd-all-access' ),
 			);
 		}
 
-		// If this All Access has already expired (this can happen if an All Access pass expired and then the start date was manually changed to be in the future).
+		// If this Full Access has already expired (this can happen if an Full Access pass expired and then the start date was manually changed to be in the future).
 		if ( array_key_exists( $purchased_aa_download_key, $all_access_expired_ids ) ) {
 
-			// NEVER allow an expired All Access to be reactivated. That is when bad things happen.
+			// NEVER allow an expired Full Access to be reactivated. That is when bad things happen.
 			return array(
-				'error' => __( 'This All Access Pass has already expired. It must be repurchased to be re-activated.', 'edd-all-access' ),
+				'error' => __( 'This Full Access Pass has already expired. It must be repurchased to be re-activated.', 'edd-all-access' ),
 			);
 		}
 
-		// Update the customer meta which stores the settings for the customer's All Access Pass.
+		// Update the customer meta which stores the settings for the customer's Full Access Pass.
 
-		// So that we can save the "Settings at Time of Purchase", get the All Access meta that is set in the purchased post's meta at this moment.
+		// So that we can save the "Settings at Time of Purchase", get the Full Access meta that is set in the purchased post's meta at this moment.
 		// $product = new \EDD\AllAccess\Models\AllAccessProduct( $this->download_id );
 
-		// A quick note about the start time of an All Access Pass. If never purchased before, use the payment date (includes retroactive payments).
+		// A quick note about the start time of an Full Access Pass. If never purchased before, use the payment date (includes retroactive payments).
 		// For renewals, we use the time of the previous pass's expiration.
 		$time_of_payment = edd_all_access_get_payment_utc_timestamp( $this->payment );
 
 		$prior_of                = $this->get_is_prior_of();
 		$prior_all_access_passes = $this->get_prior_all_access_passes();
 
-		// If this All Access pass has never been saved/bought by this customer before, or has been upgraded away from (or to), this is brand new.
+		// If this Full Access pass has never been saved/bought by this customer before, or has been upgraded away from (or to), this is brand new.
 		if ( ! isset( $this->customer_all_access_passes[ $this->download_id . '_' . $this->price_id ] ) || $prior_of || ! empty( $prior_all_access_passes ) ) {
 
 			// If no all access passes have been purchased by this customer and their array of passes is empty, declare the variable as an array.
@@ -1667,14 +1667,14 @@ class EDD_All_Access_Pass {
 				$this->customer_all_access_passes = array();
 			}
 
-			// Clear out any old All Access Pass data.
+			// Clear out any old Full Access Pass data.
 			if ( isset( $this->customer_all_access_passes[ $this->download_id . '_' . $this->price_id ] ) ) {
 				unset( $this->customer_all_access_passes[ $this->download_id . '_' . $this->price_id ] );
 			}
 
 			$new_aa_pass = array();
 
-			// Update/Save the customer's All Access pass data using all the default settings for a brand new pass.
+			// Update/Save the customer's Full Access pass data using all the default settings for a brand new pass.
 			$new_aa_pass[ $this->download_id . '_' . $this->price_id ] = array(
 				'download_id'               => $this->download_id,
 				'price_id'                  => $this->price_id,
@@ -1688,26 +1688,26 @@ class EDD_All_Access_Pass {
 				'customer_specific_meta'    => $this->get_default_pass_meta(),
 			);
 
-			// Add this new All Access Pass to the start of the array of customer passes - this is so that it is sorted with the newest first.
+			// Add this new Full Access Pass to the start of the array of customer passes - this is so that it is sorted with the newest first.
 			$this->customer_all_access_passes = $new_aa_pass + $this->customer_all_access_passes;
 
 			$this->get_customer()->update_meta( 'all_access_passes', $this->customer_all_access_passes );
 			$this->retrieve_fresh_data();
 
-			// Save a note in the EDD Payment that All Access has been activated for this product.
-			// Translators: The name of the All Access Product being left in a payment note.
-			$activation_note = sprintf( __( 'All Access enabled for the product called "%s"', 'edd-all-access' ), get_the_title( $this->download_id ) );
+			// Save a note in the EDD Payment that Full Access has been activated for this product.
+			// Translators: The name of the Full Access Product being left in a payment note.
+			$activation_note = sprintf( __( 'Full Access enabled for the product called "%s"', 'edd-all-access' ), get_the_title( $this->download_id ) );
 			edd_insert_payment_note( $this->payment->ID, $activation_note );
 
-			// Add this id to the list of active All Access products in this payment.
+			// Add this id to the list of active Full Access products in this payment.
 			$all_access_active_ids[ $purchased_aa_download_key ] = true;
 			edd_update_payment_meta( $this->payment->ID, '_edd_aa_active_ids', $all_access_active_ids );
 
-			// If you need something to happen when an All Access payment activates, this hook is the place to do it.
+			// If you need something to happen when an Full Access payment activates, this hook is the place to do it.
 			do_action( 'edd_all_access_activated', $this->payment_id, $this->download_id, $this->price_id );
 
 		} else {
-			// This pass has already been purchased. Now we need to find out if this is a valid renewal. First, lets set up the All Access Pass object for the existing pass.
+			// This pass has already been purchased. Now we need to find out if this is a valid renewal. First, lets set up the Full Access Pass object for the existing pass.
 			$pre_existing_all_access_pass = edd_all_access_get_pass( $this->customer_all_access_passes[ $this->download_id . '_' . $this->price_id ]['payment_id'], $this->download_id, $this->price_id );
 
 			// Get the timestamp of the pre-existing pass.
@@ -1722,7 +1722,7 @@ class EDD_All_Access_Pass {
 				$payment_was_already_renewal = true;
 			}
 
-			// If the existing All Access Pass is still active, we can stop processing here as, if it was valid, the renewal has been stored.
+			// If the existing Full Access Pass is still active, we can stop processing here as, if it was valid, the renewal has been stored.
 			if ( 'active' === $pre_existing_all_access_pass->status ) {
 
 				// If this payment does not exist in the list of renewals, something was wrong with it as it was filtered out.
@@ -1733,21 +1733,21 @@ class EDD_All_Access_Pass {
 				} else {
 					// The renewal payment has been stored for later.
 
-					// Save a note in the EDD Payment that All Access has been stored as a renewal for this product.
+					// Save a note in the EDD Payment that Full Access has been stored as a renewal for this product.
 					if ( ! $payment_was_already_renewal ) {
-						// Translators: The name of the All Access product being left in a payment note.
-						$activation_note = sprintf( __( 'This payment will be used once the All Access Pass expires for "%s"', 'edd-all-access' ), get_the_title( $this->download_id ) );
+						// Translators: The name of the Full Access product being left in a payment note.
+						$activation_note = sprintf( __( 'This payment will be used once the Full Access Pass expires for "%s"', 'edd-all-access' ), get_the_title( $this->download_id ) );
 						edd_insert_payment_note( $this->payment->ID, $activation_note );
 					}
 
 					// We can leave here now.
 					return array(
-						'success' => __( 'This payment will be used once the All Access Pass expires.', 'edd-all-access' ),
+						'success' => __( 'This payment will be used once the Full Access Pass expires.', 'edd-all-access' ),
 					);
 				}
 			} else {
 
-				// The existing All Access Pass is expired or invalid and thus, this activation is a renewal attempt.
+				// The existing Full Access Pass is expired or invalid and thus, this activation is a renewal attempt.
 
 				$renewal_payment_ids = $this->get_renewal_payment_ids();
 
@@ -1764,7 +1764,7 @@ class EDD_All_Access_Pass {
 				// Update the payment_id because that needs to reflect this new payment.
 				$this->customer_all_access_passes[ $this->download_id . '_' . $this->price_id ]['payment_id'] = $renewal_payment_id;
 
-				// Update the downloads_used because this new All Access Pass has never been used.
+				// Update the downloads_used because this new Full Access Pass has never been used.
 				$this->customer_all_access_passes[ $this->download_id . '_' . $this->price_id ]['downloads_used'] = 0;
 
 				$renewal_payment_time = edd_all_access_get_payment_utc_timestamp( $renewal_payment );
@@ -1772,7 +1772,7 @@ class EDD_All_Access_Pass {
 				$activation_start_time_note = '';
 
 				// Figure out the correct new $renewal_start_time
-				// If there is no expiration time for the previous All Access Pass, its payment might have been deleted so use the time right now.
+				// If there is no expiration time for the previous Full Access Pass, its payment might have been deleted so use the time right now.
 				if ( empty( $pre_existing_all_access_pass->expiration_time ) ) {
 
 					// Set the renewal start time to be the time of the renewal payment.
@@ -1780,14 +1780,14 @@ class EDD_All_Access_Pass {
 
 				} elseif ( $renewal_payment_time < $pre_existing_all_access_pass->expiration_time ) {
 
-					// If the renewal payment happened before the previous All Access Pass was expired, use the expiration date of the previous pass.
+					// If the renewal payment happened before the previous Full Access Pass was expired, use the expiration date of the previous pass.
 					$renewal_start_time = $pre_existing_all_access_pass->expiration_time;
 
 					// Save a note in the EDD Payment to let us know why the start time was used.
 					$activation_start_time_note = sprintf( __( 'Start Time is set to start when the previous expired.', 'edd-all-access' ), get_the_title( $this->download_id ) );
 
 				} elseif ( $renewal_payment_time > $pre_existing_all_access_pass->expiration_time ) {
-					// If the renewal payment happened after the previous All Access Pass was expired, use the time of the renewal payment.
+					// If the renewal payment happened after the previous Full Access Pass was expired, use the time of the renewal payment.
 					$renewal_start_time = $renewal_payment_time;
 
 					// Save a note in the EDD Payment to let us know why the start time was used.
@@ -1799,10 +1799,10 @@ class EDD_All_Access_Pass {
 					$renewal_start_time = $renewal_payment_time;
 
 					// Save a note in the EDD Payment to let us know why the start time was used.
-					$activation_start_time_note = sprintf( __( 'All Access Error: No renewal start time was found.', 'edd-all-access' ), get_the_title( $this->download_id ) );
+					$activation_start_time_note = sprintf( __( 'Full Access Error: No renewal start time was found.', 'edd-all-access' ), get_the_title( $this->download_id ) );
 				}
 
-				// Update the downloads_used_last_reset because this new All Access Pass has never been used.
+				// Update the downloads_used_last_reset because this new Full Access Pass has never been used.
 				$this->customer_all_access_passes[ $this->download_id . '_' . $this->price_id ]['downloads_used_last_reset'] = $renewal_start_time;
 
 				// Update all the "Time Of Activation" meta to match the settings in the Product's meta.
@@ -1815,7 +1815,7 @@ class EDD_All_Access_Pass {
 				array_shift( $this->customer_all_access_passes[ $this->download_id . '_' . $this->price_id ]['renewal_payment_ids'] );
 
 				// If this renewal pass was initially the result of an upgrade, we will also remove any information about upgrades now.
-				// A renewed All Access Pass was not upgraded - it was renewed. Only the initial one can be upgraded.
+				// A renewed Full Access Pass was not upgraded - it was renewed. Only the initial one can be upgraded.
 				// This prevents poisoned data for possible future upgrades by this customer. For example, if they let everything expire,
 				// and then decide to come back, start back at the bottom and upgrade their way back again.
 				unset( $this->customer_all_access_passes[ $this->download_id . '_' . $this->price_id ]['prior_all_access_passes'] );
@@ -1836,20 +1836,20 @@ class EDD_All_Access_Pass {
 				$this->get_customer()->update_meta( 'all_access_passes', $this->customer_all_access_passes );
 				$this->retrieve_fresh_data();
 
-				// Save a note in the EDD Payment that All Access has been activated for this product.
-				// Translators: The name of the All Access product being left in a note on an EDD payment to indicate it was renewed.
-				$activation_note = sprintf( __( 'All Access enabled for the product called "%s" (Renewal).', 'edd-all-access' ), get_the_title( $this->download_id ) );
+				// Save a note in the EDD Payment that Full Access has been activated for this product.
+				// Translators: The name of the Full Access product being left in a note on an EDD payment to indicate it was renewed.
+				$activation_note = sprintf( __( 'Full Access enabled for the product called "%s" (Renewal).', 'edd-all-access' ), get_the_title( $this->download_id ) );
 				edd_insert_payment_note( $renewal_payment_id, $activation_note . ' ' . $activation_start_time_note );
 
-				// Add this id to the list of active All Access products in this payment.
+				// Add this id to the list of active Full Access products in this payment.
 				$all_access_active_ids[ $purchased_aa_download_key ] = true;
 				edd_update_payment_meta( $renewal_payment_id, '_edd_aa_active_ids', $all_access_active_ids );
 
-				// If you need something to happen when an All Access payment activates, this hook is the place to do it.
+				// If you need something to happen when an Full Access payment activates, this hook is the place to do it.
 				do_action( 'edd_all_access_activated', $renewal_payment_id, $this->download_id, $this->price_id );
 
 				return array(
-					'success' => __( 'This All Access Pass has been renewed.', 'edd-all-access' ),
+					'success' => __( 'This Full Access Pass has been renewed.', 'edd-all-access' ),
 				);
 			}
 		}
@@ -1857,7 +1857,7 @@ class EDD_All_Access_Pass {
 	}
 
 	/**
-	 * Convert an active All Access Payment to be an expired one. There are a few different things that make an All Access pass expired.
+	 * Convert an active Full Access Payment to be an expired one. There are a few different things that make an Full Access pass expired.
 	 * All of those things are carried out by this function.
 	 *
 	 * @since       1.0.0
@@ -1881,21 +1881,21 @@ class EDD_All_Access_Pass {
 
 		$args = wp_parse_args( $args, $default_args );
 
-		// If this purchased download is not an "All Access" post.
+		// If this purchased download is not an "Full Access" post.
 		if ( ! in_array( $this->download_id, $this->all_access_posts, true ) ) {
 			return array(
-				'error' => __( 'The purchased download is not an All Access enabled product', 'edd-all-access' ),
+				'error' => __( 'The purchased download is not an Full Access enabled product', 'edd-all-access' ),
 			);
 		}
 
-		// Check the All Access time period it now so we don't accidentally activate an All Access pass that shouldn't be active.
+		// Check the Full Access time period it now so we don't accidentally activate an Full Access pass that shouldn't be active.
 		$time_period_still_valid = $this->get_time_period_still_valid();
 
 		if ( $time_period_still_valid && ! $args['override_time_period'] ) {
 
-			// If this All Access purchase should not be expired yet.
+			// If this Full Access purchase should not be expired yet.
 			return array(
-				'error' => __( 'This All Access Pass\'s time period is not expired.', 'edd-all-access' ),
+				'error' => __( 'This Full Access Pass\'s time period is not expired.', 'edd-all-access' ),
 			);
 		}
 
@@ -1908,79 +1908,79 @@ class EDD_All_Access_Pass {
 		// If we should be checking for active/inactive states to prevent double deactivations (in rare cases you could override this to re-deactivate a pass).
 		if ( ! $args['override_active_checks'] ) {
 
-			// Set a default in case there aren't any expired All Access ids that already exist in this payment.
+			// Set a default in case there aren't any expired Full Access ids that already exist in this payment.
 			if ( empty( $all_access_expired_ids ) ) {
 				$all_access_expired_ids = array();
 			}
 
-			// If this Payment has no active All Access products in it (if they exist, they might already be expired).
+			// If this Payment has no active Full Access products in it (if they exist, they might already be expired).
 			if ( ! is_array( $all_access_active_ids ) || empty( $all_access_active_ids ) ) {
 
 				$this->maybe_renew();
 
 				return array(
-					'error' => sprintf( __( 'Payment %d does not contain any active All Access purchases.', 'edd-all-access' ), $this->payment->ID ),
+					'error' => sprintf( __( 'Payment %d does not contain any active Full Access purchases.', 'edd-all-access' ), $this->payment->ID ),
 				);
 			}
 
-			// Active/Incative All Access purchases are stored in the _edd_aa_active_ids and _edd_aa_expired_ids using the Download Id and Price ID combined into a string.
+			// Active/Incative Full Access purchases are stored in the _edd_aa_active_ids and _edd_aa_expired_ids using the Download Id and Price ID combined into a string.
 			// For example, if the download id is 5456 and the purchased price id was 3, the array key will be 5456-3.
 			$purchased_aa_download_key = $this->download_id . '-' . $this->price_id;
 
-			// If this All Access purchase is not currently listed as active in this payment.
+			// If this Full Access purchase is not currently listed as active in this payment.
 			if ( ! array_key_exists( $purchased_aa_download_key, $all_access_active_ids ) ) {
 
-				// If this All Access purchase is currently listed as expired in this payment.
+				// If this Full Access purchase is currently listed as expired in this payment.
 				if ( array_key_exists( $purchased_aa_download_key, $all_access_expired_ids ) ) {
 
 					$this->maybe_renew();
 
 					return array(
-						'error' => __( 'This All Access Pass is already expired.', 'edd-all-access' ),
+						'error' => __( 'This Full Access Pass is already expired.', 'edd-all-access' ),
 					);
 				} else {
-					// If this All Access purchase is not listed in the active OR expired arrays in this payment.
+					// If this Full Access purchase is not listed in the active OR expired arrays in this payment.
 					return array(
-						'error' => __( 'That All Access product does not exist within this payment.', 'edd-all-access' ),
+						'error' => __( 'That Full Access product does not exist within this payment.', 'edd-all-access' ),
 					);
 				}
 			}
 		}
 
-		// Remove this payment from the list of active All Access ids in this payment.
+		// Remove this payment from the list of active Full Access ids in this payment.
 		unset( $all_access_active_ids[ $purchased_aa_download_key ] );
 
-		// Update the list of active All Access posts.
+		// Update the list of active Full Access posts.
 		if ( empty( $all_access_active_ids ) ) {
 			$this->payment->delete_meta( '_edd_aa_active_ids' );
 		} else {
 			edd_update_payment_meta( $this->payment->ID, '_edd_aa_active_ids', $all_access_active_ids );
 		}
 
-		// Add this to the list of expired All Access ids in this payment.
+		// Add this to the list of expired Full Access ids in this payment.
 		$all_access_expired_ids[ $purchased_aa_download_key ] = true;
 		edd_update_payment_meta( $this->payment->ID, '_edd_aa_expired_ids', $all_access_expired_ids );
 
 		// If this is a prior pass that has been upgraded, set the status to "upgraded" instead of "expired".
 		if ( $this->get_is_prior_of() ) {
 
-			// Save a note in the EDD Payment that All Access has expired for this product.
-			// Translators: The name of the All Access product which was upgraded-from and is now expired.
-			$expiration_note = sprintf( __( 'All Access upgraded (expired) for the product called "%s"', 'edd-all-access' ), get_the_title( $this->download_id ) );
+			// Save a note in the EDD Payment that Full Access has expired for this product.
+			// Translators: The name of the Full Access product which was upgraded-from and is now expired.
+			$expiration_note = sprintf( __( 'Full Access upgraded (expired) for the product called "%s"', 'edd-all-access' ), get_the_title( $this->download_id ) );
 			edd_insert_payment_note( $this->payment->ID, $expiration_note );
 
 			$this->set_and_return_status( 'upgraded' );
 		} else {
 
-			// Save a note in the EDD Payment that All Access has expired for this product.
-			// Translators: The name of the All Access product which has just expired.
-			$expiration_note = sprintf( __( 'All Access expired for the product called "%s"', 'edd-all-access' ), get_the_title( $this->download_id ) );
+			// Save a note in the EDD Payment that Full Access has expired for this product.
+			// Translators: The name of the Full Access product which has just expired.
+			$expiration_note = sprintf( __( 'Full Access expired for the product called "%s"', 'edd-all-access' ), get_the_title( $this->download_id ) );
 			edd_insert_payment_note( $this->payment->ID, $expiration_note );
 
 			$this->set_and_return_status( 'expired' );
 		}
 
-		// If you need something to happen when an All Access payment expires, this hook is the place to do it.
+		// If you need something to happen when an Full Access payment expires, this hook is the place to do it.
 		do_action( 'edd_all_access_expired', $this, $args );
 
 		// Now that the pass has been expired, check if any renewal payments exist to make it re-activated with a new payment.

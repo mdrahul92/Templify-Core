@@ -176,15 +176,15 @@ if ( ! class_exists( 'EDD_All_Access' ) ) {
 		private function hooks() {
 			// Handle licensing.
 			add_action( 'edd_extension_license_init', function( \EDD\Extensions\ExtensionRegistry $registry ) {
-				$registry->addExtension( __FILE__, 'All Access', 1005380, EDD_ALL_ACCESS_VER );
+				$registry->addExtension( __FILE__, 'Full Access', 1005380, EDD_ALL_ACCESS_VER );
 			} );
 
-			// Register a dashboard page so we can view single All Access pass data.
+			// Register a dashboard page so we can view single Full Access pass data.
 			add_action( 'admin_menu', array( $this, 'all_access_passes_view_page' ), 10 );
 		}
 
 		/**
-		 * Register our All Access single view page
+		 * Register our Full Access single view page
 		 *
 		 * @since  1.0.0
 		 * @return void

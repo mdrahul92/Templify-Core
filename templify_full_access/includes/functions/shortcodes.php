@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * All Access Shortcodes
+ * Full Access Shortcodes
  *
  * Adds additional recurring specific shortcodes as well as hooking into existing EDD core shortcodes to add additional subscription functionality
  *
@@ -25,7 +25,7 @@ class EDD_All_Access_Shortcodes {
 	 */
 	public function __construct() {
 
-		// Make All Access template files work.
+		// Make Full Access template files work.
 		add_filter( 'edd_template_paths', array( $this, 'add_template_stack' ) );
 
 		// Add the Shortcode [edd_aa_customer_passes].
@@ -42,13 +42,13 @@ class EDD_All_Access_Shortcodes {
 
 		add_shortcode( 'edd_aa_download_limit', array( $this, 'download_limit' ) );
 
-		// Filter the [downloads] shortcode to only include products the current customer can download using All Access.
+		// Filter the [downloads] shortcode to only include products the current customer can download using Full Access.
 		add_filter( 'edd_downloads_query', array( $this, 'all_access_products_only_in_downloads' ), 10, 2 );
 
 		// Allow the all_access_customer_downloads_only attribute to be used in the [downloads] shortcode.
 		add_filter( 'shortcode_atts_downloads', array( $this, 'shortcode_atts' ), 10, 3 );
 
-		// Override the [downloads] shortcode output if the user is logged out or doesn't have All Access (and all_access_customer_downloads is in the shortcode atts).
+		// Override the [downloads] shortcode output if the user is logged out or doesn't have Full Access (and all_access_customer_downloads is in the shortcode atts).
 		add_filter( 'downloads_shortcode', array( $this, 'override_downloads_shortcode' ), 10, 11 );
 
 		// Allow the all_access_download_now_text attribute to be used in the [purchase_link] shortcode.
@@ -91,7 +91,7 @@ class EDD_All_Access_Shortcodes {
 
 	/**
 	 * Modify the [downloads] shortcode so that if all_access_customer_downloads_only is added to the shortcode, it removes any products that aren't
-	 * covered by this customers All Access Passes.
+	 * covered by this customers Full Access Passes.
 	 *
 	 * @since    1.0.0
 	 * @param    string $display The output of the shortcode.
@@ -116,10 +116,10 @@ class EDD_All_Access_Shortcodes {
 
 		$current_user_id = get_current_user_id();
 
-		// If the viewer is not logged in, we know they don't have All Access to anything, show them a login/buy form for the latest All Access Product.
+		// If the viewer is not logged in, we know they don't have Full Access to anything, show them a login/buy form for the latest Full Access Product.
 		if ( ! is_user_logged_in() || 0 === $current_user_id ) {
 
-			$default_buy_instructions   = edd_get_option( 'all_access_buy_instructions', __( 'To get access, purchase an All Access Pass here.', 'edd-all-access' ) );
+			$default_buy_instructions   = edd_get_option( 'all_access_buy_instructions', __( 'To get access, purchase an Full Access Pass here.', 'edd-all-access' ) );
 			$default_login_instructions = edd_get_option( 'all_access_login_instructions', __( 'Already purchased?', 'edd-all-access' ) );
 
 			return edd_all_access_buy_or_login_form(
@@ -142,16 +142,16 @@ class EDD_All_Access_Shortcodes {
 			);
 		}
 
-		// If the viewer is logged in but does not have any All Access Passes.
+		// If the viewer is logged in but does not have any Full Access Passes.
 		$customer = new EDD_Customer( $current_user_id, true );
 
-		// Get the All Access passes saved to this customer meta.
+		// Get the Full Access passes saved to this customer meta.
 		$customer_all_access_passes = edd_all_access_get_customer_passes( $customer );
 
 		// If this customer has no all access passes, they don't have access for sure.
 		if ( empty( $customer_all_access_passes ) ) {
 
-			$default_buy_instructions   = edd_get_option( 'all_access_buy_instructions', __( 'To get access, purchase an All Access Pass here.', 'edd-all-access' ) );
+			$default_buy_instructions   = edd_get_option( 'all_access_buy_instructions', __( 'To get access, purchase an Full Access Pass here.', 'edd-all-access' ) );
 			$default_login_instructions = edd_get_option( 'all_access_login_instructions', __( 'Already purchased?', 'edd-all-access' ) );
 
 			return edd_all_access_buy_or_login_form(
@@ -174,7 +174,7 @@ class EDD_All_Access_Shortcodes {
 			);
 		}
 
-		// Loop through all of this customer's All Access Passes.
+		// Loop through all of this customer's Full Access Passes.
 		foreach ( $customer_all_access_passes as $purchased_download_id_price_id => $purchased_aa_data ) {
 
 			// In case there happens to be an entry in the array without a valid key.
@@ -182,7 +182,7 @@ class EDD_All_Access_Shortcodes {
 				continue;
 			}
 
-			// Set up the All Access Pass object.
+			// Set up the Full Access Pass object.
 			$all_access_pass = edd_all_access_get_pass( $purchased_aa_data['payment_id'], $purchased_aa_data['download_id'], $purchased_aa_data['price_id'] );
 
 			// If this purchased product is an active all access pass.
@@ -192,7 +192,7 @@ class EDD_All_Access_Shortcodes {
 		}
 
 		// If we got this far, no passes were active.
-		$default_buy_instructions   = edd_get_option( 'all_access_buy_instructions', __( 'To get access, purchase an All Access Pass here.', 'edd-all-access' ) );
+		$default_buy_instructions   = edd_get_option( 'all_access_buy_instructions', __( 'To get access, purchase an Full Access Pass here.', 'edd-all-access' ) );
 		$default_login_instructions = edd_get_option( 'all_access_login_instructions', __( 'Already purchased?', 'edd-all-access' ) );
 
 		return edd_all_access_buy_or_login_form(
@@ -218,7 +218,7 @@ class EDD_All_Access_Shortcodes {
 
 	/**
 	 * Modify the [downloads] shortcode so that if all_access_customer_downloads_only is added to the shortcode, it removes any products that aren't
-	 * covered by this customers All Access Passes.
+	 * covered by this customers Full Access Passes.
 	 *
 	 * @since    1.0.0
 	 * @param    array $query The query that retrieved the products being shown.
@@ -232,7 +232,7 @@ class EDD_All_Access_Shortcodes {
 			return $query;
 		}
 
-		// If the viewer is not logged in, we know they don't have All Access to anything, so show nothing.
+		// If the viewer is not logged in, we know they don't have Full Access to anything, so show nothing.
 		if ( ! is_user_logged_in() || 0 === get_current_user_id() ) {
 			return array();
 		}
@@ -240,10 +240,10 @@ class EDD_All_Access_Shortcodes {
 		// Set up the customer object using the currently logged in user.
 		$customer = new EDD_Customer( get_current_user_id(), true );
 
-		// Get the All Access passes saved to this customer meta.
+		// Get the Full Access passes saved to this customer meta.
 		$customer_all_access_passes = edd_all_access_get_customer_passes( $customer );
 
-		// If this customer has no all access passes, they don't have access to any product with All Access so return a blank query.
+		// If this customer has no all access passes, they don't have access to any product with Full Access so return a blank query.
 		if ( empty( $customer_all_access_passes ) ) {
 
 			return array();
@@ -255,7 +255,7 @@ class EDD_All_Access_Shortcodes {
 		// We make sure to only include categories this customer has access to, so lets get all the categories this customer can access.
 		$all_included_categories = array();
 
-		// Loop through all of this customer's All Access Passes.
+		// Loop through all of this customer's Full Access Passes.
 		foreach ( $customer_all_access_passes as $purchased_download_id_price_id => $purchased_aa_data ) {
 
 			// In case there happens to be an entry in the array without a numeric key.
@@ -263,27 +263,27 @@ class EDD_All_Access_Shortcodes {
 				continue;
 			}
 
-			// Set up the All Access Pass object.
+			// Set up the Full Access Pass object.
 			$all_access_pass = edd_all_access_get_pass( $purchased_aa_data['payment_id'], $purchased_aa_data['download_id'], $purchased_aa_data['price_id'] );
 
-			// If this All Access Pass is not active, skip it.
+			// If this Full Access Pass is not active, skip it.
 			if ( 'active' !== $all_access_pass->status ) {
 				continue;
 			}
 
-			// If any valid All Access Pass includes all categories, we can stop checking everything now. Simply return the query as-is.
+			// If any valid Full Access Pass includes all categories, we can stop checking everything now. Simply return the query as-is.
 			if ( in_array( 'all', $all_access_pass->included_categories, true ) ) {
 				return $query;
 			}
 
-			// Loop through the included categories in this All Access Pass.
+			// Loop through the included categories in this Full Access Pass.
 			foreach ( $all_access_pass->included_categories as $included_category_id ) {
 				// Add all the included categories to our master list of included categories.
 				$all_included_categories[ $included_category_id ] = $included_category_id;
 			}
 		}
 
-		// If no categories have been set up be included at this point, it's likely no All Access Pass was active. Thus, we'll show nothing.
+		// If no categories have been set up be included at this point, it's likely no Full Access Pass was active. Thus, we'll show nothing.
 		if ( empty( $all_included_categories ) ) {
 			return array();
 		}
@@ -300,10 +300,10 @@ class EDD_All_Access_Shortcodes {
 
 		$all_access_tax_query = array();
 
-		// The All Access query will be "OR" because posts can be in any of the all access categories (EG: this category OR that one).
+		// The Full Access query will be "OR" because posts can be in any of the all access categories (EG: this category OR that one).
 		$all_access_tax_query['tax_query']['relation'] = 'OR';
 
-		// Now loop through our All Access categories and add them back into the query.
+		// Now loop through our Full Access categories and add them back into the query.
 		foreach ( $all_included_categories as $all_access_adjusted_category ) {
 			$all_access_tax_query['tax_query'][] = array(
 				'taxonomy' => 'download_category',
@@ -314,7 +314,7 @@ class EDD_All_Access_Shortcodes {
 
 		// Rebuild the tax query.
 		$query['tax_query'] = array(); //phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
-		// First off, we know the tax_query relation must be "AND" so force that right now because the posts MUST be in All Access categories
+		// First off, we know the tax_query relation must be "AND" so force that right now because the posts MUST be in Full Access categories
 		// EG: (This query AND that query must match).
 		$query['tax_query']['relation'] = 'AND';
 		$query['tax_query'][]           = $all_access_tax_query;
@@ -362,9 +362,9 @@ class EDD_All_Access_Shortcodes {
 	}
 
 	/**
-	 * All Access Passes shortcode callback
+	 * Full Access Passes shortcode callback
 	 *
-	 * Provides users with the data relating to their All Access passes.
+	 * Provides users with the data relating to their Full Access passes.
 	 *
 	 * @since    1.0.0
 	 */
@@ -373,7 +373,7 @@ class EDD_All_Access_Shortcodes {
 		ob_start();
 		edd_print_errors();
 
-		// If we are viewing a single All Access Pass's details.
+		// If we are viewing a single Full Access Pass's details.
 		if ( ! empty( $_GET['action'] ) && 'view_all_access_pass' === $_GET['action'] ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			edd_get_template_part( 'edd-all-access', 'view-single-pass' );
 		} else {
@@ -418,14 +418,14 @@ class EDD_All_Access_Shortcodes {
 	}
 
 	/**
-	 * Shortcode which can be used to easily give a user the option to log in or purchase an All Access Pass.
-	 * If the user is already logged in but does not have a valid All Access Pass, they will see a buy button.
-	 * If the user is both logged in and has a valid All Access Pass, they will be redirected to the page defined by the shortcode args.
+	 * Shortcode which can be used to easily give a user the option to log in or purchase an Full Access Pass.
+	 * If the user is already logged in but does not have a valid Full Access Pass, they will see a buy button.
+	 * If the user is both logged in and has a valid Full Access Pass, they will be redirected to the page defined by the shortcode args.
 	 * Can also be used to restrict content.
 	 *
 	 * @since     1.0.0
 	 * @param     array  $atts Shortcode attributes.
-	 * @param     string $content The content that shoukd be shown if the user has the All Access Pass(s) in question.
+	 * @param     string $content The content that shoukd be shown if the user has the Full Access Pass(s) in question.
 	 * @return    string Shortcode Output
 	 */
 	public function edd_aa_all_access( $atts, $content = null ) {
@@ -489,7 +489,7 @@ class EDD_All_Access_Shortcodes {
 			$preview_area_html .= '<div class="edd-aa-preview-area"><img class="edd-aa-preview-img" src="' . esc_url( $atts['preview_image'] ) . '" /></div>';
 		}
 
-		// If this customer has this All Access Pass and it is valid.
+		// If this customer has this Full Access Pass and it is valid.
 		if ( $at_least_one_all_access_pass_is_valid ) {
 
 			// If success content has been passed in use that.
@@ -497,7 +497,7 @@ class EDD_All_Access_Shortcodes {
 				$success_html .= do_shortcode( $content );
 			} else {
 				// Set up success text if it exists.
-				$success_html .= empty( $atts['success_text'] ) ? __( 'You have an All Access Pass for', 'edd-all-access' ) . ' ' . get_the_title( $atts['id'] ) : $atts['success_text'];
+				$success_html .= empty( $atts['success_text'] ) ? __( 'You have an Full Access Pass for', 'edd-all-access' ) . ' ' . get_the_title( $atts['id'] ) : $atts['success_text'];
 			}
 
 			// Redirect the user if shortcode has it set.
@@ -529,7 +529,7 @@ class EDD_All_Access_Shortcodes {
 				'preview_image'          => $atts['preview_image'],
 			);
 
-			// Customer does not have All Access Pass. Output buy / login form.
+			// Customer does not have Full Access Pass. Output buy / login form.
 			$login_purchase_area = edd_all_access_buy_or_login_form( $all_access_buy_or_login_atts );
 		}
 
@@ -563,7 +563,7 @@ class EDD_All_Access_Shortcodes {
 	}
 
 	/**
-	 * Simple shortcode which can be used to show content only to people without an All Access Pass.
+	 * Simple shortcode which can be used to show content only to people without an Full Access Pass.
 	 *
 	 * @since    1.0.0
 	 * @param    array  $atts Shortcode attributes.
@@ -603,12 +603,12 @@ class EDD_All_Access_Shortcodes {
 			}
 		}
 
-		// If they have no All Access Pass, return the content to show them.
+		// If they have no Full Access Pass, return the content to show them.
 		return do_shortcode( $content );
 	}
 
 	/**
-	 * Simple shortcode which can be used to show content only to people with an All Access Pass.
+	 * Simple shortcode which can be used to show content only to people with an Full Access Pass.
 	 *
 	 * @since   1.0.0
 	 * @param    array  $atts Shortcode attributes.
@@ -653,7 +653,7 @@ class EDD_All_Access_Shortcodes {
 			}
 		}
 
-		// If the customer does not have the All Access Pass, this shortcode has no output.
+		// If the customer does not have the Full Access Pass, this shortcode has no output.
 		return ! $at_least_one_all_access_pass_is_valid ? '' : do_shortcode( $content );
 	}
 

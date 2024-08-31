@@ -351,6 +351,7 @@ class EDD_Software_Licensing {
 	public function get_license( $id_or_key, $by_key = false ) {
 		if ( $by_key || ! is_numeric( $id_or_key ) ) {
 			$result    = edd_software_licensing()->licenses_db->get_column_by( 'id', 'license_key', sanitize_text_field( $id_or_key ) );
+			//print_r($result);
 			$id_or_key = is_numeric( $result ) ? (int) $result : false;
 		}
 
@@ -361,7 +362,9 @@ class EDD_Software_Licensing {
 		$id      = $id_or_key;
 		$license = new EDD_SL_License( $id );
 
-		// The ID used does not exist as a valid license.
+		//print_r($license);
+
+		//The ID used does not exist as a valid license.
 		if ( empty( $license->ID ) && false === $license->exists ) {
 			return false;
 		}
@@ -1047,6 +1050,7 @@ class EDD_Software_Licensing {
 
 	}
 
+	
 	/*
 	|--------------------------------------------------------------------------
 	| License Renewal
@@ -2478,7 +2482,8 @@ class EDD_Software_Licensing {
 			return false;
 		}
 
-		return $license->license_limit();
+		// return $license->license_limit();
+		return 0;
 	}
 
 	/**

@@ -1,8 +1,8 @@
 <?php
 /**
- * All Access Download Functions. This file contains all functions that relate to *actually actually downloading* a file using an All Access pass.
+ * Full Access Download Functions. This file contains all functions that relate to *actually actually downloading* a file using an Full Access pass.
  *
- * @package     EDD All Access
+ * @package     EDD Full Access
  * @since       1.0.0
  */
 
@@ -35,7 +35,7 @@ function edd_all_access_convert_site_to_download() {
 		'check_download_limit' => true, // Make sure to check for download limits here since we are actually attempting to download a file.
 	);
 
-	// Check if this user has an All Access priveleges for this product.
+	// Check if this user has an Full Access priveleges for this product.
 	$all_access_check = edd_all_access_check( $args );
 
 	/**
@@ -52,7 +52,7 @@ function edd_all_access_convert_site_to_download() {
 
 	$all_access_pass  = $all_access_check['all_access_pass'];
 
-	// If the user does NOT have All Access priveleges for this product.
+	// If the user does NOT have Full Access priveleges for this product.
 	if ( ! $all_access_check['success'] ) {
 
 		if ( 'all_access_pass_expired' === $all_access_check['failure_id'] ) {
@@ -87,7 +87,7 @@ function edd_all_access_convert_site_to_download() {
 
 		if ( 'download_limit_reached' === $all_access_check['failure_id'] ) {
 
-			$error_message = edd_get_option( 'all_access_download_limit_reached_text', __( 'Sorry. You\'ve hit the maximum number of downloads allowed for your All Access account.', 'edd-all-access' ) ) . ' (' . edd_all_access_download_limit_string( $all_access_pass ) . ')';
+			$error_message = edd_get_option( 'all_access_download_limit_reached_text', __( 'Sorry. You\'ve hit the maximum number of downloads allowed for your Full Access account.', 'edd-all-access' ) ) . ' (' . edd_all_access_download_limit_string( $all_access_pass ) . ')';
 
 			$redirect_url = edd_get_option( 'all_access_download_limit_reached_redirect' );
 
@@ -117,10 +117,10 @@ function edd_all_access_convert_site_to_download() {
 	// Get the customer.
 	$customer = new EDD_Customer( $user_id, true );
 
-	// If the currently logged-in customer is not the one attached to this All Access Pass.
+	// If the currently logged-in customer is not the one attached to this Full Access Pass.
 	if ( $customer->id !== $all_access_pass->customer->id ) {
 
-		wp_die( esc_html( apply_filters( 'edd_all_access_no_all_access_message', __( 'That All Access Pass does not belong to this account. Try logging in with the correct account information', 'edd-all-access' ) ), 'wrong_account' ), esc_html( __( 'Error', 'edd-all-access' ) ), array( 'response' => 403 ) );
+		wp_die( esc_html( apply_filters( 'edd_all_access_no_all_access_message', __( 'That Full Access Pass does not belong to this account. Try logging in with the correct account information', 'edd-all-access' ) ), 'wrong_account' ), esc_html( __( 'Error', 'edd-all-access' ) ), array( 'response' => 403 ) );
 
 		exit();
 	}
@@ -195,14 +195,14 @@ function edd_all_access_convert_site_to_download() {
 
 	// Note that we increment the count of downloads-used by the customer in the edd_process_download_headers hook.
 
-	// Now that we've authenticated the All Access, process the download.
+	// Now that we've authenticated the Full Access, process the download.
 	edd_process_download();
 
 }
 add_action( 'init', 'edd_all_access_convert_site_to_download' );
 
 /**
- * After a download is completed by a customer using an All Access pass, add some meta to the log letting it know which All Access download was used.
+ * After a download is completed by a customer using an Full Access pass, add some meta to the log letting it know which Full Access download was used.
  *
  * @since    1.0.0
  * @param    string      $requested_file The file being downloaded.
@@ -213,7 +213,7 @@ add_action( 'init', 'edd_all_access_convert_site_to_download' );
  */
 function edd_all_access_add_download_id_to_file_log( $requested_file, $download, $email, $payment ) {
 
-	// If no All Access Pass was used to download this file, get out of here now.
+	// If no Full Access Pass was used to download this file, get out of here now.
 	if ( ! isset( $_GET['all_access_pass_id'] ) || empty( $_GET['all_access_pass_id'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		return false;
 	}
@@ -225,14 +225,14 @@ function edd_all_access_add_download_id_to_file_log( $requested_file, $download,
 	$price_id        = intval( $aa_data[2] );
 	$all_access_pass = edd_all_access_get_pass( $payment_id, $download_id, $price_id );
 
-	// If this All Access Pass is not valid.
+	// If this Full Access Pass is not valid.
 	if ( 'active' !== $all_access_pass->status ) {
 		return false;
 	}
 
 	$current_user_id = get_current_user_id();
 
-	// If this All Access Pass does not belong to the currently-logged-in customer.
+	// If this Full Access Pass does not belong to the currently-logged-in customer.
 	if ( absint( $all_access_pass->customer->user_id ) !== absint( $current_user_id ) ) {
 		return false;
 	}
@@ -258,7 +258,7 @@ function edd_all_access_add_download_id_to_file_log( $requested_file, $download,
 		$logs      = $edd_logs->get_connected_logs( $log_query );
 	}
 
-	// Since the purchased All Access ID will be different than the ID of the downloaded post, we'll also add that All Access ID to the log.
+	// Since the purchased Full Access ID will be different than the ID of the downloaded post, we'll also add that Full Access ID to the log.
 	foreach ( $logs as $log ) {
 		// EDD 3.0
 		if ( function_exists( 'edd_update_file_download_log_meta' ) ) {
@@ -270,7 +270,7 @@ function edd_all_access_add_download_id_to_file_log( $requested_file, $download,
 		}
 	}
 
-	// This filter allows downloads done using All Access to be counted, or to not be counted.
+	// This filter allows downloads done using Full Access to be counted, or to not be counted.
 	$download_should_be_counted = apply_filters( 'edd_all_access_download_should_be_counted', true, $all_access_pass, $download, $requested_file, $email, $log_id );
 
 	if ( $download_should_be_counted ) {
@@ -288,8 +288,8 @@ function edd_all_access_add_download_id_to_file_log( $requested_file, $download,
 add_action( 'edd_process_download_headers', 'edd_all_access_add_download_id_to_file_log', 10, 4 );
 
 /**
- * When a customer is downloading a product, add the payment ID containing this All Access pass to the download args.
- * This is hooked to edd_process_download_args when a download using All Access is actually taking place.
+ * When a customer is downloading a product, add the payment ID containing this Full Access pass to the download args.
+ * This is hooked to edd_process_download_args when a download using Full Access is actually taking place.
  *
  * @since    1.0.0
  * @param    array $download_args The args being set in the edd_process_download function.
@@ -319,7 +319,7 @@ function edd_all_access_add_payment_to_download_args( $download_args ) {
 
 /**
  * Set the allowed token paramaters to include the edd-all-access-download URL paramater
- * This is hooked to edd_url_token_allowed_params when an All Access download is taking place.
+ * This is hooked to edd_url_token_allowed_params when an Full Access download is taking place.
  *
  * @since    1.0.0
  * @param    array $token_params The args being set in the edd_process_download function.
@@ -336,7 +336,7 @@ function edd_all_access_url_tokens_add_params( $token_params ) {
  * Get the file download logs for an order ID, grouped by the product ID and file id.
  *
  * @since 1.2.2
- * @param EDD_All_Access_Pass $all_access_pass The All Access Pass to collect unique logs for.
+ * @param EDD_All_Access_Pass $all_access_pass The Full Access Pass to collect unique logs for.
  *
  * @return array The array of unique product/file_ids downloaded by this pass.
  */

@@ -61,7 +61,7 @@ class DownloadAccessChecker {
 	 * Checks whether or not the customer has a pass that gives them access to
 	 * the specified download + price ID.
 	 *
-	 * If the customer does have access, the "winning" All Access Pass object
+	 * If the customer does have access, the "winning" Full Access Pass object
 	 * will be returned.
 	 *
 	 * If the customer does not have access, an AccessException will be thrown.
@@ -75,19 +75,19 @@ class DownloadAccessChecker {
 		if ( get_post_meta( $this->download_id, '_edd_all_access_exclude', true ) ) {
 			throw new AccessException(
 				'product_is_excluded',
-				__( 'The product you are attempting to access is excluded from All Access.', 'edd-all-access' ),
+				__( 'The product you are attempting to access is excluded from Full Access.', 'edd-all-access' ),
 				400
 			);
 		}
 
-		// Get the All Access passes saved to this customer meta.
+		// Get the Full Access passes saved to this customer meta.
 		$customer_all_access_passes = edd_all_access_get_customer_passes( $this->customer );
 
 		// If this customer has no all access passes, they don't have access for sure.
 		if ( empty( $customer_all_access_passes ) ) {
 			throw new AccessException(
 				'no_all_access_passes_purchased',
-				__( 'You have not purchased any All Access Passes.', 'edd-all-access' ),
+				__( 'You have not purchased any Full Access Passes.', 'edd-all-access' ),
 				403
 			);
 		}
@@ -108,7 +108,7 @@ class DownloadAccessChecker {
 
 			$all_access_pass = edd_all_access_get_pass( $purchased_aa_data['payment_id'], $purchased_aa_data['download_id'], $purchased_aa_data['price_id'] );
 
-			// This All Access Pass is not valid for use.
+			// This Full Access Pass is not valid for use.
 			if ( 'invalid' === $all_access_pass->status || 'upcoming' === $all_access_pass->status || is_wp_error( $all_access_pass->status ) ) {
 				continue;
 			}
@@ -136,7 +136,7 @@ class DownloadAccessChecker {
 		} else {
 			throw new AccessException(
 				'failure_by_default',
-				__( 'For some unknown reason, this user does not have All Access to this product.', 'edd-all-access' )
+				__( 'For some unknown reason, this user does not have Full Access to this product.', 'edd-all-access' )
 			);
 		}
 	}
@@ -173,7 +173,7 @@ class DownloadAccessChecker {
 			if ( $is_at_limit && 0 !== intval( $all_access_pass->download_limit ) ) {
 				throw new AccessException(
 					'download_limit_reached',
-					edd_get_option( 'all_access_download_limit_reached_text', __( 'Sorry. You\'ve hit the maximum number of downloads allowed for your All Access account.', 'edd-all-access' ) ) . ' (' . edd_all_access_download_limit_string( $all_access_pass ) . ')',
+					edd_get_option( 'all_access_download_limit_reached_text', __( 'Sorry. You\'ve hit the maximum number of downloads allowed for your Full Access account.', 'edd-all-access' ) ) . ' (' . edd_all_access_download_limit_string( $all_access_pass ) . ')',
 					403,
 					$all_access_pass
 				);
@@ -205,12 +205,12 @@ class DownloadAccessChecker {
 	 */
 	private function validatePassStatus( \EDD_All_Access_Pass $all_access_pass ) {
 		if ( 'expired' === $all_access_pass->status ) {
-			// Run the expiration method to make sure everything is properly set for this expired All Access Pass.
+			// Run the expiration method to make sure everything is properly set for this expired Full Access Pass.
 			$all_access_pass->maybe_expire();
 
 			throw new AccessException(
 				'all_access_pass_expired',
-				edd_get_option( 'all_access_expired_text', __( 'Your All Access Pass is expired.', 'edd-all-access' ) ),
+				edd_get_option( 'all_access_expired_text', __( 'Your Full Access Pass is expired.', 'edd-all-access' ) ),
 				403,
 				$all_access_pass
 			);
@@ -219,7 +219,7 @@ class DownloadAccessChecker {
 		if ( 'upgraded' === $all_access_pass->status ) {
 			throw new AccessException(
 				'all_access_pass_upgraded',
-				edd_get_option( 'all_access_upgraded_text', __( 'This All Access Pass was upgraded to another one.', 'edd-all-access' ) ),
+				edd_get_option( 'all_access_upgraded_text', __( 'This Full Access Pass was upgraded to another one.', 'edd-all-access' ) ),
 				403,
 				$all_access_pass
 			);
@@ -228,7 +228,7 @@ class DownloadAccessChecker {
 		if ( 'renewed' === $all_access_pass->status ) {
 			throw new AccessException(
 				'all_access_pass_renewed',
-				edd_get_option( 'all_access_renewed_text', __( 'This All Access Pass was renewed. It is no longer active but the newest one is.', 'edd-all-access' ) ),
+				edd_get_option( 'all_access_renewed_text', __( 'This Full Access Pass was renewed. It is no longer active but the newest one is.', 'edd-all-access' ) ),
 				403,
 				$all_access_pass
 			);
@@ -237,7 +237,7 @@ class DownloadAccessChecker {
 		if ( 'active' !== $all_access_pass->status ) {
 			throw new AccessException(
 				'all_access_pass_not_active',
-				__( 'Your All Access Pass is not active.', 'edd-all-access' ),
+				__( 'Your Full Access Pass is not active.', 'edd-all-access' ),
 				403,
 				$all_access_pass
 			);

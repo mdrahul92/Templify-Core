@@ -1,8 +1,8 @@
 <?php
 /**
- * Add All Access Passes to the EDD Customer Interface
+ * Add Full Access Passes to the EDD Customer Interface
  *
- * @package     EDD All Access
+ * @package     EDD Full Access
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0.0
  */
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Add the All Access Passes tab to the customer interface if the customer has All Access Passes
+ * Add the Full Access Passes tab to the customer interface if the customer has Full Access Passes
  *
  * @since  1.0.0
  *
@@ -26,7 +26,7 @@ function edd_all_access_customer_tab( $tabs ) {
 	// This makes it so former commission recievers get the tab and new commission users with no sales see it.
 	$tabs['all-access-passes'] = array(
 		'dashicon' => 'dashicons-welcome-widgets-menus',
-		'title'    => __( 'All Access Passes', 'edd-all-access' ),
+		'title'    => __( 'Full Access Passes', 'edd-all-access' ),
 	);
 
 	return $tabs;
@@ -35,7 +35,7 @@ function edd_all_access_customer_tab( $tabs ) {
 add_filter( 'edd_customer_tabs', 'edd_all_access_customer_tab', 10, 1 );
 
 /**
- * Register the All Access Passes view for the customer interface
+ * Register the Full Access Passes view for the customer interface
  *
  * @since  1.0.0
  *
@@ -53,7 +53,7 @@ function edd_all_access_add_customer_view( $views ) {
 add_filter( 'edd_customer_views', 'edd_all_access_add_customer_view', 10, 1 );
 
 /**
- * Display the All Access Passes area for the customer view
+ * Display the Full Access Passes area for the customer view
  *
  * @since  1.0.0
  *
@@ -75,13 +75,13 @@ function edd_all_access_customer_view( $customer ) {
 	<div id="customer-tables-wrapper" class="customer-section">
 		<?php
 
-		// Get the All Access passes saved to this customer meta.
+		// Get the Full Access passes saved to this customer meta.
 		$customer_all_access_passes = edd_all_access_get_customer_pass_objects( $customer );
 
 		$at_least_one_pass_to_show = false;
 
 		?>
-		<h3><?php esc_html_e( 'All Access Passes', 'edd-all-access' ); ?></h3>
+		<h3><?php esc_html_e( 'Full Access Passes', 'edd-all-access' ); ?></h3>
 		<table class="wp-list-table widefat striped downloads">
 			<thead>
 			<tr>
@@ -134,7 +134,7 @@ function edd_all_access_customer_view( $customer ) {
 			if ( ! $at_least_one_pass_to_show ) {
 				?>
 				<tr>
-					<td colspan="5"><?php esc_html_e( 'No All Access Passes Found', 'edd-all-access' ); ?></td>
+					<td colspan="5"><?php esc_html_e( 'No Full Access Passes Found', 'edd-all-access' ); ?></td>
 				</tr>
 			<?php } ?>
 			</tbody>
@@ -145,7 +145,7 @@ function edd_all_access_customer_view( $customer ) {
 		if ( class_exists( 'EDD_Dev_Tools' ) ) {
 			?>
 			<div class="edd-all-access-dev-tools-area" style="background-color:#fffbb4; padding:10px;">'
-				<h2><?php echo esc_html( __( 'Customer All Access Passes Array:', 'edd-all-access' ) ); ?></h2>
+				<h2><?php echo esc_html( __( 'Customer Full Access Passes Array:', 'edd-all-access' ) ); ?></h2>
 				<p><?php echo esc_html( __( 'You are seeing this because you have EDD Dev Tools Activated', 'edd-all-access' ) ); ?></p>
 				<pre>
 					<?php print_r( $customer_all_access_passes ); ?>

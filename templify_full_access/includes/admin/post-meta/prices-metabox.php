@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Option to exclude this product from All Access
+ * Option to exclude this product from Full Access
  *
  * @since     1.0.0
  * @param int $post_id The ID of the EDD Download being managed.
@@ -32,7 +32,7 @@ function edd_all_access_excluded_product( $post_id ) {
 		<label for="edd_all_access_exclude">
 			<input type="checkbox" name="_edd_all_access_exclude" id="edd_all_access_exclude" value="1" <?php checked( 1, $all_access_exclude ); ?> />
 			<?php
-			echo esc_html( apply_filters( 'edd_all_access_exclude_toggle_text', __( 'Exclude this product from any All Access passes.', 'edd-all-access' ) ) );
+			echo esc_html( apply_filters( 'edd_all_access_exclude_toggle_text', __( 'Exclude this product from any Full Access passes.', 'edd-all-access' ) ) );
 
 			// Use nonce for verification.
 			?>
@@ -44,7 +44,7 @@ function edd_all_access_excluded_product( $post_id ) {
 add_action( 'edd_after_price_field', 'edd_all_access_excluded_product' );
 
 /**
- * Save All Access data from the prices metabox
+ * Save Full Access data from the prices metabox
  *
  * @access      public
  * @since       1.0.0
@@ -80,7 +80,7 @@ function edd_all_access_price_meta_box_save( $post_id ) {
 add_action( 'save_post', 'edd_all_access_price_meta_box_save' );
 
 /**
- * Add "Exclude from All Access" to the variable pricing options
+ * Add "Exclude from Full Access" to the variable pricing options
  *
  * @access      public
  * @since       1.0.4
@@ -102,12 +102,12 @@ function edd_all_access_exclude_price_id_option( $download_id, $price_id, $args 
 			style="display:none;"
 		<?php endif; ?>
 	>
-		<span class="edd-custom-price-option-section-title"><?php esc_html_e( 'All Access Settings', 'edd-all-access' ); ?></span>
+		<span class="edd-custom-price-option-section-title"><?php esc_html_e( 'Full Access Settings', 'edd-all-access' ); ?></span>
 		<div class="edd-custom-price-option-section-content edd-form-row">
 			<div class="edd-form-group is-column">
 				<div class="edd-form-group__control">
 					<input <?php checked( true, $price_excluded, true ); ?> type="checkbox" class="edd-form-group__input" name="edd_variable_prices[<?php echo esc_attr( $price_id ); ?>][excluded_price]" id="edd_variable_prices[<?php echo esc_attr( $price_id ); ?>][excluded_price]" value="1" />
-					<label for="edd_variable_prices[<?php echo esc_attr( $price_id ); ?>][excluded_price]"><?php esc_html_e( 'Exclude from All Access?', 'edd-all-access' ); ?></label><span alt="f223" class="edd-help-tip dashicons dashicons-editor-help" title="<?php printf( '<strong>%s</strong> %s', esc_html__( 'Exclude from All Access:', 'edd-all-access' ), esc_html__( 'Check this setting to exclude this price from every All Access pass. If checked, no one with any All Access pass will be able to download this price\'s files using All Access.', 'edd-all-access' ) ); ?>"></span>
+					<label for="edd_variable_prices[<?php echo esc_attr( $price_id ); ?>][excluded_price]"><?php esc_html_e( 'Exclude from Full Access?', 'edd-all-access' ); ?></label><span alt="f223" class="edd-help-tip dashicons dashicons-editor-help" title="<?php printf( '<strong>%s</strong> %s', esc_html__( 'Exclude from Full Access:', 'edd-all-access' ), esc_html__( 'Check this setting to exclude this price from every Full Access pass. If checked, no one with any Full Access pass will be able to download this price\'s files using Full Access.', 'edd-all-access' ) ); ?>"></span>
 				</div>
 			</div>
 		</div>

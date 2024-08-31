@@ -11,7 +11,7 @@
 namespace EDD\AllAccess\Helpers;
 
 /*
- * Integrates EDD All Access with the EDD Auto Register extension
+ * Integrates EDD Full Access with the EDD Auto Register extension
  *
  * @since 1.0.0
  */
@@ -82,7 +82,7 @@ class ObjectCacheHelper {
 	 */
 	public function set_cache_group_persistence() {
 		/**
-		 * Allow All Access to use persistent caching on passes.
+		 * Allow Full Access to use persistent caching on passes.
 		 *
 		 * By default, as of 1.2.4.2, we're setting this to `false` while we work towards a persistent implmentation.
 		 * This filter allows developers and store owners to swtich this to `true` and test before enabling it by default.

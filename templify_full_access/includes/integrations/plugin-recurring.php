@@ -1,15 +1,15 @@
 <?php
 /**
- * Integration functions to make All Access compatible with EDD Recurring.
- * How it works: If an All Access pass is set to sync with Recurring's expiration, it will expire when the customer's recurring renews.
- * Note that the All Access still actually expires (so expiration functions still fire - like commission payouts).
- * The renewal payment actually starts a new All Access period - though the user wouldn't notice anything changing on their end.
+ * Integration functions to make Full Access compatible with EDD Recurring.
+ * How it works: If an Full Access pass is set to sync with Recurring's expiration, it will expire when the customer's recurring renews.
+ * Note that the Full Access still actually expires (so expiration functions still fire - like commission payouts).
+ * The renewal payment actually starts a new Full Access period - though the user wouldn't notice anything changing on their end.
  *
- * Changing a renewal period: If you decide to edit the renewal period of your recurring All Access product, existing customers with existing subscriptions will be "grandfathered".
- * This means their All Access periods will still expire with their subscriptions - as EDD recurring also grandfathers in existing subscriptions. They do not change if you edit the recurring period.
- * Any NEW purchases after editing the product's recurring period will use that new recurring/expiration period for both All Access and recurring.
+ * Changing a renewal period: If you decide to edit the renewal period of your recurring Full Access product, existing customers with existing subscriptions will be "grandfathered".
+ * This means their Full Access periods will still expire with their subscriptions - as EDD recurring also grandfathers in existing subscriptions. They do not change if you edit the recurring period.
+ * Any NEW purchases after editing the product's recurring period will use that new recurring/expiration period for both Full Access and recurring.
  *
- * You can use this to sell All Access passes with variable prices that renew at different times. For example, a variable price for monthly or yearly.
+ * You can use this to sell Full Access passes with variable prices that renew at different times. For example, a variable price for monthly or yearly.
  *
  * @package     EDD\EDDAllAccess\Functions
  * @since       1.0.0
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Integrates EDD All Access with the EDD Recurring extension
+ * Integrates EDD Full Access with the EDD Recurring extension
  *
  * @since 1.0.0
  */
@@ -39,22 +39,22 @@ class EDD_All_Access_Recurring {
 			return;
 		}
 
-		// Include the "Sync with Recurring expiration" option in the Post Meta for All Access duration.
+		// Include the "Sync with Recurring expiration" option in the Post Meta for Full Access duration.
 		add_filter( 'edd_all_access_duration_unit_metabox_options', array( $this, 'edd_all_access_recurring_duration_option' ) );
 
-		// Include the "Sync with Recurring expiration" option in the Customer Meta for an All Access Pass's duration.
+		// Include the "Sync with Recurring expiration" option in the Customer Meta for an Full Access Pass's duration.
 		add_filter( 'edd_all_access_duration_unit_customer_options', array( $this, 'edd_all_access_recurring_duration_customer_option' ), 10, 4 );
 
-		// Include 'edd_subscription' in the array of acceptable payment statuses for All Access.
+		// Include 'edd_subscription' in the array of acceptable payment statuses for Full Access.
 		add_filter( 'edd_all_access_valid_statuses', array( $this, 'edd_all_access_recurring_valid_payment_statuses' ) );
 
-		// Filter the expiration time function so that All Access products set to sync with recurring expire when they should.
+		// Filter the expiration time function so that Full Access products set to sync with recurring expire when they should.
 		add_filter( 'edd_all_access_get_expiration_time', array( $this, 'sync_expiration_time_with_recurring' ), 10, 2 );
 
-		// Filter the duration String used to represent the duration. For example, this is used in the edd_all_access_passes shortcode to display "1 Year" for All Access Pass Duration.
+		// Filter the duration String used to represent the duration. For example, this is used in the edd_all_access_passes shortcode to display "1 Year" for Full Access Pass Duration.
 		add_filter( 'edd_all_access_duration_string', array( $this, 'duration_string' ), 10, 2 );
 
-		// Fire the expiration function for All Access Passes.
+		// Fire the expiration function for Full Access Passes.
 		add_action( 'edd_subscription_post_renew', array( $this, 'check_expirations_post_renew' ), 10, 3 );
 
 		add_action( 'edd_all_access_rcp_migrate_subscription', array( $this, 'migrate_rcp_subscriptions' ), 10, 3 );
@@ -68,19 +68,19 @@ class EDD_All_Access_Recurring {
 	}
 
 	/**
-	 * If someone is migrating their users from Restrict Content Pro to EDD All Access, here's we'll migrate their subscription to EDD Recurring
+	 * If someone is migrating their users from Restrict Content Pro to EDD Full Access, here's we'll migrate their subscription to EDD Recurring
 	 *
 	 * @since    1.0.0
 	 * @param    string $subscription_profile_id The profile id for the subscription being migrated.
 	 * @param    string $edd_payment The EDD Payment which will be used as the parent payment.
-	 * @param    int    $all_access_product_id The ID of the All Access Pass whose subscriptions are being migrated from RCP to EDD Recurring.
+	 * @param    int    $all_access_product_id The ID of the Full Access Pass whose subscriptions are being migrated from RCP to EDD Recurring.
 	 * @return   void
 	 */
 	public function migrate_rcp_subscriptions( $subscription_profile_id, $edd_payment, $all_access_product_id ) {
 
 		$recurring = EDD_Recurring()->is_recurring( $all_access_product_id );
 
-		// If recurring is not enabled for the All Access product we are migrating to, don't migrate/create the subscription.
+		// If recurring is not enabled for the Full Access product we are migrating to, don't migrate/create the subscription.
 		if ( ! $recurring ) {
 			return;
 		}
@@ -119,11 +119,11 @@ class EDD_All_Access_Recurring {
 	}
 
 	/**
-	 * Add "Sync with Recurring expiration" as an expiration option for All Access.
+	 * Add "Sync with Recurring expiration" as an expiration option for Full Access.
 	 *
 	 * @since    1.0.0
-	 * @param    array $all_access_length_options Array of expiration options for All Access.
-	 * @return   array $all_access_length_options Array (modified) of expiration options for All Access
+	 * @param    array $all_access_length_options Array of expiration options for Full Access.
+	 * @return   array $all_access_length_options Array (modified) of expiration options for Full Access
 	 */
 	public function edd_all_access_recurring_duration_option( $all_access_length_options ) {
 
@@ -134,14 +134,14 @@ class EDD_All_Access_Recurring {
 	}
 
 	/**
-	 * Add "Sync with Recurring expiration" as an expiration option for All Access on the Customer Meta (Single All Access Pass Page).
+	 * Add "Sync with Recurring expiration" as an expiration option for Full Access on the Customer Meta (Single Full Access Pass Page).
 	 *
 	 * @since    1.0.0
-	 * @param    array       $all_access_length_options Array of expiration options for All Access.
-	 * @param    EDD_Payment $payment The EDD Payment where the All Access Pass was purchased.
-	 * @param    int         $download_id The product id which was purchased, and is an All Access product.
-	 * @param    int         $price_id The variable price id which was purchased, and is an All Access product.
-	 * @return   array $all_access_length_options Array (modified) of expiration options for All Access
+	 * @param    array       $all_access_length_options Array of expiration options for Full Access.
+	 * @param    EDD_Payment $payment The EDD Payment where the Full Access Pass was purchased.
+	 * @param    int         $download_id The product id which was purchased, and is an Full Access product.
+	 * @param    int         $price_id The variable price id which was purchased, and is an Full Access product.
+	 * @return   array $all_access_length_options Array (modified) of expiration options for Full Access
 	 */
 	public function edd_all_access_recurring_duration_customer_option( $all_access_length_options, $payment, $download_id, $price_id ) {
 
@@ -174,7 +174,7 @@ class EDD_All_Access_Recurring {
 	 * Include recurring payment statuses to the list of valid statuses
 	 *
 	 * @since    1.0.0
-	 * @param    array $valid_payment_statuses The statuses which are valid for All Access Passes.
+	 * @param    array $valid_payment_statuses The statuses which are valid for Full Access Passes.
 	 * @return   array $valid_payment_statuses
 	 */
 	public function edd_all_access_recurring_valid_payment_statuses( $valid_payment_statuses ) {
@@ -184,18 +184,18 @@ class EDD_All_Access_Recurring {
 	}
 
 	/**
-	 * Make All Access pass payments that are set to sync with Recurring expiration expire when the Recurring does.
+	 * Make Full Access pass payments that are set to sync with Recurring expiration expire when the Recurring does.
 	 * Note that EDD Recurring "grandfathers" existing subscriptions if the period for the product is updated.
 	 * Thus, we need to get the period from the customer's subscription rather than the product meta - which could be edited by the site owner after purchases have happened.
 	 *
 	 * @since    1.0.0
-	 * @param    int    $expiration_time - The timestamp this All Access Pass should expire.
-	 * @param    object $all_access_pass - The All Access Pass object.
-	 * @return   int    $expiration_time - The timestamp this All Access Pass should expire.
+	 * @param    int    $expiration_time - The timestamp this Full Access Pass should expire.
+	 * @param    object $all_access_pass - The Full Access Pass object.
+	 * @return   int    $expiration_time - The timestamp this Full Access Pass should expire.
 	 */
 	public function sync_expiration_time_with_recurring( $expiration_time, $all_access_pass ) {
 
-		// If this All Access pass is set to expire when Recurring does (Sync with Recurring expiration).
+		// If this Full Access pass is set to expire when Recurring does (Sync with Recurring expiration).
 		if ( 'edd_recurring' !== $all_access_pass->duration_unit ) {
 			return $expiration_time;
 		}
@@ -216,12 +216,12 @@ class EDD_All_Access_Recurring {
 	}
 
 	/**
-	 * Show the right string for the All Access Pass if the duration is set to "Sync With Recurring"
+	 * Show the right string for the Full Access Pass if the duration is set to "Sync With Recurring"
 	 *
 	 * @since    1.0.0
-	 * @param    string $assembled_string - The All Access duration string shown to the user. For example, "1 year".
-	 * @param    object $all_access_pass - The All Access Pass Object.
-	 * @return   bool   $is_active - whether this All Access pass is active or not.
+	 * @param    string $assembled_string - The Full Access duration string shown to the user. For example, "1 year".
+	 * @param    object $all_access_pass - The Full Access Pass Object.
+	 * @return   bool   $is_active - whether this Full Access pass is active or not.
 	 */
 	public function duration_string( $assembled_string, $all_access_pass ) {
 
@@ -270,7 +270,7 @@ class EDD_All_Access_Recurring {
 	 * @param    string              $would_be_end_time The would-be end time.
 	 * @param    bool                $would_be_duration_number The duration number that would be used in our would-be scenario.
 	 * @param    string              $would_be_duration_unit The duration unit (day/week/month/edd_software_licensing) that would be used in our would-be scenario.
-	 * @param    EDD_All_Access_Pass $all_access_pass The All Access Pass in question.
+	 * @param    EDD_All_Access_Pass $all_access_pass The Full Access Pass in question.
 	 * @return   string $would_be_end_time The would-be end time adjusted for Software Licensing's license sync
 	 */
 	public function check_if_pass_would_expire( $would_be_end_time, $would_be_duration_number, $would_be_duration_unit, $all_access_pass ) {
@@ -292,7 +292,7 @@ class EDD_All_Access_Recurring {
 	}
 
 	/**
-	 * This is fired directly after a subscription has been renewed. Here we hook into that to expire the old All Access Pass and activate the new.
+	 * This is fired directly after a subscription has been renewed. Here we hook into that to expire the old Full Access Pass and activate the new.
 	 *
 	 * @since    1.0.0
 	 * @param    int    $subscription_id The ID of the subscription that was renewed.
@@ -311,7 +311,7 @@ class EDD_All_Access_Recurring {
 		// Set default price id.
 		$price_id = 0;
 
-		// We need to get the price id in order to find the All Access Pass. Loop through all items in this cart until we find the product being renewed.
+		// We need to get the price id in order to find the Full Access Pass. Loop through all items in this cart until we find the product being renewed.
 		if ( ! empty( $parent_payment->cart_details ) && is_array( $parent_payment->cart_details ) ) {
 			foreach ( $parent_payment->cart_details as $cart_item ) {
 				if ( (int) $edd_subscription->product_id === (int) $cart_item['id'] ) {
@@ -324,7 +324,7 @@ class EDD_All_Access_Recurring {
 		// Get all renewal payments attached to this renewed subscription.
 		$renewal_payments = $edd_subscription->get_child_payments();
 
-		// Get the second-newest renewal payment because we need to expire the All Access Pass attached to it.
+		// Get the second-newest renewal payment because we need to expire the Full Access Pass attached to it.
 		$expired_payment = isset( $renewal_payments[1] ) ? $renewal_payments[1] : false;
 
 		if ( ! $expired_payment ) {
@@ -333,12 +333,12 @@ class EDD_All_Access_Recurring {
 			$expired_payment_id = $expired_payment->ID;
 		}
 
-		// Set up the All Access Pass object for the expired payment.
+		// Set up the Full Access Pass object for the expired payment.
 		edd_all_access_get_pass( $expired_payment_id, $edd_subscription->product_id, $price_id );
 	}
 
 	/**
-	 * Deprecated: Prevent manual early renewal purchases of All Access if there is an active Subscription for it.
+	 * Deprecated: Prevent manual early renewal purchases of Full Access if there is an active Subscription for it.
 	 *
 	 * @since       1.0.0
 	 * @param       array $valid_data The values relating to displaying the Purchase Button.
@@ -352,18 +352,18 @@ class EDD_All_Access_Recurring {
 		// Get the currently logged-in customer.
 		$customer = new EDD_Recurring_Subscriber( get_current_user_id(), true );
 
-		// Get all of the All Access enabled products.
+		// Get all of the Full Access enabled products.
 		$all_access_products = edd_all_access_get_all_access_downloads();
 
 		$cart_contents = edd_get_cart_contents();
 
-		// Loop through each item in the cart to check if it is an All Access with an active Subscription.
+		// Loop through each item in the cart to check if it is an Full Access with an active Subscription.
 		foreach ( $cart_contents as $cart_key => $item ) {
 
 			$download_id = $item['id'];
 			$price_id    = isset( $item['options']['price_id'] ) ? (int) $item['options']['price_id'] : 0;
 
-			// If this download is an All Access Product.
+			// If this download is an Full Access Product.
 			if ( in_array( intval( $download_id ), $all_access_products, true ) ) {
 
 				// If this is an upgrade, don't prevent it. See issue 186: https://github.com/easydigitaldownloads/edd-all-access/issues/186.
@@ -385,7 +385,7 @@ class EDD_All_Access_Recurring {
 						if ( ! $sub->is_expired() && ( 'active' === $sub->status || 'trialling' === $sub->status ) && edd_is_payment_complete( $sub->parent_payment_id ) ) {
 
 							// Prevent the renewal as it will just cause the customer to double pay for no reason.
-							// Translators: The name of the product which already has an active All Access Pass.
+							// Translators: The name of the product which already has an active Full Access Pass.
 							edd_set_error( 'edd_all_access_subscription_already_exists', sprintf( __( 'You already have an active subscription for %s.', 'edd-all-access' ), get_the_title( $download_id ) ) );
 						}
 					}
@@ -435,10 +435,10 @@ class EDD_All_Access_Recurring {
 	}
 
 	/**
-	 * Prevent All Access for showing "Renew Now" on owned AA products if the user has an active subscription.
+	 * Prevent Full Access for showing "Renew Now" on owned AA products if the user has an active subscription.
 	 *
 	 * @since 1.2.4
-	 * @param string $purchase_form The purchase form (already modified by All Access).
+	 * @param string $purchase_form The purchase form (already modified by Full Access).
 	 * @param array  $args          The purchase form parameters.
 	 * @return string
 	 */
@@ -482,7 +482,7 @@ class EDD_All_Access_Recurring {
 	 */
 	private function get_expiration_from_sub( $all_access_pass ) {
 
-		// Get the purchase time for this All Access Pass in UTC.
+		// Get the purchase time for this Full Access Pass in UTC.
 		$purchase_time = $all_access_pass->start_time;
 
 		// Get the duration unit.
@@ -542,9 +542,9 @@ class EDD_All_Access_Recurring {
 			}
 		}
 
-		// If a subscription was not found that matches this All Access product, something went wrong with the subscription creation - or it was manually modified incorrectly by the site owner.
+		// If a subscription was not found that matches this Full Access product, something went wrong with the subscription creation - or it was manually modified incorrectly by the site owner.
 		if ( 'edd_recurring' === $all_access_duration_unit && empty( $date_string ) ) {
-			// Return 'never' for now so the pass does not expire, and can be fixed manually by setting the subscription back to the correct All Access product.
+			// Return 'never' for now so the pass does not expire, and can be fixed manually by setting the subscription back to the correct Full Access product.
 			return 'never';
 		}
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Integration functions to make All Access compatible with EDD Software Licenses
+ * Integration functions to make Full Access compatible with EDD Software Licenses
  *
  * @package     EDD\EDDAllAccess\Functions
  * @since       1.0.0
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Integrates EDD All Access with the EDD Software Licensing extension
+ * Integrates EDD Full Access with the EDD Software Licensing extension
  *
  * @since 1.0.0
  */
@@ -57,21 +57,21 @@ class EDD_All_Access_Software_Licensing {
 		if ( defined( 'EDD_SL_VERSION' ) && version_compare( EDD_SL_VERSION, '3.5.18', '<' ) ) {
 			?>
 			<div class="notice notice-error">
-				<p><?php echo esc_html( __( 'EDD All Access: Your version of EDD Software Licensing must be updated to version 3.5.18 or later to use the All Access extension in conjunction with Software Licensing.', 'edd-all-access' ) ); ?></p>
+				<p><?php echo esc_html( __( 'EDD Full Access: Your version of EDD Software Licensing must be updated to version 3.5.18 or later to use the Full Access extension in conjunction with Software Licensing.', 'edd-all-access' ) ); ?></p>
 			</div>
 			<?php
 		}
 	}
 
 	/**
-	 * Add "Sync with License expiration" as an expiration option for All Access.
+	 * Add "Sync with License expiration" as an expiration option for Full Access.
 	 * Not that because "Sync with Recurring" was originally the only syncing option,
 	 * and because Syncing with recurring is a bad idea if the product is also licensed (due to early renewals in SL which cause out-of-sync dates)),
 	 * this setting will only be available if EDD Recurring is not enabled/activated.
 	 *
 	 * @since    1.1.0
-	 * @param    array $all_access_length_options Array of expiration options for All Access.
-	 * @return   array $all_access_length_options Array (modified) of expiration options for All Access
+	 * @param    array $all_access_length_options Array of expiration options for Full Access.
+	 * @return   array $all_access_length_options Array (modified) of expiration options for Full Access
 	 */
 	public function edd_all_access_add_sl_duration_option( $all_access_length_options ) {
 
@@ -86,17 +86,17 @@ class EDD_All_Access_Software_Licensing {
 	}
 
 	/**
-	 * Add "Sync with License expiration" as an expiration option for All Access on the Customer Meta (Single All Access Pass Page).
+	 * Add "Sync with License expiration" as an expiration option for Full Access on the Customer Meta (Single Full Access Pass Page).
 	 * Not that because "Sync with Recurring" was originally the only syncing option,
 	 * and because Syncing with recurring is a bad idea if the product is also licensed (due to early renewals in SL which cause out-of-sync dates)),
 	 * this setting will only be available if EDD Recurring is not enabled/activated. If EDD Recurring is enabled, it falls back to the license.
 	 *
 	 * @since    1.1.0
-	 * @param    array       $all_access_length_options Array of expiration options for All Access.
+	 * @param    array       $all_access_length_options Array of expiration options for Full Access.
 	 * @param    EDD_Payment $payment The EDD Payment where the AA pass originated.
 	 * @param    int         $download_id The download ID where the AA pass originated.
 	 * @param    int         $price_id The variable price ID where the AA pass originated.
-	 * @return   array       $all_access_length_options Array (modified) of expiration options for All Access
+	 * @return   array       $all_access_length_options Array (modified) of expiration options for Full Access
 	 */
 	public function edd_all_access_sl_duration_customer_options( $all_access_length_options, $payment, $download_id, $price_id ) {
 
@@ -120,7 +120,7 @@ class EDD_All_Access_Software_Licensing {
 
 
 	/**
-	 * Software Licensing does not allow bundle activations to happen. In the case where a bundle-license is also an All Access product
+	 * Software Licensing does not allow bundle activations to happen. In the case where a bundle-license is also an Full Access product
 	 *
 	 * @since    1.0.2
 	 * @param    bool           $allow_bundle_activation Whether to allow bundles to be activated with a license.
@@ -137,10 +137,10 @@ class EDD_All_Access_Software_Licensing {
 		// Get all of the ALl Access products in this store.
 		$all_access_products = edd_all_access_get_all_access_downloads();
 
-		// Loop through each All Access product.
+		// Loop through each Full Access product.
 		foreach ( $all_access_products as $all_access_product_id ) {
 
-			// If the bundled license is an All Access product.
+			// If the bundled license is an Full Access product.
 			if ( $license->download->id === $all_access_product_id ) {
 
 				// Allow this bundle license to be activated.
@@ -154,9 +154,9 @@ class EDD_All_Access_Software_Licensing {
 
 	/**
 	 * When Software Licensing is checking if the passed-in title matches the title attached to the passed-in license in our Store,
-	 * Check if the license's product-title is an All Access product which includes the product trying to be accessed/downloaded. If it does, tell
+	 * Check if the license's product-title is an Full Access product which includes the product trying to be accessed/downloaded. If it does, tell
 	 * Software Licensing the titles match up. In this way, we can "trick" Software Licensing into accepting a license other than one for the actual product.
-	 * In this case, it allows for a "master" license key to be used for products it isn't actually for (outside of the All Access extension).
+	 * In this case, it allows for a "master" license key to be used for products it isn't actually for (outside of the Full Access extension).
 	 *
 	 * @since    1.0.0
 	 * @param    bool           $item_name_matches Whether the name of the item passed matches the name of the item on the license.
@@ -207,7 +207,7 @@ class EDD_All_Access_Software_Licensing {
 			)
 		);
 
-		// If the customer attached to the license has an All Access pass which includes the desired product.
+		// If the customer attached to the license has an Full Access pass which includes the desired product.
 		if ( isset( $all_access_check['success'] ) && $all_access_check['success'] ) {
 			return true;
 		}
@@ -219,9 +219,9 @@ class EDD_All_Access_Software_Licensing {
 
 	/**
 	 * When Software Licensing is checking if the passed-in ID matches the ID attached to the passed-in license in our Store,
-	 * Check if the license's ID is an All Access product which includes the product trying to be accessed/downloaded. If it does, tell
+	 * Check if the license's ID is an Full Access product which includes the product trying to be accessed/downloaded. If it does, tell
 	 * Software Licensing the IDs match up. In this way, we can "trick" Software Licensing into accepting a license other than one for the actual product.
-	 * In this case, it allows for a "master" license key to be used for products it isn't actually for (outside of the All Access extension).
+	 * In this case, it allows for a "master" license key to be used for products it isn't actually for (outside of the Full Access extension).
 	 *
 	 * @since    1.0.0
 	 * @param    bool   $license_match Whether the license matches the product it was submitted for.
@@ -232,7 +232,7 @@ class EDD_All_Access_Software_Licensing {
 	 */
 	public function edd_all_access_sl_id_matches( $license_match, $download_id, $license_download, $license_key ) {
 
-		// Check if the license is an All Access license which includes the desired product.
+		// Check if the license is an Full Access license which includes the desired product.
 
 		// Get the customer attached to the license.
 		$license = edd_software_licensing()->get_license( $license_key, true );
@@ -252,7 +252,7 @@ class EDD_All_Access_Software_Licensing {
 			)
 		);
 
-		// If the customer attached to the license has an All Access pass which includes the desired product.
+		// If the customer attached to the license has an Full Access pass which includes the desired product.
 		if ( isset( $all_access_check['success'] ) && $all_access_check['success'] ) {
 			return true;
 		}
@@ -263,7 +263,7 @@ class EDD_All_Access_Software_Licensing {
 
 	/**
 	 * Tell Software Licensing if we should check for new version updates using the passed-in license or the passed-in name.
-	 * Because the All Access license isn't the product we are hoping to check for updates, we want to force Software Licensing to check using the name.
+	 * Because the Full Access license isn't the product we are hoping to check for updates, we want to force Software Licensing to check using the name.
 	 *
 	 * @since    1.0.0
 	 * @param    bool $check_by_name_first Whether we should fetch update data using the passed-in name or using the passed-in license.
@@ -274,7 +274,7 @@ class EDD_All_Access_Software_Licensing {
 	}
 
 	/**
-	 * If a license is attached to an All Access Pass, use the start time of the license instead of the start time of the All Access Pass
+	 * If a license is attached to an Full Access Pass, use the start time of the license instead of the start time of the Full Access Pass
 	 *
 	 * @since    1.0.1
 	 * @param    int                 $all_access_start_time The start timestamp of the all access pass.
@@ -291,7 +291,7 @@ class EDD_All_Access_Software_Licensing {
 			return $all_access_start_time;
 		}
 
-		// Check if this All Access Pass has a license attached to it.
+		// Check if this Full Access Pass has a license attached to it.
 		$possibly_attached_license = edd_all_access_software_licensing_get_license_from_aa_pass( $all_access_pass );
 
 		// If there is a license attached, we use that over the subscription.
@@ -322,12 +322,12 @@ class EDD_All_Access_Software_Licensing {
 	}
 
 	/**
-	 * If a license is attached to an All Access Pass, use the expiration time of the license instead of the expiration time of the All Access Pass
+	 * If a license is attached to an Full Access Pass, use the expiration time of the license instead of the expiration time of the Full Access Pass
 	 *
 	 * @since    1.1.0
-	 * @param    int    $expiration_time - The timestamp this All Access Pass should expire.
-	 * @param    object $all_access_pass - The All Access Pass object.
-	 * @return   int    $expiration_time - The timestamp this All Access Pass should expire.
+	 * @param    int    $expiration_time - The timestamp this Full Access Pass should expire.
+	 * @param    object $all_access_pass - The Full Access Pass object.
+	 * @return   int    $expiration_time - The timestamp this Full Access Pass should expire.
 	 */
 	public function edd_all_access_sync_expiration_time_with_sl( $expiration_time, $all_access_pass ) {
 
@@ -360,7 +360,7 @@ class EDD_All_Access_Software_Licensing {
 	 * @param    string              $would_be_end_time The would-be end time.
 	 * @param    bool                $would_be_duration_number The duration number that would be used in our would-be scenario.
 	 * @param    string              $would_be_duration_unit The duration unit (day/week/month/edd_software_licensing) that would be used in our would-be scenario.
-	 * @param    EDD_All_Access_Pass $all_access_pass The All Access Pass in question.
+	 * @param    EDD_All_Access_Pass $all_access_pass The Full Access Pass in question.
 	 * @return   string              $would_be_end_time The would-be end time adjusted for Software Licensing's license sync
 	 */
 	public function check_if_pass_would_expire( $would_be_end_time, $would_be_duration_number, $would_be_duration_unit, $all_access_pass ) {
@@ -388,10 +388,10 @@ class EDD_All_Access_Software_Licensing {
 	}
 
 	/**
-	 * Handle SL upgrades pt 1. Because edd_sl_license_upgraded fires before All Access passes get created, and we need the data from that hook,
-	 * to solve the race condition we have to store the data from the hook somewhere until after the All Access Pass is created.
+	 * Handle SL upgrades pt 1. Because edd_sl_license_upgraded fires before Full Access passes get created, and we need the data from that hook,
+	 * to solve the race condition we have to store the data from the hook somewhere until after the Full Access Pass is created.
 	 * We'll store the data as a global variable, and then use-it/clear-it in edd_all_access_check_updated_payment
-	 * which is where the All Access Pass gets created.
+	 * which is where the Full Access Pass gets created.
 	 *
 	 * @since    1.0.0
 	 * @param    string $license_id A timestamp of the time of upgrade payment.
@@ -421,10 +421,10 @@ class EDD_All_Access_Software_Licensing {
 	/**
 	 * Handle SL upgrades pt 2. This handles things like bronze -> silver -> gold upgrades
 	 * This fires directly after an all access activation takes place (possibly non-licensed, as Sl enables non licensed upgrades).
-	 * We use it here to update the All Access Pass customer meta
+	 * We use it here to update the Full Access Pass customer meta
 	 * of both the old payment and the new payment.
-	 * The All Access Pass attached to the old_payment will get a flag letting it know it is an old/prior All Access Pass.
-	 * The All Access Pass attached to the new_payment will get an array containing all preliminary payments by taking them from the old All Access Pass.
+	 * The Full Access Pass attached to the old_payment will get a flag letting it know it is an old/prior Full Access Pass.
+	 * The Full Access Pass attached to the new_payment will get an array containing all preliminary payments by taking them from the old Full Access Pass.
 	 *
 	 * @since    1.0.0
 	 * @param    int $payment_id The payment id in question.
@@ -448,12 +448,12 @@ class EDD_All_Access_Software_Licensing {
 		$old_all_access_pass = edd_all_access_get_pass( $args['old_payment_id'], $args['old_download_id'], $args['old_price_id'] );
 		$new_all_access_pass = edd_all_access_get_pass( $args['payment_id'], $args['download_id'], $args['upgrade_price_id'] );
 
-		// If the upgrading-from product or the upgrading-to product is not an active All Access pass, do nothing. Only AA upgrades are handled here.
+		// If the upgrading-from product or the upgrading-to product is not an active Full Access pass, do nothing. Only AA upgrades are handled here.
 		if ( 'active' !== $old_all_access_pass->status || 'active' !== $new_all_access_pass->status ) {
 			return false;
 		}
 
-		// Upgrade the old All Access Pass to the new All Access Pass.
+		// Upgrade the old Full Access Pass to the new Full Access Pass.
 		$old_all_access_pass->do_upgrade( $new_all_access_pass );
 
 		// Clear the global variable.
@@ -461,7 +461,7 @@ class EDD_All_Access_Software_Licensing {
 	}
 
 	/**
-	 * If an All Access Pass is being renewed and it is licensed, make sure the license is "renewed" in Software Licensing - as opposed to creating a new license.
+	 * If an Full Access Pass is being renewed and it is licensed, make sure the license is "renewed" in Software Licensing - as opposed to creating a new license.
 	 *
 	 * @since    1.0.0
 	 * @return   void
@@ -473,7 +473,7 @@ class EDD_All_Access_Software_Licensing {
 			return;
 		}
 
-		// Check everything in the cart to see if any are Licensed All Access Renewals.
+		// Check everything in the cart to see if any are Licensed Full Access Renewals.
 		$cart_contents = edd_get_cart_contents();
 
 		if ( empty( $cart_contents ) ) {
@@ -488,7 +488,7 @@ class EDD_All_Access_Software_Licensing {
 			return;
 		}
 
-		// Get this customer's All Access Passes (if any).
+		// Get this customer's Full Access Passes (if any).
 		$customers_all_access_passes = edd_all_access_get_customer_passes( $customer );
 
 		if ( empty( $customers_all_access_passes ) ) {
@@ -508,7 +508,7 @@ class EDD_All_Access_Software_Licensing {
 				continue;
 			}
 
-			// If the customer has purchased this All Access Pass Before, this is a renewal.
+			// If the customer has purchased this Full Access Pass Before, this is a renewal.
 			if ( array_key_exists( $download_id . '_' . $price_id, $customers_all_access_passes ) ) {
 
 				$previous_payment_id = $customers_all_access_passes[ $download_id . '_' . $price_id ]['payment_id'];
@@ -546,7 +546,7 @@ class EDD_All_Access_Software_Licensing {
 		if ( 'disabled' === $license_status ) {
 			throw new EDD\AllAccess\Exceptions\AccessException(
 				'all_access_pass_license_disabled',
-				__( 'Your All Access Pass license is disabled.', 'edd-all-access' ),
+				__( 'Your Full Access Pass license is disabled.', 'edd-all-access' ),
 				403,
 				$all_access_pass
 			);
@@ -554,7 +554,7 @@ class EDD_All_Access_Software_Licensing {
 	}
 
 	/**
-	 * Checks the license status of an All Access Pass to see if it is valid or not.
+	 * Checks the license status of an Full Access Pass to see if it is valid or not.
 	 *
 	 * @param string $status
 	 * @param EDD_All_Access_Pass $all_access_pass
@@ -602,7 +602,7 @@ class EDD_All_Access_Software_Licensing {
 	}
 
 	/**
-	 * Checks the license status of an All Access Pass to see if it is valid or not.
+	 * Checks the license status of an Full Access Pass to see if it is valid or not.
 	 *
 	 * @since 1.2.5
 	 *
@@ -639,10 +639,10 @@ class EDD_All_Access_Software_Licensing {
 }
 
 /**
- * Software Licensing does not allow bundle activations to happen. In the case where a bundle-license is also an All Access product
+ * Software Licensing does not allow bundle activations to happen. In the case where a bundle-license is also an Full Access product
  *
  * @since    1.1
- * @param    EDD_All_Access_Pass $all_access_pass The All Access pass in question.
+ * @param    EDD_All_Access_Pass $all_access_pass The Full Access pass in question.
  * @return   mixed                Returns false of no license found. An EDD_License object if one is found.
  */
 function edd_all_access_software_licensing_get_license_from_aa_pass( $all_access_pass ) {
@@ -659,7 +659,7 @@ function edd_all_access_software_licensing_get_license_from_aa_pass( $all_access
 
 	if ( $eddaa_existing_licenses ) {
 
-		// Loop through each license in this purchase to see if it matches the All Access product.
+		// Loop through each license in this purchase to see if it matches the Full Access product.
 		foreach ( $eddaa_existing_licenses as $existing_license ) {
 
 			if ( absint( $existing_license->download_id ) !== absint( $all_access_pass->download_id ) ) {

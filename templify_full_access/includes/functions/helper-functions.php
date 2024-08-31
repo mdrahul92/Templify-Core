@@ -12,11 +12,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Check if a user has access to a specific EDD Download through an "All Access" purchase.
+ * Check if a user has access to a specific EDD Download through an "Full Access" purchase.
  * All we need to know for this function is which product/price-variation is being downloaded.
  * From there we can detect the user based on whether they are logged in.
  *
- * Note: in a case where a user has purchased multiple All Access passes, the first one that qualifies will be returned.
+ * Note: in a case where a user has purchased multiple Full Access passes, the first one that qualifies will be returned.
  *
  * @since    1.0.0
  * @param    array $args Array of options that determine the return.
@@ -71,7 +71,7 @@ function edd_all_access_check( $args = array() ) {
 			'failure_message' => __( 'No customer was given in regards to this check.', 'edd-all-access' ),
 		);
 
-		edd_debug_log( 'EDD All Access - Issue 311: Customer not found. Passed-in args: ' . wp_json_encode( $args ) );
+		edd_debug_log( 'EDD Full Access - Issue 311: Customer not found. Passed-in args: ' . wp_json_encode( $args ) );
 
 		return $return_data;
 	}
@@ -103,18 +103,18 @@ function edd_all_access_check( $args = array() ) {
 }
 
 /**
- * Get an array of product/download ids which are "All Access" enabled.
+ * Get an array of product/download ids which are "Full Access" enabled.
  *
  * @since    1.0.0
  * @since    1.2.1 Added the $force_lookup parameter to allow using the function to force a refresh.
  *
  * @param bool $force_lookup If the function should force possibly refreshing the array of product IDs.
  *
- * @return   array - The post ids of all "All Access" posts
+ * @return   array - The post ids of all "Full Access" posts
  */
 function edd_all_access_get_all_access_downloads( $force_lookup = false ) {
 
-	// Check for the All Access products option.
+	// Check for the Full Access products option.
 	$edd_all_access_products = get_option( 'edd_all_access_products' );
 	$current_hash            = md5( json_encode( $edd_all_access_products ) );
 
@@ -154,12 +154,13 @@ function edd_all_access_get_all_access_downloads( $force_lookup = false ) {
 		// Set the products option.
 		update_option( 'edd_all_access_products', $edd_all_access_downloads );
 	}
+	
 
 	return apply_filters( 'edd_all_access_downloads', $edd_all_access_downloads );
 }
 
 /**
- * Check if a download is an All Access enabled product.
+ * Check if a download is an Full Access enabled product.
  *
  * @since    1.0.0
  * @param    int $download_id The id of the product being checked.
@@ -168,7 +169,7 @@ function edd_all_access_get_all_access_downloads( $force_lookup = false ) {
  */
 function edd_all_access_download_is_all_access( $download_id, $price_id = 0 ) {
 
-	// If this purchase is not an "All Access" post.
+	// If this purchase is not an "Full Access" post.
 	if ( ! in_array( $download_id, edd_all_access_get_all_access_downloads() ) ) {
 		return false;
 	}
@@ -178,7 +179,7 @@ function edd_all_access_download_is_all_access( $download_id, $price_id = 0 ) {
 }
 
 /**
- * Check if an All Access pass (if theoretically purchased and active) would have access to an EDD Download. This is not dependant on any user or payment.
+ * Check if an Full Access pass (if theoretically purchased and active) would have access to an EDD Download. This is not dependant on any user or payment.
  *
  * @since    1.0.0
  * @param    array $args Array of options that determine the return.
@@ -189,7 +190,7 @@ function edd_all_access_includes_download( $args = array() ) {
 	$default_args = array(
 		'all_access_product_info' => array(
 			'download_id' => 0,
-			'price_id'    => 0, // This is unused even if variable pricing is enabled for an All Access Pass because the meta options are product-wide (not pricing specific).
+			'price_id'    => 0, // This is unused even if variable pricing is enabled for an Full Access Pass because the meta options are product-wide (not pricing specific).
 		),
 		'desired_product_info'    => array(
 			'download_id' => 0,
@@ -199,24 +200,24 @@ function edd_all_access_includes_download( $args = array() ) {
 
 	$args = wp_parse_args( $args, $default_args );
 
-	// Get all posts which count as "All Access" posts.
+	// Get all posts which count as "Full Access" posts.
 	$all_access_posts = edd_all_access_get_all_access_downloads();
 
-	// There's no All Access to purchase so definitively, none could access this product.
+	// There's no Full Access to purchase so definitively, none could access this product.
 	if ( empty( $all_access_posts ) ) {
 		return array(
 			'success'         => false,
 			'failure_id'      => 'no_all_access_posts_exist',
-			'failure_message' => __( 'No All Access downloads have been configured', 'edd-all-access' ),
+			'failure_message' => __( 'No Full Access downloads have been configured', 'edd-all-access' ),
 		);
 	}
 
-	// If the passed in download_id is not an All Access pass.
+	// If the passed in download_id is not an Full Access pass.
 	if ( ! in_array( $args['all_access_product_info']['download_id'], $all_access_posts, true ) ) {
 		return array(
 			'success'         => false,
 			'failure_id'      => 'not_an_all_access_product',
-			'failure_message' => __( 'The ID passed was not an All Access product.', 'edd-all-access' ),
+			'failure_message' => __( 'The ID passed was not an Full Access product.', 'edd-all-access' ),
 		);
 	}
 
@@ -226,7 +227,7 @@ function edd_all_access_includes_download( $args = array() ) {
 	// If there are variable prices and the desired product is one of those variable prices (not single price mode).
 	if ( $has_variable_prices && 0 !== intval( $args['desired_product_info']['price_id'] ) ) {
 
-		// Check if any of the variable prices exclude All Access.
+		// Check if any of the variable prices exclude Full Access.
 		$variable_prices = edd_get_variable_prices( $args['desired_product_info']['download_id'] );
 
 		foreach ( $variable_prices as $variable_price_id => $variable_price_settings ) {
@@ -234,26 +235,26 @@ function edd_all_access_includes_download( $args = array() ) {
 			// If this variable price id matches the one we are checking for with this function.
 			if ( intval( $variable_price_id ) === intval( $args['desired_product_info']['price_id'] ) ) {
 
-				// If this variable price is excluded from All Access.
+				// If this variable price is excluded from Full Access.
 				if ( ! empty( $variable_price_settings['excluded_price'] ) ) {
 					$return_data = array(
 						'success'         => false,
 						'failure_id'      => 'product_is_excluded',
-						'failure_message' => __( 'The Price ID you are attempting to access is excluded from All Access', 'edd-all-access' ),
+						'failure_message' => __( 'The Price ID you are attempting to access is excluded from Full Access', 'edd-all-access' ),
 					);
 					return $return_data;
 				}
 			}
 		}
 	} else {
-		// If this single-price product is known to be excluded from all All Access passes.
+		// If this single-price product is known to be excluded from all Full Access passes.
 		$product_is_excluded = get_post_meta( $args['desired_product_info']['download_id'], '_edd_all_access_exclude', true );
 
 		if ( $product_is_excluded ) {
 			$return_data = array(
 				'success'         => false,
 				'failure_id'      => 'product_is_excluded',
-				'failure_message' => __( 'The product you are attempting to access is excluded from All Access', 'edd-all-access' ),
+				'failure_message' => __( 'The product you are attempting to access is excluded from Full Access', 'edd-all-access' ),
 			);
 			return $return_data;
 		}
@@ -282,48 +283,48 @@ function edd_all_access_includes_download( $args = array() ) {
 		}
 	}
 
-	// If this All Access Product has access to a category that this download has.
+	// If this Full Access Product has access to a category that this download has.
 	if ( empty( $all_access_categories ) || in_array( 'all', $all_access_categories, true ) || $has_required_category ) {
 
-		// If this All Access Product has access to the price_id we are hoping to retrieve.
+		// If this Full Access Product has access to the price_id we are hoping to retrieve.
 		if ( empty( $args['desired_product_info']['price_id'] ) || empty( $included_price_ids ) || in_array( intval( $args['desired_product_info']['price_id'] ), array_map( 'intval', $included_price_ids ), true ) ) {
 
-			// The All Access post would/does include access to the Download/Price ID requested.
+			// The Full Access post would/does include access to the Download/Price ID requested.
 			return array(
 				'success'         => true,
-				'success_message' => __( 'This All Access post does include access to this Download.', 'edd-all-access' ),
+				'success_message' => __( 'This Full Access post does include access to this Download.', 'edd-all-access' ),
 				'failure'         => false,
 			);
 		} else {
 			return array(
 				'success'         => false,
 				'failure'         => 'price_id_not_included',
-				'failure_message' => __( 'This All Access post does not have access to this product variation.', 'edd-all-access' ),
+				'failure_message' => __( 'This Full Access post does not have access to this product variation.', 'edd-all-access' ),
 			);
 		}
 	} else {
 		return array(
 			'success'         => false,
 			'failure'         => 'category_not_included',
-			'failure_message' => __( 'This All Access post does not have access to products in this category.', 'edd-all-access' ),
+			'failure_message' => __( 'This Full Access post does not have access to products in this category.', 'edd-all-access' ),
 		);
 	}
 
 	return array(
 		'success'         => false,
 		'failure'         => 'unknown_error',
-		'failure_message' => __( 'Unknown error with All Access', 'edd-all-access' ),
+		'failure_message' => __( 'Unknown error with Full Access', 'edd-all-access' ),
 	);
 }
 
 /**
- * Get the URL used to download products using an All Access pass.
+ * Get the URL used to download products using an Full Access pass.
  *
  * @since    1.0.0
  * @param    int $download_id The post ID of the product being downloaded.
  * @param    int $price_id The price ID product being downloaded.
  * @param    int $file_id The ID of the file being downloaded.
- * @return   string - The URL used to downlodad the file via All Access
+ * @return   string - The URL used to downlodad the file via Full Access
  */
 function edd_all_access_product_download_url( $download_id, $price_id = 0, $file_id = 0 ) {
 
@@ -353,10 +354,10 @@ function edd_all_access_product_download_url( $download_id, $price_id = 0, $file
 }
 
 /**
- * Get the status label of an All Access pass.
+ * Get the status label of an Full Access pass.
  *
  * @since    1.0.0
- * @param    string $status The status of the All Access Pass.
+ * @param    string $status The status of the Full Access Pass.
  * @return   string "Active" if still active. 'Expired' if expired. 'Invalid' if invalid.
  */
 function edd_all_access_get_status_label( $status ) {
@@ -430,8 +431,8 @@ function edd_all_access_download_limit_time_period_to_string( $download_limit_ti
  * Turn $download_limit per $time_period into a human-readable string like "5 Downloads per Day".
  *
  * @since    1.0.0
- * @param    EDD_All_Access_Pass $all_access_pass An All Access Pass object.
- * @return   string - Easy to read string representing the download limit for an All Access Pass.
+ * @param    EDD_All_Access_Pass $all_access_pass An Full Access Pass object.
+ * @return   string - Easy to read string representing the download limit for an Full Access Pass.
  */
 function edd_all_access_download_limit_string( $all_access_pass ) {
 
@@ -449,11 +450,11 @@ function edd_all_access_download_limit_string( $all_access_pass ) {
 }
 
 /**
- * Get the string for an All Access Pass's duration. For example, if you want to show "1 year" when referring to the length of an All Access Pass.
+ * Get the string for an Full Access Pass's duration. For example, if you want to show "1 year" when referring to the length of an Full Access Pass.
  *
  * @since    1.0.0
- * @param    EDD_All_Access_Pass $all_access_pass An All Access Pass object.
- * @return   string - Easy to read string representing the duration for an All Access Pass.
+ * @param    EDD_All_Access_Pass $all_access_pass An Full Access Pass object.
+ * @return   string - Easy to read string representing the duration for an Full Access Pass.
  */
 function edd_all_access_duration_string( $all_access_pass ) {
 
@@ -492,7 +493,7 @@ function edd_all_access_duration_string( $all_access_pass ) {
  * If the download limit is 1 download per year, here we find the number of years since the payment took place.
  *
  * @since    1.0.0
- * @param    EDD_All_Access_Pass $all_access_pass An All Access Pass object.
+ * @param    EDD_All_Access_Pass $all_access_pass An Full Access Pass object.
  * @return   int - The number of download-limit-time-periods that have passed since the original payment.
  */
 function edd_all_access_get_download_limit_time_periods_since_payment( $all_access_pass ) {
@@ -539,7 +540,7 @@ function edd_all_access_get_download_limit_time_periods_since_payment( $all_acce
  * If 5 months have passed but the downloads-used count was last reset to 0 in month 1, the period returned here is 1.
  *
  * @since    1.0.0
- * @param    EDD_All_Access_Pass $all_access_pass An All Access Pass object.
+ * @param    EDD_All_Access_Pass $all_access_pass An Full Access Pass object.
  * @return   int - The time period in which the downloads-used counter was last reset to 0.
  */
 function edd_all_access_get_download_limit_last_reset_period( $all_access_pass ) {
@@ -590,7 +591,7 @@ function edd_all_access_get_download_limit_last_reset_period( $all_access_pass )
  * For example, if we are allowed 1 download per week and it's been 5 weeks since purchase, get the timestamp for the end of week 4.
  *
  * @since    1.0.0
- * @param    EDD_All_Access_Pass $all_access_pass An All Access Pass object.
+ * @param    EDD_All_Access_Pass $all_access_pass An Full Access Pass object.
  * @return   int - The timestamp for when the previous period ended.
  */
 function edd_all_access_get_current_period_start_timestamp( $all_access_pass ) {
@@ -626,14 +627,14 @@ function edd_all_access_get_current_period_start_timestamp( $all_access_pass ) {
 }
 
 /**
- * Check if a specific customer has a valid, specific All Access Pass.
+ * Check if a specific customer has a valid, specific Full Access Pass.
  *
  * @since    1.0.0
  * @param int    $user_id The ID of the user.
- * @param int    $download_id The ID of the All Access product.
- * @param int    $price_id The price_id (price variation) of the All Access product.
+ * @param int    $download_id The ID of the Full Access product.
+ * @param int    $price_id The price_id (price variation) of the Full Access product.
  * @param string $required_pass_status The status of the pass we want to check if the user has.
- * @return EDD_All_Access_Pass|false The All Access Pass if it exists or false if not.
+ * @return EDD_All_Access_Pass|false The Full Access Pass if it exists or false if not.
  */
 function edd_all_access_user_has_pass( $user_id, $download_id, $price_id = 0, $required_pass_status = 'active' ) {
 
@@ -647,18 +648,18 @@ function edd_all_access_user_has_pass( $user_id, $download_id, $price_id = 0, $r
 		return $has_pass;
 	}
 
-	// Get the current customer's All Access Passes from the customer meta.
+	// Get the current customer's Full Access Passes from the customer meta.
 	$customer_all_access_passes = edd_all_access_get_customer_pass_objects( $customer );
 
-	// If the customer has no All Access Passes in their customer meta.
+	// If the customer has no Full Access Passes in their customer meta.
 	if ( empty( $customer_all_access_passes ) || ! is_array( $customer_all_access_passes ) ) {
 		return $has_pass;
 	}
 
-	// Loop through each All Access Pass to see if any match the restricted_to and are active.
+	// Loop through each Full Access Pass to see if any match the restricted_to and are active.
 	foreach ( $customer_all_access_passes as $all_access_pass ) {
 
-		// If this All Access Pass matches the required status, check if it is one of the restricted_to products.
+		// If this Full Access Pass matches the required status, check if it is one of the restricted_to products.
 		if ( $all_access_pass->status === $required_pass_status ) {
 
 			// If this download is not the one which was purchased, continue.
@@ -682,10 +683,10 @@ function edd_all_access_user_has_pass( $user_id, $download_id, $price_id = 0, $r
 }
 
 /**
- * By passing an All Access Pass object, check if a, higher, upgraded-to version of that All Access Pass is active for the customer.
+ * By passing an Full Access Pass object, check if a, higher, upgraded-to version of that Full Access Pass is active for the customer.
  *
  * @since    1.0.0
- * @param    EDD_All_Access_Pass $prior_all_access_pass The All Access Pass Object to check.
+ * @param    EDD_All_Access_Pass $prior_all_access_pass The Full Access Pass Object to check.
  * @return   bool
  */
 function edd_all_access_user_has_upgrade_of_prior_pass( $prior_all_access_pass ) {
@@ -699,10 +700,10 @@ function edd_all_access_user_has_upgrade_of_prior_pass( $prior_all_access_pass )
 		return false;
 	}
 
-	// Get the current customer's All Access Passes from the customer meta.
+	// Get the current customer's Full Access Passes from the customer meta.
 	$customer_all_access_passes = $prior_all_access_pass->customer->get_meta( 'all_access_passes' );
 
-	// Loop through the customer's All Access Passes to check if the upgraded version is still active.
+	// Loop through the customer's Full Access Passes to check if the upgraded version is still active.
 	foreach ( $customer_all_access_passes as $purchased_download_id_price_id => $purchased_aa_data ) {
 
 		// In case there happens to be an entry in the array without a numeric key.
@@ -716,10 +717,10 @@ function edd_all_access_user_has_upgrade_of_prior_pass( $prior_all_access_pass )
 
 		$all_access_pass = edd_all_access_get_pass( $purchased_aa_data['payment_id'], $purchased_aa_data['download_id'], $purchased_aa_data['price_id'] );
 
-		// If this All Access Pass is still active and has been upgraded.
+		// If this Full Access Pass is still active and has been upgraded.
 		if ( 'active' === $all_access_pass->status && $all_access_pass->prior_all_access_passes ) {
 
-			// Loop through each of the prior All Access Passes attached to this and see if they match.
+			// Loop through each of the prior Full Access Passes attached to this and see if they match.
 			foreach ( $all_access_pass->prior_all_access_passes as $prior_all_access_pass_id ) {
 
 				// If the product being purchased matches one of the prior passes in this still-active/upgraded pass.
@@ -736,9 +737,9 @@ function edd_all_access_user_has_upgrade_of_prior_pass( $prior_all_access_pass )
 
 /**
  * This function will return different HTML depending on the current state of the viewer.
- * If logged out it will return HTML containing a Buy Button for an All Access Pass and a Login Form below it.
- * If logged in without an active All Access Pass, it will output a Buy Button only.
- * If logged in with a valid All Access Pass, it will simply return false, as no output is needed.
+ * If logged out it will return HTML containing a Buy Button for an Full Access Pass and a Login Form below it.
+ * If logged in without an active Full Access Pass, it will output a Buy Button only.
+ * If logged in with a valid Full Access Pass, it will simply return false, as no output is needed.
  *
  * @since       1.0.0
  * @param       array $atts The args for the output.
@@ -779,20 +780,20 @@ function edd_all_access_buy_or_login_form( $atts ) {
 		$atts['all_access_price_id'] = array( $atts['all_access_price_id'] );
 	}
 
-	// Loop through each All Access product that might be output for sale.
+	// Loop through each Full Access product that might be output for sale.
 	foreach ( $atts['all_access_download_id'] as $all_access_download_id ) {
 		foreach ( $atts['all_access_price_id'] as $all_access_price_id ) {
 
 			$customer_has_all_access_pass = edd_all_access_user_has_pass( get_current_user_id(), $all_access_download_id, $all_access_price_id );
 
-			// If the customer has any of the All Access passes in question, there's no output needed so return false.
+			// If the customer has any of the Full Access passes in question, there's no output needed so return false.
 			if ( $customer_has_all_access_pass ) {
 				return false;
 			}
 		}
 	}
 
-	// If we got this far, the customer does not have any valid All Access passes of the ones required. Therefore, output is required. Lets set it up.
+	// If we got this far, the customer does not have any valid Full Access passes of the ones required. Therefore, output is required. Lets set it up.
 	if ( ! $login_purchase_area_already_output ) {
 		$login_purchase_area                = '<div class="edd-aa-login-purchase-area ' . esc_attr( $atts['class'] ) . ' ">';
 		$login_purchase_area_already_output = true;
@@ -810,7 +811,7 @@ function edd_all_access_buy_or_login_form( $atts ) {
 	$custom_btn_url                             = apply_filters( 'edd_all_access_custom_url_btn_url', edd_get_option( 'all_access_custom_url_btn_url', get_bloginfo( 'wpurl' ) ) );
 	$custom_btn_text                            = apply_filters( 'all_access_custom_url_btn_text', edd_get_option( 'all_access_custom_url_btn_text', __( 'View Pricing', 'edd-all-access' ) ) );
 
-	// If we should show a custom button (think "pricing") instead of the All Access purchase buttons.
+	// If we should show a custom button (think "pricing") instead of the Full Access purchase buttons.
 	if ( 'custom_btn' === $all_access_replace_aa_btns_with_custom_btn ) {
 
 		$class = implode( ' ', array( 'edd-all-access-btn', 'button', 'edd-button', $atts['all_access_btn_style'], $atts['all_access_btn_color'], trim( $atts['all_access_btn_class'] ) ) );
@@ -828,10 +829,10 @@ function edd_all_access_buy_or_login_form( $atts ) {
 		// Make sure each product is only shown once.
 		$atts['all_access_download_id'] = array_unique( $atts['all_access_download_id'] );
 
-		// Loop through each All Access product that might be output for sale.
+		// Loop through each Full Access product that might be output for sale.
 		foreach ( $atts['all_access_download_id'] as $all_access_download_id ) {
 
-			// Now we will output the purchase button. Logged in or out, we know they don't have All Access at this point.
+			// Now we will output the purchase button. Logged in or out, we know they don't have Full Access at this point.
 			$all_access_buy_btn_args = array(
 				'id'      => $all_access_download_id,
 				'sku'     => $atts['all_access_sku'],
@@ -849,7 +850,7 @@ function edd_all_access_buy_or_login_form( $atts ) {
 				if ( intval( '1' ) === intval( $all_access_buy_btn_args['direct'] ) || 'true' === $all_access_buy_btn_args['direct'] ) {
 					$all_access_buy_btn_args['text'] = edd_get_option( 'buy_now_text', __( 'Buy Now', 'edd-all-access' ) );
 				} else {
-					$all_access_buy_btn_args['text'] = edd_get_option( 'add_to_cart_text', __( 'Purchase All Access', 'edd-all-access' ) );
+					$all_access_buy_btn_args['text'] = edd_get_option( 'add_to_cart_text', __( 'Purchase Full Access', 'edd-all-access' ) );
 				}
 			}
 
@@ -1021,8 +1022,8 @@ function edd_all_access_output_login_modal() {
 }
 
 /**
- * This function retrieves which variable prices are "relevant" to an All Access pass.
- * That is, which variable prices does the customer have access to because of their All Access pass?
+ * This function retrieves which variable prices are "relevant" to an Full Access pass.
+ * That is, which variable prices does the customer have access to because of their Full Access pass?
  *
  * @since       1.0.10
  * @param       int $download_id The ID of the downloading being checked.
@@ -1192,10 +1193,10 @@ function edd_all_access_wp_timestamp_to_utc_timestamp( $wp_timestamp ) {
 }
 
 /**
- * Get the timestamp of when an All Access Pass was purchased in UTC
+ * Get the timestamp of when an Full Access Pass was purchased in UTC
  *
  * @since       1.1
- * @param       EDD_All_Access_Pass $all_access_pass The All Access pass in question.
+ * @param       EDD_All_Access_Pass $all_access_pass The Full Access pass in question.
  * @return      int
  */
 function edd_all_access_get_aap_purchase_timestamp( $all_access_pass ) {
@@ -1234,7 +1235,7 @@ function edd_all_access_get_payment_utc_timestamp( $payment_object ) {
 }
 
 /**
- * Retrieves the payment statuses that count as "valid" for All Access.
+ * Retrieves the payment statuses that count as "valid" for Full Access.
  *
  * @since 1.2
  *
@@ -1302,7 +1303,7 @@ function edd_all_access_get_download_limit_periods() {
 }
 
 /**
- * Gets the customer's All Access Passes.
+ * Gets the customer's Full Access Passes.
  *
  * @since 1.2
  * @param \EDD_Customer $customer
@@ -1352,7 +1353,7 @@ function edd_all_access_get_customer_pass_objects( \EDD_Customer $customer ) {
 			continue;
 		}
 
-		// Set up an All Access Pass Object for this.
+		// Set up an Full Access Pass Object for this.
 		$pass = edd_all_access_get_pass( $purchased_aa_data['payment_id'], $purchased_aa_data['download_id'], $purchased_aa_data['price_id'] );
 		if ( 'invalid' !== $pass->status ) {
 			$pass_objects[] = $pass;
@@ -1390,7 +1391,7 @@ function edd_all_access_get_customer_pass_objects( \EDD_Customer $customer ) {
 function edd_all_access_get_and_activate_pass( $order_id, $product_id, $price_id ) {
 	$all_access_pass = new EDD_All_Access_Pass( $order_id, $product_id, absint( $price_id ) );
 
-	// If it is required, activate this All Access Pass.
+	// If it is required, activate this Full Access Pass.
 	return $all_access_pass->maybe_activate();
 }
 
@@ -1413,9 +1414,9 @@ function edd_all_access_allow_redownload() {
  *
  * @since 1.2.4.2 - Replaces the oddly named function EDD_All_Access_Pass that is the same as the main class.
  *
- * @param    int $payment_id The ID of the payment attached to the All Access Pass.
- * @param    int $download_id The ID of the download attached to the All Access Pass.
- * @param    int $price_id The ID of the price attached to the All Access Pass.
+ * @param    int $payment_id The ID of the payment attached to the Full Access Pass.
+ * @param    int $download_id The ID of the download attached to the Full Access Pass.
+ * @param    int $price_id The ID of the price attached to the Full Access Pass.
  *
  * @return   object - an EDD_All_Access_Pass object
  */
@@ -1424,16 +1425,16 @@ function edd_all_access_get_pass( $payment_id = 0, $download_id = 0, $price_id =
 }
 
 /**
- * This function is useful for situations like an archive page where you might instatiate the same All Access Pass object many times in a single page load.
+ * This function is useful for situations like an archive page where you might instatiate the same Full Access Pass object many times in a single page load.
  * It caches the object into a global variable and uses that, rather than completely running the instantiation each time.
  * This name remains in Camel Case format to support backwards compatible calls.
  *
  * @since    1.0.0
  * @since    1.2.4.2 - Moved to the helper-functions.php and is now just a pass through.
  *
- * @param    int $payment_id The ID of the payment attached to the All Access Pass.
- * @param    int $download_id The ID of the download attached to the All Access Pass.
- * @param    int $price_id The ID of the price attached to the All Access Pass.
+ * @param    int $payment_id The ID of the payment attached to the Full Access Pass.
+ * @param    int $download_id The ID of the download attached to the Full Access Pass.
+ * @param    int $price_id The ID of the price attached to the Full Access Pass.
  * @return   object - an EDD_All_Access_Pass object
  */
 function EDD_All_Access_Pass( $payment_id = 0, $download_id = 0, $price_id = 0 ) { //phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid
@@ -1441,7 +1442,7 @@ function EDD_All_Access_Pass( $payment_id = 0, $download_id = 0, $price_id = 0 )
 }
 
 /**
- * Helper function to check if All Access is enabled for a download.
+ * Helper function to check if Full Access is enabled for a download.
  *
  * @since 1.2.5
  * @param int $download_id

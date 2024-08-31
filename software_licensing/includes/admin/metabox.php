@@ -708,6 +708,7 @@ function edd_sl_payment_details_meta_box( $payment_id = 0 ) {
 			}
 		}
 	}
+	
 
 
 	?>

@@ -1,8 +1,8 @@
 <?php
 /**
- * Render the All Access Pass Single View in wp-admin
+ * Render the Full Access Pass Single View in wp-admin
  *
- * @package     EDD All Access
+ * @package     EDD Full Access
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0.0
  */
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Render the All Access Pass Single View
+ * Render the Full Access Pass Single View
  *
  * @access      public
  * @since       1.0.0
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function edd_all_access_pass_page() {
 
-	// If payment_id, download_id, and price_id exist in the URL, load the single All Access pass we are dealing with.
+	// If payment_id, download_id, and price_id exist in the URL, load the single Full Access pass we are dealing with.
 	if ( ! empty( $_GET['payment_id'] ) && ! empty( $_GET['download_id'] ) && isset( $_GET['price_id'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		edd_all_access_display_pass_details( intval( $_GET['payment_id'] ), intval( $_GET['download_id'] ), intval( $_GET['price_id'] ) ); //phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -30,11 +30,11 @@ function edd_all_access_pass_page() {
 
 	}
 
-	echo esc_html( __( 'No All Access Pass defined', 'edd-all-access' ) );
+	echo esc_html( __( 'No Full Access Pass defined', 'edd-all-access' ) );
 }
 
 /**
- * Updates the EDD settings page title on the All Access page.
+ * Updates the EDD settings page title on the Full Access page.
  *
  * @since 1.2.4
  * @param string $page_title     The page title.
@@ -43,19 +43,19 @@ function edd_all_access_pass_page() {
  */
 add_filter( 'edd_settings_page_title', function( $page_title, $current_page, $is_single_view ) {
 	if ( 'edd-all-access-pass' === $current_page ) {
-		return __( 'All Access', 'edd-all-access' );
+		return __( 'Full Access', 'edd-all-access' );
 	}
 
 	return $page_title;
 }, 10, 3 );
 
 /**
- * All Access Pass Details
+ * Full Access Pass Details
  * Outputs the subscriber details
  *
- * @param int $payment_id  The ID of the EDD payment where this All Access Pass was purchased.
- * @param int $download_id The ID of the product where this All Access Pass originated.
- * @param int $price_id    The ID of the price variation where this All Access Pass originated. Use 0 for a non variable priced product.
+ * @param int $payment_id  The ID of the EDD payment where this Full Access Pass was purchased.
+ * @param int $download_id The ID of the product where this Full Access Pass originated.
+ * @param int $price_id    The ID of the price variation where this Full Access Pass originated. Use 0 for a non variable priced product.
  * @since       1.0.0
  */
 function edd_all_access_display_pass_details( $payment_id, $download_id, $price_id ) {
@@ -67,12 +67,12 @@ function edd_all_access_display_pass_details( $payment_id, $download_id, $price_
 	}
 
 	if ( 'invalid' === $all_access_pass->status ) {
-		edd_set_error( 'edd-invalid-all-access-pass', __( 'Invalid All Access Pass Provided.', 'edd-all-access' ) );
+		edd_set_error( 'edd-invalid-all-access-pass', __( 'Invalid Full Access Pass Provided.', 'edd-all-access' ) );
 	}
 
 	?>
 	<div class="wrap">
-		<h2><?php esc_html_e( 'All Access Pass Details', 'edd-all-access' ); ?></h2>
+		<h2><?php esc_html_e( 'Full Access Pass Details', 'edd-all-access' ); ?></h2>
 		<?php
 		if ( edd_get_errors() ) {
 			?>
@@ -85,7 +85,7 @@ function edd_all_access_display_pass_details( $payment_id, $download_id, $price_
 			return;
 		}
 
-		// Get the customer data and any All Access passes they may already have purchased.
+		// Get the customer data and any Full Access passes they may already have purchased.
 		$customer_all_access_passes = $all_access_pass->customer->get_meta( 'all_access_passes' );
 
 		?>
@@ -129,18 +129,18 @@ function edd_all_access_display_pass_details( $payment_id, $download_id, $price_
 						if ( 'expired' === $all_access_pass->status ) {
 
 							echo '<p style="margin-top: 0;">';
-							echo wp_kses_post( '<strong>' . __( 'Note:', 'edd-all-access' ) . '</strong> ' . __( 'This All Access Pass has expired.', 'edd-all-access' ) . ' ' );
+							echo wp_kses_post( '<strong>' . __( 'Note:', 'edd-all-access' ) . '</strong> ' . __( 'This Full Access Pass has expired.', 'edd-all-access' ) . ' ' );
 							echo wp_kses_post( $reactivation_notice );
 							echo '</p>';
 						}
 
 						if ( 'upgraded' === $all_access_pass->status ) {
 							echo '<p style="margin-top: 0;">';
-							echo wp_kses_post( '<strong>' . __( 'Note:', 'edd-all-access' ) . '</strong> ' . __( 'This All Access Pass has been upgraded.', 'edd-all-access' ) . ' ' );
+							echo wp_kses_post( '<strong>' . __( 'Note:', 'edd-all-access' ) . '</strong> ' . __( 'This Full Access Pass has been upgraded.', 'edd-all-access' ) . ' ' );
 							echo wp_kses_post( $reactivation_notice );
 							echo '</p>';
 
-							// Set up the upgraded All Access Pass object so we can use it's data.
+							// Set up the upgraded Full Access Pass object so we can use it's data.
 							$upgraded_aa_data         = explode( '_', $all_access_pass->is_prior_of );
 							$upgraded_payment_id      = intval( $upgraded_aa_data[0] );
 							$upgraded_download_id     = intval( $upgraded_aa_data[1] );
@@ -151,23 +151,23 @@ function edd_all_access_display_pass_details( $payment_id, $download_id, $price_
 
 						if ( 'renewed' === $all_access_pass->status ) {
 
-							// Set up the currently active All Access Pass object so we can use its data.
+							// Set up the currently active Full Access Pass object so we can use its data.
 							$latest_active_payment_id = $customer_all_access_passes[ $all_access_pass->download_id . '_' . $all_access_pass->price_id ]['payment_id'];
 							$current_all_access_pass  = edd_all_access_get_pass( $latest_active_payment_id, $all_access_pass->download_id, $all_access_pass->price_id );
 
 							if ( ! is_wp_error( $current_all_access_pass->payment_id ) ) {
-								echo wp_kses_post( '<p style="margin-top: 0;"><strong>' . __( 'Note:', 'edd-all-access' ) . '</strong> ' . __( 'This All Access Pass has expired but was renewed by the customer. You can view the currently active All Access Pass', 'edd-all-access' ) . ' <a href="' . esc_url( admin_url( 'edit.php?post_type=download&page=edd-all-access-pass&payment_id=' . $current_all_access_pass->payment_id . '&download_id=' . $all_access_pass->download_id . '&price_id=' . $all_access_pass->price_id ) ) . '">' . __( 'here', 'edd-all-access' ) . '</a>.' );
+								echo wp_kses_post( '<p style="margin-top: 0;"><strong>' . __( 'Note:', 'edd-all-access' ) . '</strong> ' . __( 'This Full Access Pass has expired but was renewed by the customer. You can view the currently active Full Access Pass', 'edd-all-access' ) . ' <a href="' . esc_url( admin_url( 'edit.php?post_type=download&page=edd-all-access-pass&payment_id=' . $current_all_access_pass->payment_id . '&download_id=' . $all_access_pass->download_id . '&price_id=' . $all_access_pass->price_id ) ) . '">' . __( 'here', 'edd-all-access' ) . '</a>.' );
 							}
 						}
 
 						if ( 'upcoming' === $all_access_pass->status ) {
 
-							// Set up the currently active All Access Pass object so we can use it's data.
+							// Set up the currently active Full Access Pass object so we can use it's data.
 							$latest_active_payment_id = $customer_all_access_passes[ $all_access_pass->download_id . '_' . $all_access_pass->price_id ]['payment_id'];
 							$current_all_access_pass  = edd_all_access_get_pass( $latest_active_payment_id, $all_access_pass->download_id, $all_access_pass->price_id );
 
 							if ( ! is_wp_error( $current_all_access_pass->payment_id ) ) {
-								echo wp_kses_post( '<p style="margin-top: 0;"><strong>' . __( 'Note:', 'edd-all-access' ) . '</strong> ' . __( 'This All Access Pass is tied to a renewal payment and will "take over" when the current period ends. You can view the currently active All Access Pass', 'edd-all-access' ) . ' <a href="' . esc_url( admin_url( 'edit.php?post_type=download&page=edd-all-access-pass&payment_id=' . $current_all_access_pass->payment_id . '&download_id=' . $all_access_pass->download_id . '&price_id=' . $all_access_pass->price_id ) ) . '">' . __( 'here', 'edd-all-access' ) . '</a>.' );
+								echo wp_kses_post( '<p style="margin-top: 0;"><strong>' . __( 'Note:', 'edd-all-access' ) . '</strong> ' . __( 'This Full Access Pass is tied to a renewal payment and will "take over" when the current period ends. You can view the currently active Full Access Pass', 'edd-all-access' ) . ' <a href="' . esc_url( admin_url( 'edit.php?post_type=download&page=edd-all-access-pass&payment_id=' . $current_all_access_pass->payment_id . '&download_id=' . $all_access_pass->download_id . '&price_id=' . $all_access_pass->price_id ) ) . '">' . __( 'here', 'edd-all-access' ) . '</a>.' );
 							}
 
 						}
@@ -251,7 +251,7 @@ function edd_all_access_display_pass_details( $payment_id, $download_id, $price_
 									}
 									?>
 										<a href="<?php echo esc_url( $link ); ?>">
-										<?php esc_html_e( 'View file download logs for this All Access pass.', 'edd-all-access' ); ?></a>
+										<?php esc_html_e( 'View file download logs for this Full Access pass.', 'edd-all-access' ); ?></a>
 									</td>
 								</tr>
 								<?php } ?>
@@ -315,7 +315,7 @@ function edd_all_access_display_pass_details( $payment_id, $download_id, $price_
 }
 								}
 
-								// Show the Upgraded Date - If this All Access Pass has been upgraded, show that information instead of Expiration Date.
+								// Show the Upgraded Date - If this Full Access Pass has been upgraded, show that information instead of Expiration Date.
 								if ( 'upgraded' === $all_access_pass->status ) {
 									$date = false;
 									foreach ( array( 'completed_date', 'date_completed', 'date' ) as $payment_date ) {
@@ -357,7 +357,7 @@ function edd_all_access_display_pass_details( $payment_id, $download_id, $price_
 									<td><?php echo esc_html( edd_all_access_get_status_label( $all_access_pass->status ) ); ?>
 
 										<?php
-										// If this All Access Pass is not yet active but will/should be once the current one expires (upcoming).
+										// If this Full Access Pass is not yet active but will/should be once the current one expires (upcoming).
 										if ( 'upgraded' === $all_access_pass->status && ! is_wp_error( $upgraded_all_access_pass->payment_id ) ) {
 
 											// Show a link to the upgraded-to pass.
@@ -366,7 +366,7 @@ function edd_all_access_display_pass_details( $payment_id, $download_id, $price_
 										<?php } ?>
 										<?php
 
-										// If this is a renewed All Access Pass.
+										// If this is a renewed Full Access Pass.
 										if ( 'renewed' === $all_access_pass->status && ! is_wp_error( $current_all_access_pass->payment_id ) ) {
 
 											// Show link to latest active all access pass.
@@ -374,7 +374,7 @@ function edd_all_access_display_pass_details( $payment_id, $download_id, $price_
 											<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=download&page=edd-all-access-pass&payment_id=' . $current_all_access_pass->payment_id . '&download_id=' . $all_access_pass->download_id . '&price_id=' . $all_access_pass->price_id ) ); ?>"> <?php echo esc_html( __( '(View Current Pass)', 'edd-all-access' ) ); ?></a>
 										<?php } ?>
 										<?php
-										// If this All Access Pass is not yet active but will/should be once the current one expires (upcoming).
+										// If this Full Access Pass is not yet active but will/should be once the current one expires (upcoming).
 										if ( 'upcoming' === $all_access_pass->status && ! is_wp_error( $current_all_access_pass->payment_id ) ) {
 
 											// Show link to latest active all access pass.
@@ -424,7 +424,7 @@ function edd_all_access_display_pass_details( $payment_id, $download_id, $price_
 									</tr>
 									<tr>
 										<td class="row-title">
-											<label for="tablecell"><?php esc_html_e( 'All Access Duration:', 'edd-all-access' ); ?></label>
+											<label for="tablecell"><?php esc_html_e( 'Full Access Duration:', 'edd-all-access' ); ?></label>
 										</td>
 										<?php
 										if ( 'never' === $all_access_duration_unit ) {
@@ -472,7 +472,7 @@ function edd_all_access_display_pass_details( $payment_id, $download_id, $price_
 									</tr>
 									<tr>
 										<td class="row-title">
-											<label for="tablecell"><?php esc_html_e( 'All Access To:', 'edd-all-access' ); ?></label>
+											<label for="tablecell"><?php esc_html_e( 'Full Access To:', 'edd-all-access' ); ?></label>
 										</td>
 										<td>
 										<?php
@@ -572,13 +572,13 @@ function edd_all_access_display_pass_details( $payment_id, $download_id, $price_
 									</tr>
 									<tr>
 										<td class="row-title">
-											<label for="tablecell"><?php esc_html_e( 'All Access Duration:', 'edd-all-access' ); ?></label>
+											<label for="tablecell"><?php esc_html_e( 'Full Access Duration:', 'edd-all-access' ); ?></label>
 										</td>
 										<td>
 
 											<?php
 
-											// Length of All Access duration.
+											// Length of Full Access duration.
 											$all_access_duration_unit_options = array(
 												'never' => __( 'Never Expires', 'edd-all-access' ),
 												'year'  => __( 'Year(s)', 'edd-all-access' ),
@@ -620,7 +620,7 @@ function edd_all_access_display_pass_details( $payment_id, $download_id, $price_
 											<span id="edd_all_access_unlimited_download_limit_note" style="display:none;"><?php echo esc_html( __( '(0 = Unlimited downloads per day)', 'edd-all-access' ) ); ?></span>
 											<?php
 
-											// Downloads allowed per All Access Period.
+											// Downloads allowed per Full Access Period.
 											$download_limit_time_period_options = array(
 												'per_day'  => __( 'X downloads per day', 'edd-all-access' ),
 												'per_week' => __( 'X downloads per week', 'edd-all-access' ),
@@ -645,7 +645,7 @@ function edd_all_access_display_pass_details( $payment_id, $download_id, $price_
 									</tr>
 									<tr>
 										<td class="row-title">
-											<label for="tablecell"><?php esc_html_e( 'All Access To:', 'edd-all-access' ); ?></label>
+											<label for="tablecell"><?php esc_html_e( 'Full Access To:', 'edd-all-access' ); ?></label>
 										</td>
 										<td>
 										<?php
@@ -722,20 +722,20 @@ function edd_all_access_display_pass_details( $payment_id, $download_id, $price_
 							<?php
 							if ( 'expired' === $all_access_pass->status ) {
 								echo '<p style="margin-top: 0;">';
-								echo wp_kses_post( '<strong>' . __( 'Note:', 'edd-all-access' ) . '</strong> ' . __( 'This All Access Pass has expired.', 'edd-all-access' ) . ' ' );
+								echo wp_kses_post( '<strong>' . __( 'Note:', 'edd-all-access' ) . '</strong> ' . __( 'This Full Access Pass has expired.', 'edd-all-access' ) . ' ' );
 								echo wp_kses_post( $reactivation_notice );
 								echo '</p>';
 							}
 							if ( 'upgraded' === $all_access_pass->status ) {
 								echo '<p style="margin-top: 0;">';
-								echo wp_kses_post( '<strong>' . __( 'Note:', 'edd-all-access' ) . '</strong> ' . __( 'This All Access Pass has been upgraded.', 'edd-all-access' ) . ' ' );
+								echo wp_kses_post( '<strong>' . __( 'Note:', 'edd-all-access' ) . '</strong> ' . __( 'This Full Access Pass has been upgraded.', 'edd-all-access' ) . ' ' );
 								echo wp_kses_post( $reactivation_notice );
 								echo '</p>';
 							}
 							?>
 
 							<?php wp_nonce_field( 'edd-all-access-update', 'edd-all-access-update-nonce', false, true ); ?>
-							<input type="submit" name="edd_update_all_access_pass" id="edd_update_all_access_pass" class="button button-primary" value="<?php echo esc_attr( 'Update All Access Pass', 'edd-all-access' ); ?>"/>
+							<input type="submit" name="edd_update_all_access_pass" id="edd_update_all_access_pass" class="button button-primary" value="<?php echo esc_attr( 'Update Full Access Pass', 'edd-all-access' ); ?>"/>
 						</div>
 					<?php } ?>
 				</form>
@@ -749,7 +749,7 @@ function edd_all_access_display_pass_details( $payment_id, $download_id, $price_
 }
 
 /**
- * Handles saving/updating a single All Access Pass.
+ * Handles saving/updating a single Full Access Pass.
  *
  * @access      public
  * @since       1.0.0
@@ -784,18 +784,18 @@ function edd_all_access_process_update() {
 	$all_access_pass = edd_all_access_get_pass( absint( $_GET['payment_id'] ), absint( $_GET['download_id'] ), absint( $_GET['price_id'] ) );
 
 	if ( 'invalid' === $all_access_pass->status ) {
-		wp_die( __( 'That is not a valid All Access Pass.', 'edd-all-access' ), __( 'Error', 'edd-all-access' ), array( 'response' => 403 ) );
+		wp_die( __( 'That is not a valid Full Access Pass.', 'edd-all-access' ), __( 'Error', 'edd-all-access' ), array( 'response' => 403 ) );
 	}
 
-	// Get the All Access Pass data saved to this customer.
+	// Get the Full Access Pass data saved to this customer.
 	$customer_all_access_passes = $all_access_pass->customer->get_meta( 'all_access_passes' );
 
-	// If the All Access Passes array is empty, flush the cache as it's probably wrong if it's empty here.
+	// If the Full Access Passes array is empty, flush the cache as it's probably wrong if it's empty here.
 	if ( empty( $customer_all_access_passes ) ) {
 
 		$all_access_pass = edd_all_access_get_pass( absint( $_GET['payment_id'] ), absint( $_GET['download_id'] ), absint( $_GET['price_id'] ) );
 
-		// Get the All Access Pass data saved to this customer.
+		// Get the Full Access Pass data saved to this customer.
 		$customer_all_access_passes = $all_access_pass->customer->get_meta( 'all_access_passes' );
 	}
 

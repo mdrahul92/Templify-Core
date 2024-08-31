@@ -1,8 +1,8 @@
 <?php
 /**
- * All Access Product
+ * Full Access Product
  *
- * This class is used for parsing settings from an All Access-enabled product and putting them
+ * This class is used for parsing settings from an Full Access-enabled product and putting them
  * in an easy-to-use class. This ensures data remains consistent, especially default values.
  *
  * @package   edd-all-access
@@ -142,7 +142,7 @@ class AllAccessProduct {
 			$this->show_link_in_receipt = false;
 		}
 
-		$this->receipt_link_message = isset( $settings['link_message'] ) ? $settings['link_message'] : __( 'Click here to use your All Access Pass', 'edd-all-access' );
+		$this->receipt_link_message = isset( $settings['link_message'] ) ? $settings['link_message'] : __( 'Click here to use your Full Access Pass', 'edd-all-access' );
 		$edd_slug                   = ! defined( 'EDD_SLUG' ) ? 'downloads' : EDD_SLUG;
 		$this->receipt_link_url     = isset( $settings['link_url'] ) ? $settings['link_url'] : home_url() . '/' . $edd_slug . '/';
 	}

@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * If a customer is looking at the purchase button for an All Access Product that they have an active All Access Pass for,
+ * If a customer is looking at the purchase button for an Full Access Product that they have an active Full Access Pass for,
  * change the word on the button from "Purchase" to "Renew".
  *
  * @since       1.0.0
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function edd_all_access_modify_renew_btn_text( $args ) {
 
-	// First lets check if this is an All Access Product.
+	// First lets check if this is an Full Access Product.
 	if ( ! edd_all_access_download_is_all_access( $args['download_id'], $args['price_id'] ) ) {
 
 		return $args;
@@ -29,7 +29,7 @@ function edd_all_access_modify_renew_btn_text( $args ) {
 
 	$customer = new EDD_Customer( get_current_user_id(), true );
 
-	// Get the All Access passes saved to this customer meta.
+	// Get the Full Access passes saved to this customer meta.
 	$customer_all_access_passes = edd_all_access_get_customer_passes( $customer );
 
 	// If this customer has no all access passes return the button as-is.
@@ -59,7 +59,7 @@ function edd_all_access_modify_renew_btn_text( $args ) {
 		return $args;
 	}
 
-	// If this customer has purchased this All Access Pass before, change the button text to "Renew" to provide better context.
+	// If this customer has purchased this Full Access Pass before, change the button text to "Renew" to provide better context.
 	$renew_button_text = apply_filters( 'edd_all_access_renew_btn_text', __( 'Renew Now', 'edd-all-access' ), $args );
 	$args['text']      = $renew_button_text;
 
@@ -68,9 +68,9 @@ function edd_all_access_modify_renew_btn_text( $args ) {
 add_filter( 'edd_purchase_link_args', 'edd_all_access_modify_renew_btn_text' );
 
 /**
- * Prevent bad purchases of All Access.
+ * Prevent bad purchases of Full Access.
  * Make sure the user is logged in and has an account.
- * Also prevent an prior (prior-to-upgraded) All Access Pass from being purchased while the upgrade is still active.
+ * Also prevent an prior (prior-to-upgraded) Full Access Pass from being purchased while the upgrade is still active.
  * This prevents errors relating to upgrades since it would overwrite the is_prior_of value.
  *
  * @since       1.0.0
@@ -94,10 +94,10 @@ function edd_all_access_prevent_bad_purchases( $user, $valid_data, $post ) {
 		return;
 	}
 
-	// Check which mode the site is in for selling All Access.
+	// Check which mode the site is in for selling Full Access.
 	$sell_mode = edd_get_option( 'all_access_purchase_form_display', 'normal-mode' );
 
-	// Get all of the All Access enabled products.
+	// Get all of the Full Access enabled products.
 	$all_access_products = edd_all_access_get_all_access_downloads();
 	$all_access_products = array_reverse( $all_access_products );
 
@@ -107,18 +107,18 @@ function edd_all_access_prevent_bad_purchases( $user, $valid_data, $post ) {
 		$download_id = $item['id'];
 		$price_id    = isset( $item['options']['price_id'] ) ? (int) $item['options']['price_id'] : 0;
 
-		// Check if this product is an All Access product.
+		// Check if this product is an Full Access product.
 		$enabled = edd_all_access_enabled_for_download( $download_id );
 
-		// If this is not an All Access Product.
+		// If this is not an Full Access Product.
 		if ( ! $enabled ) {
 
-			// If the store is in the mode which only allows products to be downloaded using All Access, and the product 'could' be downloaded through All Access.
+			// If the store is in the mode which only allows products to be downloaded using Full Access, and the product 'could' be downloaded through Full Access.
 			if ( 'aa-only-mode' === $sell_mode ) {
 
-				// Loop through all of the All Access Products.
+				// Loop through all of the Full Access Products.
 				foreach ( $all_access_products as $all_access_product_id ) {
-					// Check if this All Access Product would contain this download.
+					// Check if this Full Access Product would contain this download.
 					$aa_includes_download_args = array(
 						'all_access_product_info' => array(
 							'download_id' => $all_access_product_id,
@@ -157,12 +157,12 @@ function edd_all_access_prevent_bad_purchases( $user, $valid_data, $post ) {
 			return false;
 		}
 
-		// If this is not an All Access Product, and no products are in the cart that are included in an All Access pass.
+		// If this is not an Full Access Product, and no products are in the cart that are included in an Full Access pass.
 		if ( ! $enabled ) {
 			return false;
 		}
 
-		// If we got to here, this is an All Access enabled product that is in the cart.
+		// If we got to here, this is an Full Access enabled product that is in the cart.
 		$bypass_login_requirement = apply_filters( 'edd_all_access_bypass_login_requirement', false, $download_id, $price_id );
 
 		// Check if the customer is not logged in.
@@ -170,14 +170,14 @@ function edd_all_access_prevent_bad_purchases( $user, $valid_data, $post ) {
 			edd_set_error( 'edd_all_access_purchase_not_possible', __( 'Create an account or log in before purchasing', 'edd-all-access' ) . ' ' . get_the_title( $download_id ) . '.' );
 		}
 
-		// Check the quantity of the All Access product. If it's more than 1, at this time, you can't buy more than 1 quantity of an All Access Pass in a single purchase.
+		// Check the quantity of the Full Access product. If it's more than 1, at this time, you can't buy more than 1 quantity of an Full Access Pass in a single purchase.
 		// This is because you can only buy an access pass for yourself (your own account). You can't purchase for other accounts at this time.
 		if ( isset( $item['quantity'] ) && $item['quantity'] > 1 ) {
 			// Translators: The name of the product being purchased.
 			edd_set_error( 'edd_all_access_quantity_error', sprintf( __( 'You can only purchase 1 "%s" per user account. If you wish to purchase for another user account, log into that account and purchase it there as well. To complete this purchase, reduce the quantity in your cart to 1.', 'edd-all-access' ), get_the_title( $download_id ) ) );
 		}
 
-		// Different than official "quantities", but if there is more than 1 of the same All Access product in the cart, throw an error.
+		// Different than official "quantities", but if there is more than 1 of the same Full Access product in the cart, throw an error.
 		foreach ( $cart_contents as $checker_cart_key => $checker_item ) {
 
 			// Skip over this item of course - we only want to check if OTHER products in the cart match this one.
@@ -196,10 +196,10 @@ function edd_all_access_prevent_bad_purchases( $user, $valid_data, $post ) {
 		$has_active_all_access_pass   = edd_all_access_user_has_pass( get_current_user_id(), $download_id, $price_id, 'active' );
 		$has_upgraded_all_access_pass = edd_all_access_user_has_pass( get_current_user_id(), $download_id, $price_id, 'upgraded' );
 
-		// Check if the customer already has an All Access Pass for this product.
+		// Check if the customer already has an Full Access Pass for this product.
 		if ( $has_active_all_access_pass ) {
 
-			// Check if this All Access Pass is set to never expire. If so, there's no need to purchase it again.
+			// Check if this Full Access Pass is set to never expire. If so, there's no need to purchase it again.
 			if ( 'never' === $has_active_all_access_pass->expiration_time ) {
 				$download = new EDD_Download( $download_id );
 				// Translators: The name of the product being purchased.
@@ -225,7 +225,7 @@ function edd_all_access_prevent_bad_purchases( $user, $valid_data, $post ) {
 add_action( 'edd_checkout_user_error_checks', 'edd_all_access_prevent_bad_purchases', 10, 3 );
 
 /**
- * Automatically remove deuplciate All Access products from the cart
+ * Automatically remove deuplciate Full Access products from the cart
  *
  * This has been superceded by `edd_all_access_maybe_prevent_add_to_cart()` and may no
  * longer be needed. It's still in place for now as a fallback.
@@ -245,7 +245,7 @@ function edd_all_access_auto_remove_duplicates( $cart ) {
 	foreach ( $cart as $key => $item ) {
 		$download = new EDD_Download( $item['id'] );
 
-		// If the item is an All Access product.
+		// If the item is an Full Access product.
 		if ( in_array( $download->ID, $all_access_products, true ) ) {
 
 			$price_id = isset( $item['options']['price_id'] ) ? $item['options']['price_id'] : 0;
@@ -253,7 +253,7 @@ function edd_all_access_auto_remove_duplicates( $cart ) {
 			// If this item is already in the cart.
 			if ( in_array( $download->ID . '_' . $price_id, $in_cart_aa_products, true ) ) {
 
-				// Remove it from the cart because it is a duplicate All Access product.
+				// Remove it from the cart because it is a duplicate Full Access product.
 				unset( $cart[ $key ] );
 
 			} else {
@@ -270,7 +270,7 @@ function edd_all_access_auto_remove_duplicates( $cart ) {
 add_filter( 'edd_cart_contents', 'edd_all_access_auto_remove_duplicates', 10, 1 );
 
 /**
- * Prevents duplicate All Access Passes from being added to the cart.
+ * Prevents duplicate Full Access Passes from being added to the cart.
  * This is a replacement for `edd_all_access_auto_remove_duplicates()`, which de-dupes
  * after the fact.
  *
@@ -281,7 +281,7 @@ add_filter( 'edd_cart_contents', 'edd_all_access_auto_remove_duplicates', 10, 1 
  * @return array|false
  */
 function edd_all_access_maybe_prevent_add_to_cart( $item ) {
-	// Bail if there's no item ID, or this isn't an All Access Product.
+	// Bail if there's no item ID, or this isn't an Full Access Product.
 	if ( empty( $item['id'] ) || ! in_array( $item['id'], edd_all_access_get_all_access_downloads() ) ) {
 		return $item;
 	}
@@ -315,7 +315,7 @@ function edd_all_access_maybe_prevent_add_to_cart( $item ) {
 add_filter( 'edd_add_to_cart_item', 'edd_all_access_maybe_prevent_add_to_cart' );
 
 /**
- * Modify the purchase form (Add To Cart) to append the Buy/Login form for All Access.
+ * Modify the purchase form (Add To Cart) to append the Buy/Login form for Full Access.
  * The default here is to make no change to the normal purchase form but if set in the settings, the output will change.
  *
  * @since       1.0.0
@@ -333,7 +333,7 @@ function edd_all_access_modify_purchase_form( $purchase_form, $args ) {
 		return $purchase_form;
 	}
 
-	// If we should only show the All Access purchase/login form, find which AA pass could contain this product.
+	// If we should only show the Full Access purchase/login form, find which AA pass could contain this product.
 	$all_access_products = edd_all_access_get_all_access_downloads();
 	$all_access_products = array_reverse( $all_access_products );
 
@@ -341,7 +341,7 @@ function edd_all_access_modify_purchase_form( $purchase_form, $args ) {
 	$download_id = absint( $args['download_id'] );
 	$price_id    = defined( 'DOING_AJAX' ) && DOING_AJAX ? absint( $args['price_id'] ) : edd_get_default_variable_price( $download_id );
 
-	// If the product is an All Access Product, check if it never expires. If so, output a message, otherwise, show the purchase button.
+	// If the product is an Full Access Product, check if it never expires. If so, output a message, otherwise, show the purchase button.
 	if ( in_array( $download_id, $all_access_products, true ) ) {
 
 		$maybe_all_access_pass = edd_all_access_user_has_pass( get_current_user_id(), $download_id, $price_id );
@@ -361,7 +361,7 @@ function edd_all_access_modify_purchase_form( $purchase_form, $args ) {
 	// Set default output for the purchase form.
 	$form = '';
 
-	// Don't run this if the customer has access to this product with their current All Access Pass.
+	// Don't run this if the customer has access to this product with their current Full Access Pass.
 	$all_access_check_args = array(
 		'download_id' => $download_id,
 		'price_id'    => $price_id,
@@ -369,7 +369,7 @@ function edd_all_access_modify_purchase_form( $purchase_form, $args ) {
 
 	$all_access = edd_all_access_check( $all_access_check_args );
 
-	// If the customer has access to this product through an All Access Pass, return the purchase form as is.
+	// If the customer has access to this product through an Full Access Pass, return the purchase form as is.
 	if ( $all_access['success'] ) {
 		return $purchase_form;
 	}
@@ -377,22 +377,22 @@ function edd_all_access_modify_purchase_form( $purchase_form, $args ) {
 	// Check if this product being viewed has variable pricing.
 	$has_variable_prices = edd_has_variable_prices( $download_id );
 
-	// Check if any of the variable prices exclude All Access.
+	// Check if any of the variable prices exclude Full Access.
 	$variable_prices = edd_get_variable_prices( $download_id );
 
-	// If this product has variable pricing and any of those variable prices are not covered by an All Access Pass, return the normal purchase form.
+	// If this product has variable pricing and any of those variable prices are not covered by an Full Access Pass, return the normal purchase form.
 	if ( $has_variable_prices ) {
 
-		// Loop through each price id to check if it is excluded from All Access.
+		// Loop through each price id to check if it is excluded from Full Access.
 		foreach ( $variable_prices as $variable_price_id => $variable_price_settings ) {
-			// If this variable price is excluded from All Access.
+			// If this variable price is excluded from Full Access.
 			if ( ! empty( $variable_price_settings['excluded_price'] ) ) {
 					return $purchase_form;
 			}
 		}
 	}
 
-	// Get the mode the user has chosen for the Add To Cart purchase form display in the All Access settings.
+	// Get the mode the user has chosen for the Add To Cart purchase form display in the Full Access settings.
 	$purchase_form_display_mode = edd_get_option( 'all_access_purchase_form_display', 'normal-mode' );
 
 	// If the site is set to use the normal purchase mode.
@@ -408,16 +408,16 @@ function edd_all_access_modify_purchase_form( $purchase_form, $args ) {
 		$every_price_id_included      = true;
 		$all_access_products_to_show  = array();
 
-		// Loop through each All Access Product.
+		// Loop through each Full Access Product.
 		foreach ( $all_access_products as $all_access_product_id ) {
 
-			// If this product has variable pricing and any of those variable prices are not covered by an All Access Pass, return the normal purchase form.
+			// If this product has variable pricing and any of those variable prices are not covered by an Full Access Pass, return the normal purchase form.
 			if ( $has_variable_prices ) {
 
-				// Loop through each price id to check if it is excluded from this All Access Product.
+				// Loop through each price id to check if it is excluded from this Full Access Product.
 				foreach ( $variable_prices as $variable_price_id => $variable_price_settings ) {
 
-					// Check if this All Access Pass would contain this download/price_id.
+					// Check if this Full Access Pass would contain this download/price_id.
 					$aa_includes_download_args = array(
 						'all_access_product_info' => array(
 							'download_id' => $all_access_product_id,
@@ -431,7 +431,7 @@ function edd_all_access_modify_purchase_form( $purchase_form, $args ) {
 
 					$all_access_includes_download = edd_all_access_includes_download( $aa_includes_download_args );
 
-					// If this All Access Pass does not cover every price id in the product being viewed.
+					// If this Full Access Pass does not cover every price id in the product being viewed.
 					if ( ! $all_access_includes_download['success'] ) {
 
 						$every_price_id_included = false;
@@ -440,18 +440,18 @@ function edd_all_access_modify_purchase_form( $purchase_form, $args ) {
 					}
 				}
 
-				// If this All Access pass failed to cover every price id.
+				// If this Full Access pass failed to cover every price id.
 				if ( ! $every_price_id_included ) {
-					// Reset the value for the next All Access Pass to check.
+					// Reset the value for the next Full Access Pass to check.
 					$every_price_id_included = true;
 					// And then skip this pass and start checking the next one.
 					continue;
 				} else {
 
-					// If it would contain this download, we'll output a link to buy the All Access Pass.
+					// If it would contain this download, we'll output a link to buy the Full Access Pass.
 					if ( $all_access_includes_download['success'] ) {
 
-						// Add this All Access product to the list of All Access Products we'll show links to.
+						// Add this Full Access product to the list of Full Access Products we'll show links to.
 						$all_access_products_to_show[] = $all_access_product_id;
 					}
 				}
@@ -459,7 +459,7 @@ function edd_all_access_modify_purchase_form( $purchase_form, $args ) {
 
 				// Single price mode (not variable).
 
-				// Check if this All Access Pass would contain this download.
+				// Check if this Full Access Pass would contain this download.
 				$aa_includes_download_args = array(
 					'all_access_product_info' => array(
 						'download_id' => $all_access_product_id,
@@ -473,16 +473,16 @@ function edd_all_access_modify_purchase_form( $purchase_form, $args ) {
 
 				$all_access_includes_download = edd_all_access_includes_download( $aa_includes_download_args );
 
-				// If it would contain this download, we'll output a link to buy the All Access Pass.
+				// If it would contain this download, we'll output a link to buy the Full Access Pass.
 				if ( $all_access_includes_download['success'] ) {
 
-					// Add this All Access product to the list of All Access Products we'll show links to.
+					// Add this Full Access product to the list of Full Access Products we'll show links to.
 					$all_access_products_to_show[] = $all_access_product_id;
 				}
 			}
 		}
 
-		// If no All Access Passes would contain this download, return the normal purchase form.
+		// If no Full Access Passes would contain this download, return the normal purchase form.
 		if ( empty( $all_access_products_to_show ) ) {
 			return $purchase_form;
 		}
@@ -494,7 +494,7 @@ function edd_all_access_modify_purchase_form( $purchase_form, $args ) {
 
 		// Check if we should show the buy instructions.
 		$show_buy_instructions = edd_get_option( 'all_access_show_buy_instructions', 'show' );
-		$buy_instructions      = edd_get_option( 'all_access_buy_instructions', __( 'To get access, purchase an All Access Pass here.', 'edd-all-access' ) );
+		$buy_instructions      = edd_get_option( 'all_access_buy_instructions', __( 'To get access, purchase an Full Access Pass here.', 'edd-all-access' ) );
 
 		// Check if we should show the login instructions.
 		$show_login_instructions = edd_get_option( 'all_access_show_login_instructions', 'show' );
@@ -512,10 +512,10 @@ function edd_all_access_modify_purchase_form( $purchase_form, $args ) {
 			'login_instructions'     => 'show' === $show_login_instructions ? $login_instructions : '',
 		);
 
-		// Return the All Access Purchase/Login form only.
+		// Return the Full Access Purchase/Login form only.
 		$form = edd_all_access_buy_or_login_form( $all_access_form_args );
 
-		// If we should show both the normal "Add To Cart" button and the All Access purchase/login form.
+		// If we should show both the normal "Add To Cart" button and the Full Access purchase/login form.
 		if ( 'normal-plus-aa-mode' === $purchase_form_display_mode ) {
 
 			// Add the purchase back before the newly renovated aa-only style form.
@@ -541,7 +541,7 @@ function edd_all_access_modify_purchase_form( $purchase_form, $args ) {
  */
 function edd_all_access_set_priority_of_purchase_form_modifier() {
 
-	// Check which mode the site is in for selling All Access.
+	// Check which mode the site is in for selling Full Access.
 	$sell_mode = edd_get_option( 'all_access_purchase_form_display', 'normal-mode' );
 
 	if ( 'aa-only-mode' === $sell_mode ) {
@@ -556,22 +556,22 @@ function edd_all_access_set_priority_of_purchase_form_modifier() {
 add_action( 'init', 'edd_all_access_set_priority_of_purchase_form_modifier' );
 
 /**
- * Exclude Bundles From All Access. Bundles aren't "real" products with actual downloadable files. Only products WITHIN bundles are.
+ * Exclude Bundles From Full Access. Bundles aren't "real" products with actual downloadable files. Only products WITHIN bundles are.
  *
  * @since       1.0.0
- * @param       bool   $allowed Whether to allow All Access to change the download form for this product or not.
+ * @param       bool   $allowed Whether to allow Full Access to change the download form for this product or not.
  * @param       string $purchase_form The actual form output which is being filtered.
  * @param       array  $args The arguments passed to the edd_purchase_download_form filter.
  * @param       int    $download_id The ID of the product in question..
  * @param       int    $price_id The price ID of the product in question.
- * @return      bool $allowed Whether to allow All Access to change the download form for this product or not.
+ * @return      bool $allowed Whether to allow Full Access to change the download form for this product or not.
  */
 function edd_all_access_exclude_bundles( $allowed, $purchase_form, $args, $download_id, $price_id ) {
 
 	$download = new EDD_Download( $download_id );
 	$type     = $download->get_type();
 
-	// If the product being viewed is a bundle, exclude it from All Access.
+	// If the product being viewed is a bundle, exclude it from Full Access.
 	if ( 'bundle' === $type ) {
 		return false;
 	}
@@ -582,7 +582,7 @@ function edd_all_access_exclude_bundles( $allowed, $purchase_form, $args, $downl
 add_filter( 'edd_all_access_allow', 'edd_all_access_exclude_bundles', 10, 5 );
 
 /**
- * Add an informational box for All Access to the View Order Details screen.
+ * Add an informational box for Full Access to the View Order Details screen.
  *
  * @since       1.0.0
  * @param       int $payment_id The ID of the Payment being viewed.
@@ -598,22 +598,22 @@ function edd_all_access_view_order_details_sidebar( $payment_id ) {
 	<div id="edd-order-logs" class="postbox edd-order-logs">
 
 		<h3 class="hndle">
-			<span><?php esc_html_e( 'All Access Passes', 'edd-all-access' ); ?></span>
+			<span><?php esc_html_e( 'Full Access Passes', 'edd-all-access' ); ?></span>
 		</h3>
 		<div class="inside">
 			<div class="edd-admin-box">
 				<div class="edd-admin-box-inside">
 					<ul class="edd-aa-view-order-details">
 					<?php
-					// Loop through each All Access Product that was purchased in this payment and list links to view/manage them.
+					// Loop through each Full Access Product that was purchased in this payment and list links to view/manage them.
 					foreach ( $payment->cart_details as $cart_key => $cart_item ) {
 
 						$download_id = $cart_item['id'];
 
-						// Check if this product is an All Access product.
+						// Check if this product is an Full Access product.
 						$all_access_enabled = edd_all_access_enabled_for_download( $download_id );
 
-						// If not an All Access product, skip it.
+						// If not an Full Access product, skip it.
 						if ( ! $all_access_enabled ) {
 							continue;
 						}
@@ -627,7 +627,7 @@ function edd_all_access_view_order_details_sidebar( $payment_id ) {
 							$product_title .= ' - ' . edd_get_price_option_name( $download_id, $price_id, $payment_id );
 						}
 
-						// Set up the All Access Pass Object for this product.
+						// Set up the Full Access Pass Object for this product.
 						$all_access_pass = edd_all_access_get_pass( $payment->ID, $download_id, $price_id );
 
 						$at_least_one_all_access_pass_purchased = true;
@@ -636,7 +636,7 @@ function edd_all_access_view_order_details_sidebar( $payment_id ) {
 							<p>
 								<span class="label"><?php echo esc_html( $product_title ); ?></span>&nbsp;
 								<?php
-								// If this All Access pass is invalid, don't show a link to view it.
+								// If this Full Access pass is invalid, don't show a link to view it.
 
 								if ( 'pending' === $payment->status ) {
 									?>
@@ -651,7 +651,7 @@ function edd_all_access_view_order_details_sidebar( $payment_id ) {
 						<?php
 					}
 
-					// If no All Access Products were purchased, show "none".
+					// If no Full Access Products were purchased, show "none".
 					if ( ! $at_least_one_all_access_pass_purchased ) {
 						?>
 						<li class="edd-aa-single-pass-payment-sidebar">
@@ -670,12 +670,12 @@ function edd_all_access_view_order_details_sidebar( $payment_id ) {
 add_action( 'edd_view_order_details_sidebar_after', 'edd_all_access_view_order_details_sidebar' );
 
 /**
- * Because of a bug, when using the retroactive All Access Passes tool we'll do a check to make sure
+ * Because of a bug, when using the retroactive Full Access Passes tool we'll do a check to make sure
  * all data that should exist does exist prior to attempting an activation.
  * Otherwise, it's possible that the activation gets falsely triggered as a renewal. See issue #152 on GitHub for more.
  *
  * @since       1.0.7
- * @param       EDD_All_Access_Pass $all_access_pass The All Access Pass in question.
+ * @param       EDD_All_Access_Pass $all_access_pass The Full Access Pass in question.
  * @param       int                 $payment_id The ID of the payment in question.
  * @param       int                 $download_id The ID of the download/product in question.
  * @param       int                 $price_id The ID of the variable price in question.
@@ -699,16 +699,16 @@ function all_access_issue_152_check( $all_access_pass, $payment_id, $download_id
 	// Lets assume the pass was activated correctly and then double check.
 	$correctly_activated = true;
 
-	// If this All Access pass does not exists in the customer meta array.
+	// If this Full Access pass does not exists in the customer meta array.
 	if ( ! isset( $customer_all_access_passes[ $download_id . '_' . $price_id ] ) ) {
 
-		// And it's also not set in the payment meta, this All Access pass was not affected by the issue.
+		// And it's also not set in the payment meta, this Full Access pass was not affected by the issue.
 		if ( ! isset( $all_access_active_ids[ $purchased_aa_download_key ] ) && ! isset( $all_access_expired_ids[ $purchased_aa_download_key ] ) ) {
 			return;
 		}
 	}
 
-	// If this All Access pass exists in either the active or expired payment meta.
+	// If this Full Access pass exists in either the active or expired payment meta.
 	if ( isset( $all_access_active_ids[ $purchased_aa_download_key ] ) || isset( $all_access_expired_ids[ $purchased_aa_download_key ] ) ) {
 
 		// But it's NOT in the customer meta, something is broken with it.
@@ -788,11 +788,11 @@ function _edd_all_access_deprecated_function( $function, $version, $replacement 
 	// Allow plugin to filter the output error trigger.
 	if ( WP_DEBUG && apply_filters( 'edd_deprecated_function_trigger_error', $show_errors ) ) {
 		if ( ! is_null( $replacement ) ) {
-			trigger_error( sprintf( __( '%1$s is <strong>deprecated</strong> since All Access version %2$s! Use %3$s instead.', 'edd-all-access' ), $function, $version, $replacement ) );
+			trigger_error( sprintf( __( '%1$s is <strong>deprecated</strong> since Full Access version %2$s! Use %3$s instead.', 'edd-all-access' ), $function, $version, $replacement ) );
 			trigger_error( print_r( $backtrace, 1 ) ); // Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
 			// Alternatively we could dump this to a file.
 		} else {
-			trigger_error( sprintf( __( '%1$s is <strong>deprecated</strong> since All Access version %2$s with no alternative available.', 'edd-all-access' ), $function, $version ) );
+			trigger_error( sprintf( __( '%1$s is <strong>deprecated</strong> since Full Access version %2$s with no alternative available.', 'edd-all-access' ), $function, $version ) );
 			trigger_error( print_r( $backtrace, 1 ) );// Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
 			// Alternatively we could dump this to a file.
 		}
@@ -800,13 +800,13 @@ function _edd_all_access_deprecated_function( $function, $version, $replacement 
 }
 
 /**
- * If the payment used to create this All Access Pass was an upgrade payment through Software Licensing,
- * check to see if the upgraded-from payment was All Access enabled. If not, we need to manually adjust the
+ * If the payment used to create this Full Access Pass was an upgrade payment through Software Licensing,
+ * check to see if the upgraded-from payment was Full Access enabled. If not, we need to manually adjust the
  * start time of this AA pass to match the start time of the upgraded-from payment.
  * Note that only non-AA to AA upgrades are affected here, as AA to AA upgrades are handled correctly
  *
  * @since  1.1
- * @param  EDD_All_Access_Pass $all_access_pass The All Access Pass in question.
+ * @param  EDD_All_Access_Pass $all_access_pass The Full Access Pass in question.
  * @param  EDD_Payment         $payment The EDD Payment in question.
  * @param  int                 $download_id The id of the product in question.
  * @param  int                 $price_id The id of the variable price in question.
@@ -829,7 +829,7 @@ function all_access_issue_229_check( $all_access_pass, $payment, $download_id, $
 	// Get the UTC timestamp of the original upgraded-from payment.
 	$old_start_time = edd_all_access_get_payment_utc_timestamp( $upgraded_from_payment );
 
-	// Set the start time of this upgraded-to All Access Pass to match the start time of the upgraded-from payment.
+	// Set the start time of this upgraded-to Full Access Pass to match the start time of the upgraded-from payment.
 	$all_access_pass->start_time = $old_start_time;
 
 	if ( $all_access_pass->start_time === $old_start_time ) {
@@ -862,7 +862,7 @@ function edd_all_access_allow_css_display_in_wp_kses( $styles ) {
 }
 
 /**
- * This function makes it easy show specific tags required for the All Access download form.
+ * This function makes it easy show specific tags required for the Full Access download form.
  *
  * @since  1.1.2
  * @param  array $styles The allowed styles in wp_kses.
@@ -882,7 +882,7 @@ function edd_all_access_kses_for_download_form( $allowedposttags, $context ) {
 }
 
 /**
- * Modifies the download type to be "all_access" if the download is enabled for All Access.
+ * Modifies the download type to be "all_access" if the download is enabled for Full Access.
  *
  * @since 1.2.5
  * @param string $type

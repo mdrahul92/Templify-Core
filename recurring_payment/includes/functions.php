@@ -23,6 +23,7 @@ function edd_recurring_get_order_subscriptions( $order ) {
 		return $subs_db->get_subscriptions( $args );
 	}
 
+	
 	// If this payment has a parent payment, and is possibly a renewal payment.
 	if ( $order->parent ) {
 

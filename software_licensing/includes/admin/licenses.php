@@ -203,6 +203,8 @@ function edd_sl_render_license_view( $view, $callbacks ) {
  * @return void
  */
 function edd_sl_licenses_view( $license ) {
+	//echo "License";
+	//print_r($license);
 	$base         = admin_url( 'edit.php?post_type=download&page=edd-licenses&view=overview&license_id=' . $license->ID );
 	$base         = remove_query_arg( 'edd-message' );
 	$base         = wp_nonce_url( $base, 'edd_sl_license_nonce' );
@@ -370,16 +372,18 @@ function edd_sl_licenses_view( $license ) {
 							</td>
 							<td>
 								<?php
-								$limit = $license->license_limit();
 
-							
+								
+								//$limit = $license->license_limit();
+
+								$limit = 0;
 								 $data  = '';
 
 								// if ( $license->parent ) {
 								// 	$data .= 'data-parent="' . $license->parent . '"';
 								// }
-								 $active_count = $license->activation_count;
-								 $limit_text   = '<span id="edd-sl-' . $license->ID . '-limit" ' . $data . '>' . $limit . '</span>';
+								echo  $active_count = $license->activation_count;
+								echo  $limit_text   = '<span id="edd-sl-' . $license->ID . '-limit" ' . $data . '>' . $limit . '</span>';
 
 								echo '<span class="edd-sl-limit-wrap">' . $active_count . ' / ' . $limit_text . '</span>';
 

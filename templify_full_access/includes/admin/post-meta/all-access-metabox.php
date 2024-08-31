@@ -197,6 +197,7 @@ function edd_all_access_render_all_access_meta_box() {
 				</ul>
 			</td>
 		</tr>
+		
 		<?php
 		// Full Access Receipt options.
 		?>

@@ -11,6 +11,7 @@ jQuery(document).ready(function ($) {
 		var target = $('#sl-retro-single-wrapper');
 		if ( 'all' == type ) {
 			target.hide();
+			
 		} else {
 			target.show();
 			target.find( '.edd-select-chosen' ).css( 'width', 'auto' );
